@@ -1,24 +1,32 @@
 import * as React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 
-export interface HomeProps {
-}
+export interface HomeProps {}
 
-export interface HomeState {
-}
+export interface HomeState {}
 
-export default class HomeComponent extends React.Component<HomeProps, HomeState> {
+export default class HomeComponent extends React.Component<
+  HomeProps,
+  HomeState
+> {
   constructor(props: HomeProps) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   public render() {
     return (
-      <View>
-         <Text>Home Component</Text>
+      <View style={styles.container}>
+        <Text>Home Component</Text>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+});

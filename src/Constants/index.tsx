@@ -1,16 +1,16 @@
-import { vh, vw, DesignHeight, DesignWidth } from './Dimension';
-import Colors from './Colors'
-import Images from './Images'
-import VectorIcons from './VectorIcons'
-import Strings from './Strings'
+import {vh, vw, DesignHeight, DesignWidth} from './Dimension';
+import Colors from './Colors';
+import Images from './Images';
+import VectorIcons from './VectorIcons';
+import Strings from './Strings';
 
 export {
-    vh,
-    vw,
-    DesignHeight,
-    DesignWidth,
-    Colors,
-    Images,
-    VectorIcons,
-    Strings
-}
+  vh,
+  vw,
+  DesignHeight,
+  DesignWidth,
+  Colors,
+  Images,
+  VectorIcons,
+  Strings,
+};

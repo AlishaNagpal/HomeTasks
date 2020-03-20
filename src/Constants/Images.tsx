@@ -1,5 +1,5 @@
 const Images = {
-    groupImage: require('../Assets/Images/gang.png'),
-}
+  groupImage: require('../Assets/Images/gang.png'),
+};
 
 export default Images;
