@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-// import {ChatMessagesReducer} from '../Modules/Chat/ChatReducer'
+import HomeReducer from '../Modules/Home/HomeReducer'
 
 export const reducer = combineReducers({
-    // ChatMessagesReducer: ChatMessagesReducer,
+    HomeReducer
 });
