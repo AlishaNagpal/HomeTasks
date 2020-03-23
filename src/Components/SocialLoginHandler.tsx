@@ -4,6 +4,7 @@ import { Alert } from 'react-native'
 const {AccessToken, GraphRequest, GraphRequestManager, LoginManager } = FBSDK
 
 export function fbLogin(dataCallback: Function, errorCallback: Function) {
+
     LoginManager.logInWithPermissions(['public_profile', 'email']).then(
         (result: any) => {
             if (result.isCancelled) {
@@ -53,4 +54,9 @@ export function fbLogin(dataCallback: Function, errorCallback: Function) {
             errorCallback(error);
         },
     );
+}
+
+export function logOut() {
+    LoginManager.logOut();
+    Alert.alert('You have been Logged out!');
 }

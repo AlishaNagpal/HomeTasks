@@ -4,19 +4,34 @@ import { vh, vw, Colors } from '../../Constants';
 const styles = StyleSheet.create({
     container: {
         flex:1,
-        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: Colors.white,
-        resizeMode:'contain',
     },
     textStyle:{
-        borderColor:Colors.white,
         fontSize:vh(30),
         height:vh(60),
         marginTop:vh(30),
         alignSelf: 'center',
+        color:Colors.tealGreen,
+    },
+    image:{
+        height:vh(200),
+        width:vh(200),
+        borderRadius:vh(100),
+        marginTop:vh(100)
+    },
+    email:{
+        fontSize:vh(30),
+        height:vh(60),
+        alignSelf: 'center',
+        color:Colors.tealGreen,
+    },
+    logOut:{
+        fontSize:vh(30),
+        height:vh(60),
+        alignSelf: 'center',
         color:Colors.fbColor,
-        borderRadius:vw(100)
+        marginTop:vh(30)
     }
 });
 

@@ -1,11 +1,18 @@
 import * as React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, Image, Text, TouchableOpacity} from 'react-native';
+import * as  SocialLogin from '../../Components/SocialLoginHandler';
+import { connect } from 'react-redux';
+import {updateToken} from '../../Modules/SignUP/Action'
+import styles from './styles'
 
-export interface HomeProps {}
+export interface HomeProps {
+  result:Array<any>,
+  updateToken:Function
+}
 
 export interface HomeState {}
 
-export default class HomeComponent extends React.Component<
+class HomeComponent extends React.Component<
   HomeProps,
   HomeState
 > {
@@ -14,19 +21,43 @@ export default class HomeComponent extends React.Component<
     this.state = {};
   }
 
+  logOut = () =>{
+    SocialLogin.logOut()
+    this.props.updateToken('')
+  }
+
   public render() {
     return (
       <View style={styles.container}>
-        <Text>Home Component</Text>
+        <Image
+        style={styles.image}
+        source={{uri:this.props.result.picture.data.url}}
+        />
+        <Text style={styles.textStyle} >{this.props.result.name}</Text>
+        <Text style={styles.email} >{this.props.result.email}</Text>
+        <TouchableOpacity onPress={this.logOut} >
+        <Text style={styles.logOut} >LogOut</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-  },
-});
+
+function mapDispatchToProps(dispatch:any) {
+  return {
+    updateToken: (value:string) => dispatch(updateToken(value))
+  }
+}
+
+function mapStateToProps(state:any) {
+  const {result} = state.SignUpReducer;
+  return {
+    result
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomeComponent);
