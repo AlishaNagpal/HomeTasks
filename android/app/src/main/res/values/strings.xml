@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HomeTasks</string>
+    <string name="facebook_app_id">911202066002022</string>
+    <string name="fb_login_protocol_scheme">fb911202066002022</string>
 </resources>
