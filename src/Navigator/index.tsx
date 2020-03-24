@@ -2,9 +2,11 @@ import { connect } from 'react-redux'
 import Navigator from './Navigation';
 
 const mapStateToProps = (state: any) => {
-  const { token } = state.SignUpReducer;
+  const {splashRan} = state.SplashReducer;
+  const {token} = state.SignUpReducer;
   return {
-    token
+    token,
+    splashRan
   }
 }
 

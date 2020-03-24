@@ -34,8 +34,7 @@ target 'HomeTasks' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-
-  # pod 'FBSDKLoginKit'
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
     
 
   target 'HomeTasksTests' do
