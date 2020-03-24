@@ -10,9 +10,8 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-
-//  AppDelegate.m
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "RNSplashScreen.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -31,6 +30,7 @@
   [self.window makeKeyAndVisible];
   [[FBSDKApplicationDelegate sharedInstance] application:application
   didFinishLaunchingWithOptions:launchOptions];
+  [RNSplashScreen show];
   return YES;
 }
 

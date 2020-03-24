@@ -7,7 +7,7 @@ import Home from '../Containers/Home/Home';
 import SignUP from '../Containers/SignUp/SignUp';
 import Splash from '../Containers/Splash/Splash';
 
-// console.disableYellowBox = true
+console.disableYellowBox = true
 
 const HomeStack = createStackNavigator();
 const AuthStack = createStackNavigator();

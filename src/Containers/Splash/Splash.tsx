@@ -34,7 +34,8 @@ export default function SignUP(props: SplashProps) {
     });
     const logoScale = banner.interpolate({
         inputRange: [0, 1],
-        outputRange: [0.2, 1]
+        outputRange: [0.2, 1],
+        extrapolate:'clamp'
     })
     const textTurn = banner.interpolate({
         inputRange: [0, 1],
