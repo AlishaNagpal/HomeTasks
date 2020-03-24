@@ -5,14 +5,13 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         alignItems: 'center',
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.peachy,
     },
     textStyle:{
         fontSize:vh(30),
-        height:vh(60),
-        marginTop:vh(30),
-        alignSelf: 'center',
-        color:Colors.tealGreen,
+        marginTop:vh(20),
+        color:Colors.white,
+        fontFamily:'Medinah'
     },
     image:{
         height:vh(200),
@@ -22,17 +21,23 @@ const styles = StyleSheet.create({
     },
     email:{
         fontSize:vh(30),
-        height:vh(60),
-        alignSelf: 'center',
-        color:Colors.tealGreen,
+        marginTop:vh(20),
+        color:Colors.peachy,
+        fontFamily:'Medinah'
     },
     logOut:{
-        fontSize:vh(30),
-        height:vh(60),
+        fontSize:vh(20),
         alignSelf: 'center',
-        color:Colors.fbColor,
-        marginTop:vh(30)
+        color:Colors.bronzedYellow,
     },
+    icon:{
+        position:'absolute',
+        top:vh(210),
+        right:vw(80)
+    },
+    icon2:{
+     marginTop:vh(30)   
+    }
 });
 
 export default styles;

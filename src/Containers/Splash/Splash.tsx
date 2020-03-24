@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { View, Text, Animated, Image } from 'react-native';
+import React, {useEffect} from 'react';
+import {Animated} from 'react-native';
 import styles from './styles';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { splashToken } from '../../Modules/Splash/Action';
 import { Colors, Images } from '../../Constants'
 import LinearGradient from 'react-native-linear-gradient';
@@ -11,14 +11,11 @@ const colors = [Colors.goldenYellow, Colors.goldenYellow, Colors.darkishYellow, 
 export interface SplashProps { }
 
 export default function SignUP(props: SplashProps) {
-
     let banner: any;
-
     banner = new Animated.Value(0);
-
-    const { splashRan } = useSelector((state: { SplashReducer: any }) => ({
-        splashRan: state.SplashReducer.splashRan,
-    }));
+    // const { splashRan } = useSelector((state: { SplashReducer: any }) => ({
+    //     splashRan: state.SplashReducer.splashRan,
+    // }));
 
     const dispatch = useDispatch();
 

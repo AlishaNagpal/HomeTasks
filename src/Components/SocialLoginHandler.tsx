@@ -13,13 +13,13 @@ export function fbLogin(dataCallback: Function, errorCallback: Function) {
     LoginManager.logInWithPermissions(['public_profile', 'email']).then(
         (result: any) => {
             if (result.isCancelled) {
-                Alert.alert('Login cancelled');
+                // Alert.alert('Login cancelled');
                 errorCallback('cancel');
             } else {
-                Alert.alert(
-                    'Login success with permissions: ' +
-                    result.grantedPermissions.toString(),
-                );
+                // Alert.alert(
+                //     'Login success with permissions: ' +
+                //     result.grantedPermissions.toString(),
+                // );
             }
             {
                 if (!result.isCancelled) {

@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as  SocialLogin from '../../Components/SocialLoginHandler';
 import { updateToken } from '../../Modules/SignUP/Action'
 import styles from './styles'
+import LinearGradient from 'react-native-linear-gradient';
+import { Colors, VectorIcons, vh, Strings } from '../../Constants';
 
-export interface HomeProps { }
-
-export default function Home(props: HomeProps) {
+const colors = [Colors.goldenYellow, Colors.goldenYellow, 'pink', Colors.white, Colors.white]
+export default function Home() {
 
   const { token, result } = useSelector((state: { SignUpReducer: any }) => ({
     token: state.SignUpReducer.token,
@@ -21,16 +22,20 @@ export default function Home(props: HomeProps) {
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }} colors={colors} style={styles.container}>
       <Image
         style={styles.image}
         source={{ uri: result.profilePic }}
       />
-      <Text style={styles.textStyle} >{result.name}</Text>
+      <VectorIcons.FontAwesome name={'hand-peace-o'} color={Colors.white} size={vh(80)} style={styles.icon} />
+      <Text style={styles.textStyle} >{Strings.Hello}</Text>
+      <Text style={styles.textStyle} >{Strings.I_Am}{result.name}</Text>
+      <Text style={styles.textStyle} >{Strings.contact}</Text>
       <Text style={styles.email} >{result.email}</Text>
+      <VectorIcons.MaterialCommunityIcons name={'spa-outline'} color={Colors.goldenYellow} size={vh(80)} style={styles.icon2} />
       <TouchableOpacity onPress={logOut}>
         <Text style={styles.logOut} >LogOut</Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 };

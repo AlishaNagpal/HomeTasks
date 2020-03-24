@@ -8,6 +8,9 @@ const Colors = {
   darkishYellow:'#F3CD3F',
   bronzedYellow:'#CC8837',
   brown:'#A96C3F',
+  peachyBrown:'#D1AD78',
+  peachy:'#ffc0b4',
+  gray:'#ECECEC',
 };
 
 export default Colors;
