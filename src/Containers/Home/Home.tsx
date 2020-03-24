@@ -1,63 +1,36 @@
 import * as React from 'react';
-import {View, Image, Text, TouchableOpacity} from 'react-native';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import * as  SocialLogin from '../../Components/SocialLoginHandler';
-import { connect } from 'react-redux';
-import {updateToken} from '../../Modules/SignUP/Action'
+import { updateToken } from '../../Modules/SignUP/Action'
 import styles from './styles'
 
-export interface HomeProps {
-  result:Array<any>,
-  updateToken:Function
-}
+export interface HomeProps { }
 
-export interface HomeState {}
+export default function Home(props: HomeProps) {
 
-class HomeComponent extends React.Component<
-  HomeProps,
-  HomeState
-> {
-  constructor(props: HomeProps) {
-    super(props);
-    this.state = {};
-  }
+  const { token, result } = useSelector((state: { SignUpReducer: any }) => ({
+    token: state.SignUpReducer.token,
+    result: state.SignUpReducer.result,
+  }));
+  const dispatch = useDispatch();
 
-  logOut = () =>{
+  const logOut = () => {
     SocialLogin.logOut()
-    this.props.updateToken('')
-  }
+    dispatch(updateToken(''))
+  };
 
-  public render() {
-    return (
-      <View style={styles.container}>
-        <Image
+  return (
+    <View style={styles.container}>
+      <Image
         style={styles.image}
-        source={{uri:this.props.result.picture.data.url}}
-        />
-        <Text style={styles.textStyle} >{this.props.result.name}</Text>
-        <Text style={styles.email} >{this.props.result.email}</Text>
-        <TouchableOpacity onPress={this.logOut} >
+        source={{ uri: result.profilePic }}
+      />
+      <Text style={styles.textStyle} >{result.name}</Text>
+      <Text style={styles.email} >{result.email}</Text>
+      <TouchableOpacity onPress={logOut}>
         <Text style={styles.logOut} >LogOut</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-}
-
-
-function mapDispatchToProps(dispatch:any) {
-  return {
-    updateToken: (value:string) => dispatch(updateToken(value))
-  }
-}
-
-function mapStateToProps(state:any) {
-  const {result} = state.SignUpReducer;
-  return {
-    result
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HomeComponent);
+      </TouchableOpacity>
+    </View>
+  );
+};

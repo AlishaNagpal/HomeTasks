@@ -1,7 +1,7 @@
 import * as Actions from '../../Reducer/types'
 const initialState = {
     token: '',
-    result: [],
+    result: {},
 }
 
 const Reducer = (state = initialState, action: any) => {

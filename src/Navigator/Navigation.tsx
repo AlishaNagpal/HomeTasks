@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import Home from '../Containers/Home/Home';
 import SignUP from '../Containers/SignUp/SignUp'
-import Example from '../Containers/SignUp/Example.js';
 
 // console.disableYellowBox = true
 
@@ -15,15 +14,16 @@ const RootStack = createStackNavigator();
 
 const AuthNavigator = () => (
   <AuthStack.Navigator headerMode="screen" initialRouteName="SignUP">
-    <AuthStack.Screen name="SignUP" component={SignUP} />
+    <AuthStack.Screen name="SignUP" component={SignUP} options={{
+      headerShown: false
+    }} />
   </AuthStack.Navigator>
 );
 
 const HomeNavigator = () => (
-    <HomeStack.Navigator headerMode="screen" initialRouteName="HOME">
-      <HomeStack.Screen name={'HOME'} component={Home} />
-      <HomeStack.Screen name={'Example'} component={Example} />
-    </HomeStack.Navigator>
+  <HomeStack.Navigator headerMode="screen" initialRouteName="HOME">
+    <HomeStack.Screen name={'HOME'} component={Home} />
+  </HomeStack.Navigator>
 );
 
 export interface Props {

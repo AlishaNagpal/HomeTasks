@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         color:Colors.fbColor,
         marginTop:vh(30)
-    }
+    },
 });
 
 export default styles;

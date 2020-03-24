@@ -6,8 +6,19 @@ export const updateToken = (value: string) => {
     }
 }
 
-export const getResult = (result: any) => {
+export const getResult = (
+    email: string,
+    name: string,
+    profilePic: string,
+    callback: Function,
+  ) => {
     return (dispatch: any) => {
-        dispatch({ type: Actions.GET_RESULT, payload: { data: result } });
-    }
-}
+      let temp = {
+        email: email,
+        name: name,
+        profilePic: profilePic,
+      };
+      dispatch({type: Actions.GET_RESULT, payload: {data: temp}});
+      callback();
+    };
+  };

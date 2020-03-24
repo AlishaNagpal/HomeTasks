@@ -10,13 +10,18 @@ const styles = StyleSheet.create({
         resizeMode:'contain',
     },
     textStyle:{
-        borderColor:Colors.white,
-        fontSize:vh(30),
-        height:vh(60),
-        marginTop:vh(30),
-        alignSelf: 'center',
-        color:Colors.fbColor,
-        borderRadius:vw(100)
+        fontSize:vh(50),
+        color:Colors.white,
+        fontFamily:'Medinah',
+        marginLeft:vw(160),
+        marginTop:vh(100)
+    },
+    linkedInStyle:{
+        fontSize:vh(50),
+        color:Colors.white,
+        fontFamily:'Medinah',
+        marginLeft:vw(160),
+        marginTop:vh(30)
     }
 });
 
