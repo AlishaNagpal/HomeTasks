@@ -109,6 +109,15 @@ const styles = StyleSheet.create({
         marginTop:vh(17.5),
         fontWeight:'500'
     },
+    dotView:{
+        top:(hei-50),
+        left:wi/2.3,
+        flexDirection:'row',
+        position:'absolute',
+    },
+    dot:{
+        marginLeft:vw(5)
+    }
 });
 
 export default styles;

@@ -9,7 +9,7 @@ export default function SignUP() {
         source={Images.mainScreen}
         style={styles.container}
     >
-            <VectorIcons.Ionicons name={'ios-bicycle'} color={Colors.white} size={vh(150)} />
+            <VectorIcons.MaterialCommunityIcons name={'worker'} color={Colors.white} size={vh(150)} />
             <Text style={styles.exercise} >{Strings.signUpWork}</Text>
         </ImageBackground>
     );

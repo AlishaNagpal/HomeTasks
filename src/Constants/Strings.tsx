@@ -17,6 +17,6 @@ const Strings = {
   ConnectText:'Post things happening around you, share with friends and chat with locals to learn what’s happening now',
   facebookLogin:'Login with facebook',
   linkedLogin:'Login with LinkedIn',
-  signUpWork:'Sign Up Screen over here, Please!'
+  signUpWork:'Stuff will happen!'
 };
 export default Strings;

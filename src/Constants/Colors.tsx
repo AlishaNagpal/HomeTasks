@@ -13,6 +13,7 @@ const Colors = {
   gray:'#ECECEC',
   linkedIn:'#1778B5',
   oldSchool:'#24A5E9',
+  inactiveDot:'#949494',
 };
 
 export default Colors;
