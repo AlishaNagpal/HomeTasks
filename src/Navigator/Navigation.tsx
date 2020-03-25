@@ -14,6 +14,8 @@ import Splash from '../Containers/Splash/Splash';
 import NotMuch from '../Containers/NotMuch/NotMuch';
 import NotMuch2 from '../Containers/NotMuch/NotMuch2';
 import LogOut from '../Components/LogOut';
+import TutorialScreen from '../Containers/TutorialScreen/TutorialScreen';
+import SignIn from '../Containers/SignIn/SignIn';
 
 console.disableYellowBox = true
 
@@ -31,8 +33,8 @@ const NotMuchNavigator = () => (
     tabBarOptions={{
       activeTintColor: Colors.brown,
       inactiveTintColor: Colors.gray,
-      labelStyle: {fontSize: vh(20), marginTop:vh(30)},
-      style:{height:100}
+      labelStyle: { fontSize: vh(20), marginTop: vh(30) },
+      style: { height: 100 }
     }} >
     <TopTab.Screen
       name={'NotMuch'}
@@ -55,12 +57,12 @@ const HomeNavigator = () => (
 
 const HomeBottomNavigator = () => (
   <BottomTab.Navigator
-  tabBarOptions={{
-    activeTintColor: Colors.brown,
-    inactiveTintColor: Colors.gray,
-    labelStyle: {fontSize: vh(22)},
-  }}
-   >
+    tabBarOptions={{
+      activeTintColor: Colors.brown,
+      inactiveTintColor: Colors.gray,
+      labelStyle: { fontSize: vh(22) },
+    }}
+  >
     <BottomTab.Screen
       name={'Home'}
       component={HomeNavigator}
@@ -90,8 +92,14 @@ const FullHomeNavigator = () => (
 );
 
 const AuthNavigator = () => (
-  <AuthStack.Navigator headerMode="screen" initialRouteName="SignUP">
+  <AuthStack.Navigator headerMode="screen" initialRouteName="TutorialScreen">
+    <AuthStack.Screen name="TutorialScreen" component={TutorialScreen} options={{
+      headerShown: false
+    }} />
     <AuthStack.Screen name="SignUP" component={SignUP} options={{
+      headerShown: false
+    }} />
+     <AuthStack.Screen name="SignIn" component={SignIn} options={{
       headerShown: false
     }} />
   </AuthStack.Navigator>
@@ -110,31 +118,31 @@ export interface Props {
 
 export default class Navigator extends React.PureComponent<Props>  {
   render() {
-    return (
-      <NavigationContainer>
-        <RootStack.Navigator headerMode="none">
-            <RootStack.Screen name="NotMuch" component={SplashNavigator} />
-        </RootStack.Navigator>
-      </NavigationContainer>
-    )
-    // if (this.props.splashRan) {
-    //   return (
-    //     <NavigationContainer>
-    //       <RootStack.Navigator headerMode="none">
-    //         {this.props.token === '' ?
-    //           <RootStack.Screen name="AuthNavigator" component={AuthNavigator} /> :
-    //           <RootStack.Screen name="HomeNavigator" component={FullHomeNavigator} />}
-    //       </RootStack.Navigator>
-    //     </NavigationContainer>
-    //   )
-    // } else {
-    //   return (
-    //     <NavigationContainer>
-    //       <RootStack.Navigator headerMode="none">
-    //         <RootStack.Screen name="SplashNavigator" component={SplashNavigator} />
-    //       </RootStack.Navigator>
-    //     </NavigationContainer>
-    //   )
-    // }
+    // return (
+    //   <NavigationContainer>
+    //     <RootStack.Navigator headerMode="none">
+    //         <RootStack.Screen name="NotMuch" component={TutorialScreen} />
+    //     </RootStack.Navigator>
+    //   </NavigationContainer>
+    // )
+    if (this.props.splashRan) {
+      return (
+        <NavigationContainer>
+          <RootStack.Navigator headerMode="none">
+            {this.props.token === '' ?
+              <RootStack.Screen name="AuthNavigator" component={AuthNavigator} /> :
+              <RootStack.Screen name="HomeNavigator" component={FullHomeNavigator} />}
+          </RootStack.Navigator>
+        </NavigationContainer>
+      )
+    } else {
+      return (
+        <NavigationContainer>
+          <RootStack.Navigator headerMode="none">
+            <RootStack.Screen name="SplashNavigator" component={SplashNavigator} />
+          </RootStack.Navigator>
+        </NavigationContainer>
+      )
+    }
   }
 }

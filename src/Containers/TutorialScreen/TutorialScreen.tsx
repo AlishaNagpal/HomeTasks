@@ -1,0 +1,142 @@
+import React, { useState } from 'react';
+import { FlatList, Dimensions, View, Text, ActivityIndicator } from 'react-native';
+import { Strings, Images, Colors } from '../../Constants';
+import ReusableScreen from './ReusableScreen';
+import styles from './styles';
+import * as  SocialLogin from '../../Components/SocialLoginHandler'
+import { useDispatch } from 'react-redux';
+import { updateToken, getResult } from '../../Modules/SignUP/Action';
+import CustomButton from '../../Components/CustomButtons';
+
+const wi = Dimensions.get('screen').width
+
+interface TutorialScreenProps {
+    navigation?: any,
+};
+
+export default function SignUP(props: TutorialScreenProps) {
+    const dispatch = useDispatch()
+    const [isAnimating, setisAnimating] = useState(false);
+
+    const SignUp = () => {
+        props.navigation.navigate('SignUP');
+        setisAnimating(false);
+    }
+    
+    const SignIn = () => {
+        props.navigation.navigate('SignIn');
+        setisAnimating(false);
+    }
+
+    const data = (token: any, result: any) => {
+        dispatch(
+            getResult(result.email, result.name, result.picture.data.url, () => {
+                setisAnimating(false);
+                dispatch(updateToken(token));
+            }),
+        );
+    }
+    const errorCallback = (error: any) => {
+        console.log(error);
+        setisAnimating(false);
+    }
+
+    const login = () => {
+        SocialLogin.fbLogin(data, errorCallback)
+        setisAnimating(true)
+    }
+
+    const liData = (token: string, email: string, result: any) => {
+        dispatch(
+            getResult(
+                email,
+                result.localizedFirstName + ' ' + result.localizedLastName,
+                result.profilePicture['displayImage~'].elements[3].identifiers[0]
+                    .identifier,
+                () => {
+                    setisAnimating(false);
+                    dispatch(updateToken(token));
+                },
+            ),
+        );
+    };
+
+    const renderData = (rowData: any) => {
+        const { item } = rowData;
+        return (
+            <ReusableScreen
+                swipe={item.swipe}
+                heading={item.heading}
+                text={item.text}
+                id={item.id}
+                image={item.image}
+            />
+        )
+    }
+
+    return (
+        <View>
+            <FlatList
+                data={DATA}
+                keyExtractor={(item, index) => (item.id + index).toString()}
+                renderItem={renderData}
+                horizontal={true}
+                bounces={false}
+                snapToAlignment={'start'}
+                snapToInterval={wi}
+                decelerationRate={'fast'}
+                pagingEnabled={true}
+                disableIntervalMomentum={true}
+            />
+            <View style={styles.mainHeading} >
+                <Text style={styles.moreSocial} >{Strings.appName}</Text>
+                <Text style={styles.tagLine}>{Strings.appTagLine}</Text>
+                <ActivityIndicator
+                    animating={isAnimating}
+                    size="large"
+                    color={Colors.white}
+                    style={styles.indicator}
+                />
+                <View style={styles.buttons} >
+                    <CustomButton styleButton={styles.facebook} pressMethod={login} image={Images.fb} text={Strings.facebookLogin} Social={true} />
+                    {SocialLogin.linkedInLogin(liData)}
+                    <View style={styles.oldSchool} >
+                        <CustomButton styleButton={styles.signIn} pressMethod={SignIn} text={Strings.signIn} Social={false} />
+                        <CustomButton styleButton={styles.signUp} pressMethod={SignUp} text={Strings.signUp} Social={false} />
+                    </View>
+                </View>
+            </View>
+        </View>
+    );
+}
+
+const DATA = [
+    {
+        swipe: true,
+        heading: Strings.Swipe,
+        text: '',
+        id: 1,
+        image: Images.TutorialScreen1,
+    },
+    {
+        swipe: false,
+        heading: Strings.Explore,
+        text: Strings.ExploreText,
+        id: 2,
+        image: Images.TutorialScreen2,
+    },
+    {
+        swipe: false,
+        heading: Strings.Connect,
+        text: Strings.ConnectText,
+        id: 3,
+        image: Images.TutorialScreen3,
+    },
+    {
+        swipe: false,
+        heading: Strings.Grow,
+        text: Strings.GrowText,
+        id: 4,
+        image: Images.TutorialScreen4,
+    },
+]

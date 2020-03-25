@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { vh, vw, Colors } from '../../Constants';
+import { vh, Colors } from '../../Constants';
 
 const styles = StyleSheet.create({
     container: {
@@ -9,19 +9,12 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.white,
         resizeMode:'contain',
     },
-    textStyle:{
-        fontSize:vh(50),
-        color:Colors.white,
+    exercise:{
         fontFamily:'Medinah',
-        marginLeft:vw(160),
-        marginTop:vh(100)
-    },
-    linkedInStyle:{
-        fontSize:vh(50),
         color:Colors.white,
-        fontFamily:'Medinah',
-        marginLeft:vw(160),
-        marginTop:vh(30)
+        fontSize:vh(35),
+        textAlign:'center',
+        marginTop:vh(20)
     }
 });
 
