@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Animated, ImageBackground, Text, Easing } from 'react-native';
 import styles from './styles';
-import {useDispatch} from 'react-redux';
-import {splashToken} from '../../Modules/Splash/Action';
-import {Images, Strings} from '../../Constants'
+import { useDispatch } from 'react-redux';
+import { splashToken } from '../../Modules/Splash/Action';
+import { Images, Strings } from '../../Constants'
 
 export interface SplashProps { }
 
@@ -21,17 +21,20 @@ export default function SignUP(props: SplashProps) {
             toValue: 1,
             duration: 600,
             useNativeDriver: true,
-            easing:Easing.bounce,
+            easing: Easing.bounce,
+            delay: 500
         }).start();
         setTimeout(() => {
             dispatch(splashToken(true))
-        }, 300);
+        }, 1100);
     });
+
     const logoScale = banner.interpolate({
         inputRange: [0, 1],
         outputRange: [0.2, 1],
         extrapolate: 'clamp'
     })
+
     return (
         <ImageBackground
             style={styles.container}
@@ -40,7 +43,8 @@ export default function SignUP(props: SplashProps) {
             <Text style={styles.tagLine}>{Strings.appTagLine}</Text>
             <Animated.Image
                 style={[styles.logoImage, { transform: [{ scale: logoScale }] }]}
-                source={Images.splashLogo} />
+                source={Images.splashLogo}
+            />
         </ImageBackground>
     );
 }

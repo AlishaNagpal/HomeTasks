@@ -23,6 +23,7 @@
 		67A7A6D117B24C19B12DB94E /* Medinah.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C124881CD5A04E75B45F3F2E /* Medinah.ttf */; };
 		5008508BC1A6417AA8CC06C7 /* NordiquePro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31E54EEFF8AC48A99D7F2B50 /* NordiquePro-Regular.ttf */; };
 		E45C2AAA9D724846A2AC817C /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A3C947A350A34228BC0539D0 /* Poppins-Regular.ttf */; };
+		B8A0D3EB25CA41AE8CD3A29D /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21AE0924F962494D902AE690 /* Poppins-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		C124881CD5A04E75B45F3F2E /* Medinah.ttf */ = {isa = PBXFileReference; name = "Medinah.ttf"; path = "../src/Assets/Fonts/Medinah.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		31E54EEFF8AC48A99D7F2B50 /* NordiquePro-Regular.ttf */ = {isa = PBXFileReference; name = "NordiquePro-Regular.ttf"; path = "../src/Assets/Fonts/NordiquePro-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		A3C947A350A34228BC0539D0 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; name = "Poppins-Regular.ttf"; path = "../src/Assets/Fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		21AE0924F962494D902AE690 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; name = "Poppins-Medium.ttf"; path = "../src/Assets/Fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -242,6 +244,7 @@
 				C124881CD5A04E75B45F3F2E /* Medinah.ttf */,
 				31E54EEFF8AC48A99D7F2B50 /* NordiquePro-Regular.ttf */,
 				A3C947A350A34228BC0539D0 /* Poppins-Regular.ttf */,
+				21AE0924F962494D902AE690 /* Poppins-Medium.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -391,6 +394,7 @@
 				67A7A6D117B24C19B12DB94E /* Medinah.ttf in Resources */,
 				5008508BC1A6417AA8CC06C7 /* NordiquePro-Regular.ttf in Resources */,
 				E45C2AAA9D724846A2AC817C /* Poppins-Regular.ttf in Resources */,
+				B8A0D3EB25CA41AE8CD3A29D /* Poppins-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

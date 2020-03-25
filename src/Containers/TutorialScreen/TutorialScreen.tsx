@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
-import { FlatList, Dimensions, View, Text, ActivityIndicator } from 'react-native';
+import React, {useState} from 'react';
+import { FlatList, View, Text, ActivityIndicator, Image } from 'react-native';
 import { Strings, Images, Colors } from '../../Constants';
-import ReusableScreen from './ReusableScreen';
 import styles from './styles';
 import * as  SocialLogin from '../../Components/SocialLoginHandler'
 import { useDispatch } from 'react-redux';
 import { updateToken, getResult } from '../../Modules/SignUP/Action';
 import CustomButton from '../../Components/CustomButtons';
-
-const wi = Dimensions.get('screen').width
 
 interface TutorialScreenProps {
     navigation?: any,
@@ -22,7 +19,7 @@ export default function SignUP(props: TutorialScreenProps) {
         props.navigation.navigate('SignUP');
         setisAnimating(false);
     }
-    
+
     const SignIn = () => {
         props.navigation.navigate('SignIn');
         setisAnimating(false);
@@ -64,13 +61,20 @@ export default function SignUP(props: TutorialScreenProps) {
     const renderData = (rowData: any) => {
         const { item } = rowData;
         return (
-            <ReusableScreen
-                swipe={item.swipe}
-                heading={item.heading}
-                text={item.text}
-                id={item.id}
-                image={item.image}
-            />
+            <View style={styles.container} >
+                <Image source={item.image} style={styles.backgroundImage} />
+                <View style={styles.mainHeading}>
+                    {item.swipe ?
+                        <View style={styles.swipeHeading} >
+                            <Text style={styles.swipe} >{item.heading}</Text>
+                            <Image source={Images.swipe} style={styles.swipeImage} />
+                        </View>
+                        : <View style={styles.tutorialHeading} >
+                            <Text style={styles.heading} > {item.heading} </Text>
+                            <Text style={styles.text} > {item.text} </Text>
+                        </View>}
+                </View>
+            </View>
         )
     }
 
@@ -82,11 +86,9 @@ export default function SignUP(props: TutorialScreenProps) {
                 renderItem={renderData}
                 horizontal={true}
                 bounces={false}
-                snapToAlignment={'start'}
-                snapToInterval={wi}
-                decelerationRate={'fast'}
                 pagingEnabled={true}
                 disableIntervalMomentum={true}
+                initialNumToRender={1}
             />
             <View style={styles.mainHeading} >
                 <Text style={styles.moreSocial} >{Strings.appName}</Text>
