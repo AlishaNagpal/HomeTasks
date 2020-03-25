@@ -21,6 +21,8 @@
 		94CAAA22405E9454DA9841C7 /* libPods-HomeTasks-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F2264497077FE6E50F65A2B /* libPods-HomeTasks-tvOS.a */; };
 		E6986B0DC212136E8D84D6CF /* libPods-HomeTasksTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA7C9724A9A1C959740E0566 /* libPods-HomeTasksTests.a */; };
 		67A7A6D117B24C19B12DB94E /* Medinah.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C124881CD5A04E75B45F3F2E /* Medinah.ttf */; };
+		5008508BC1A6417AA8CC06C7 /* NordiquePro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31E54EEFF8AC48A99D7F2B50 /* NordiquePro-Regular.ttf */; };
+		E45C2AAA9D724846A2AC817C /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A3C947A350A34228BC0539D0 /* Poppins-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +87,8 @@
 		F20BDB7526224DAEAE7634B1 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		F3A29BC1965A401FA113ABB0 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		C124881CD5A04E75B45F3F2E /* Medinah.ttf */ = {isa = PBXFileReference; name = "Medinah.ttf"; path = "../src/Assets/Fonts/Medinah.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		31E54EEFF8AC48A99D7F2B50 /* NordiquePro-Regular.ttf */ = {isa = PBXFileReference; name = "NordiquePro-Regular.ttf"; path = "../src/Assets/Fonts/NordiquePro-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A3C947A350A34228BC0539D0 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; name = "Poppins-Regular.ttf"; path = "../src/Assets/Fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +240,8 @@
 				F3A29BC1965A401FA113ABB0 /* SimpleLineIcons.ttf */,
 				4FAD080E519441FA8831B9D7 /* Zocial.ttf */,
 				C124881CD5A04E75B45F3F2E /* Medinah.ttf */,
+				31E54EEFF8AC48A99D7F2B50 /* NordiquePro-Regular.ttf */,
+				A3C947A350A34228BC0539D0 /* Poppins-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -383,6 +389,8 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				67A7A6D117B24C19B12DB94E /* Medinah.ttf in Resources */,
+				5008508BC1A6417AA8CC06C7 /* NordiquePro-Regular.ttf in Resources */,
+				E45C2AAA9D724846A2AC817C /* Poppins-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,19 +3,27 @@ import { vh, vw, Colors } from '../../Constants';
 
 const styles = StyleSheet.create({
     container: {
-        flex:1,
-        justifyContent: 'center',
+        flex: 1,
         alignItems: 'center',
     },
-    logoImage:{
-        height:vh(250),
-        width:vw(350)
+    moreSocial: {
+        color: Colors.white,
+        fontFamily: 'NordiquePro-Regular',
+        fontSize: vh(60),
+        marginTop: vh(63.5),
     },
-    text:{
-        color:Colors.white,
-        fontSize:vh(50),
-        fontFamily:'Medinah',
-        position:'absolute'
+    tagLine: {
+        color: Colors.white,
+        fontFamily: 'Poppins-Regular',
+        fontSize: vh(16.5),
+        marginTop: vh(-24.5),
+    },
+    logoImage: {
+        height: vh(71),
+        width: vh(71.5),
+        position:'absolute',
+        left:vw(33),
+        bottom:vh(26.5)
     }
 });
 

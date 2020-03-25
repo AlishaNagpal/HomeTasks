@@ -5,6 +5,8 @@ const Strings = {
   Hello:'Hello there!',
   I_Am:'I am ',
   contact:'Contact me at: ',
-  love:'Love Thy Self!'
+  love:'Love Thy Self!',
+  appName:'moresocial',
+  appTagLine:'What’s happening where you are?',
 };
 export default Strings;

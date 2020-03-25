@@ -1,7 +1,7 @@
 const Images = {
-  groupImage: require('../Assets/Images/gang.png'),
   mainScreen: require('../Assets/Images/border.jpg'),
-  splash: require('../Assets/Images/banner.png')
+  splash: require('../Assets/Images/ic_splash_bg.png'),
+  splashLogo:require('../Assets/Images/ic_splash_mosologo.png'),
 };
 
 export default Images;

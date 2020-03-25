@@ -1,12 +1,9 @@
-import React, {useEffect} from 'react';
-import {Animated} from 'react-native';
+import React, { useEffect } from 'react';
+import { Animated, ImageBackground, Text, Easing } from 'react-native';
 import styles from './styles';
-import { useDispatch} from 'react-redux';
-import { splashToken } from '../../Modules/Splash/Action';
-import { Colors, Images } from '../../Constants'
-import LinearGradient from 'react-native-linear-gradient';
-
-const colors = [Colors.goldenYellow, Colors.goldenYellow, Colors.darkishYellow, Colors.bronzedYellow, Colors.brown]
+import {useDispatch} from 'react-redux';
+import {splashToken} from '../../Modules/Splash/Action';
+import {Images, Strings} from '../../Constants'
 
 export interface SplashProps { }
 
@@ -23,7 +20,8 @@ export default function SignUP(props: SplashProps) {
         Animated.timing(banner, {
             toValue: 1,
             duration: 600,
-            useNativeDriver: true
+            useNativeDriver: true,
+            easing:Easing.bounce,
         }).start();
         setTimeout(() => {
             dispatch(splashToken(true))
@@ -32,20 +30,17 @@ export default function SignUP(props: SplashProps) {
     const logoScale = banner.interpolate({
         inputRange: [0, 1],
         outputRange: [0.2, 1],
-        extrapolate:'clamp'
-    })
-    const textTurn = banner.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '360deg']
+        extrapolate: 'clamp'
     })
     return (
-        <LinearGradient start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }} colors={colors} style={styles.container}>
+        <ImageBackground
+            style={styles.container}
+            source={Images.splash}>
+            <Text style={styles.moreSocial} >{Strings.appName}</Text>
+            <Text style={styles.tagLine}>{Strings.appTagLine}</Text>
             <Animated.Image
                 style={[styles.logoImage, { transform: [{ scale: logoScale }] }]}
-                source={Images.splash} />
-            <Animated.Text style={[styles.text, { transform: [{ rotate: textTurn }] }]} >
-                HomeTasks
-                </Animated.Text>
-        </LinearGradient>
+                source={Images.splashLogo} />
+        </ImageBackground>
     );
 }
