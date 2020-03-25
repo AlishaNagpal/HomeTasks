@@ -109,7 +109,7 @@ export default function SignUP(props: TutorialScreenProps) {
                 />
                 <View style={styles.buttons} >
                     <CustomButton styleButton={styles.facebook} pressMethod={login} image={Images.fb} text={Strings.facebookLogin} Social={true} />
-                    {SocialLogin.linkedInLogin(liData)}
+                    {SocialLogin.linkedInLogin(liData, 1)}
                     <View style={styles.oldSchool} >
                         <CustomButton styleButton={styles.signIn} pressMethod={SignIn} text={Strings.signIn} Social={false} />
                         <CustomButton styleButton={styles.signUp} pressMethod={SignUp} text={Strings.signUp} Social={false} />

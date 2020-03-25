@@ -69,7 +69,7 @@ export function logOut() {
     Alert.alert('You have been Logged out!');
 }
 
-export function linkedInLogin(callBack: Function) {
+export function linkedInLogin(callBack: Function, num: number) {
     const linkedRef = React.createRef<LinkedInModal>();
     // axios
     //   .get(
@@ -84,13 +84,21 @@ export function linkedInLogin(callBack: Function) {
 
     // Linking.openURL(`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientID}&redirect_uri=${redirectUri}&scope=r_liteprofile%20r_emailaddress%20w_member_social`)
     const renderButton = () => {
-        return (
-            <TouchableOpacity style={styles.linkedIn} onPress={() => linkedRef.current.open()} >
-                <Image source={Images.linkedIn} style={styles.imageStyle} />
-                <Text style={styles.line} >I</Text>
-                <Text style={styles.socialText} > {Strings.linkedLogin} </Text>
-            </TouchableOpacity>
-        );
+        if (num === 1) {
+            return (
+                <TouchableOpacity style={styles.linkedIn} onPress={() => linkedRef.current.open()} >
+                    <Image source={Images.linkedIn} style={styles.imageStyle} />
+                    <Text style={styles.line} >I</Text>
+                    <Text style={styles.socialText} > {Strings.linkedLogin} </Text>
+                </TouchableOpacity>
+            );
+        } else {
+            return (
+                <TouchableOpacity style={styles.linkedIn2} onPress={() => linkedRef.current.open()} >
+                    <Image source={Images.linkedIn} style={styles.linkedInIcon} />
+                </TouchableOpacity>
+            )
+        }
     };
     return (
         <LinkedInModal
@@ -150,25 +158,37 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: vh(20.5),
-        flexDirection:'row'
+        flexDirection: 'row'
     },
     imageStyle: {
-        marginLeft:vw(-30),
-        marginRight:vw(12.5),
-        height:vh(25),
-        width:vw(25),
-        resizeMode:'contain'
+        marginLeft: vw(-30),
+        marginRight: vw(12.5),
+        height: vh(25),
+        width: vw(25),
+        resizeMode: 'contain'
     },
-    line:{
-        color:Colors.white,
-        fontSize:vh(30),
-        width:vw(3)
+    line: {
+        color: Colors.white,
+        fontSize: vh(30),
+        width: vw(3)
     },
-    socialText:{
-        color:Colors.white,
-        fontFamily:'Poppins-Regular',
-        textTransform:'uppercase',
-        fontSize:vh(16),
-        marginLeft:vw(35)
+    socialText: {
+        color: Colors.white,
+        fontFamily: 'Poppins-Regular',
+        textTransform: 'uppercase',
+        fontSize: vh(16),
+        marginLeft: vw(35)
     },
+    linkedIn2: {
+        height: vh(42),
+        width: vh(42),
+        borderRadius: vh(21),
+        backgroundColor: Colors.linkedIn,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    linkedInIcon: {
+        height: 21,
+        width: 22
+    }
 });

@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
         fontSize: vh(60),
         top: vh(63.5),
     },
+    indicator: {
+        marginTop: vh(10)
+    },
     tagLine: {
         color: Colors.black,
         fontFamily: 'Poppins-Regular',
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
         borderRadius: vh(25)
     },
     forgotPassword: {
-        marginTop: vh(35),
+        marginTop: vh(15),
         alignSelf: 'center',
         fontSize: vh(14),
         fontFamily: 'Poppins-Regular',
@@ -90,14 +93,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    linkedIn: {
-        height: vh(42),
-        width: vh(42),
-        borderRadius: vh(21),
-        backgroundColor: Colors.linkedIn,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+    // linkedIn: {
+    //     height: vh(42),
+    //     width: vh(42),
+    //     borderRadius: vh(21),
+    //     backgroundColor: Colors.linkedIn,
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    // },
     noAccountView: {
         marginTop: vh(40),
         alignItems: 'center',
@@ -119,10 +122,6 @@ const styles = StyleSheet.create({
         height: 25,
         width: 18
     },
-    linkedInIcon: {
-        height: 21,
-        width: 22
-    }
 });
 
 export default styles;
