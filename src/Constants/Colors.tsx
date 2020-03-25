@@ -14,6 +14,9 @@ const Colors = {
   linkedIn:'#1778B5',
   oldSchool:'#24A5E9',
   inactiveDot:'#949494',
+  socialColor:'#25A6E9',
+  warmGrey:'#727272',
+  warmGrey2:'#515151',
 };
 
 export default Colors;

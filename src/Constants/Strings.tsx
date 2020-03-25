@@ -17,6 +17,13 @@ const Strings = {
   ConnectText:'Post things happening around you, share with friends and chat with locals to learn what’s happening now',
   facebookLogin:'Login with facebook',
   linkedLogin:'Login with LinkedIn',
-  signUpWork:'Stuff will happen!'
+  signUpWork:'Stuff will happen!',
+  loginEmailField:'Email Address/Mobile Number',
+  Invalid:'The entered values are invalid!',
+  Password:'Password',
+  underWork:'Under Construction!',
+  forgotPassword:'Forgot Password?',
+  orSignIn:'or sign in with',
+  noAccount:'Don’t have an account?',
 };
 export default Strings;
