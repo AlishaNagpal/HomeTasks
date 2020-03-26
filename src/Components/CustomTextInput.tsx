@@ -29,6 +29,15 @@ const TextField = React.forwardRef((props: AppProps, ref) => {
             props.onSubmitEditing()
     }
 
+    const handleOnFocus = () => {
+        if (props._handleFocus)
+        props._handleFocus()
+    }
+    const handleOnBlur = () => {
+        if (props._handleBlur)
+        props._handleBlur()
+    }
+
     const handleonKeyPress = (event:any, ref:any) => {
         if (props.onKeyPress)
             props.onKeyPress(event,ref)
@@ -40,8 +49,8 @@ const TextField = React.forwardRef((props: AppProps, ref) => {
             placeholder={props.placeholderStyle}
             style={props.style}
             ref={ref}
-            onFocus={props._handleFocus}
-            onBlur={props._handleBlur}
+            onFocus={handleOnFocus}
+            onBlur={handleOnBlur}
             onChangeText={_onChangeText}
             returnKeyType={props.returnKeyType}
             keyboardType={props.keyboardType}

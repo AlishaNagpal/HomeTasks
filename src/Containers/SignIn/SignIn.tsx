@@ -52,7 +52,9 @@ export default function SignINComponent(props: SignINProps) {
     const signIn = () => {
         if (Password !== '' || email !== '') {
             return (
-                setCallWork(true)
+                setCallWork(true),
+                setEmail(''),
+                setPassword('')
             )
         } else {
             return (
@@ -123,7 +125,8 @@ export default function SignINComponent(props: SignINProps) {
                         secureTextEntry={false}
                         onSubmitEditing={() => { emailValidation(email), setonFocus(false), passwordRef.current.focus() }}
                         ref={emailRef}
-                        _handleFocus={setonFocus}
+                        _handleFocus={()=>setonFocus(true)}
+                        _handleBlur={()=>setonFocus(false)}
                     />
 
                     <CustomTextInput
@@ -137,7 +140,8 @@ export default function SignINComponent(props: SignINProps) {
                         secureTextEntry={true}
                         onSubmitEditing={() => { passwordValidation(Password), setonPasswordFocus(false) }}
                         ref={passwordRef}
-                        _handleFocus={setonPasswordFocus}
+                        _handleFocus={()=>setonPasswordFocus(true)}
+                        _handleBlur={()=>setonPasswordFocus(false)}
                     />
 
                     <CustomButton styleButton={styles.buttonStyle} pressMethod={signIn} text={Strings.signIn} Social={false} />

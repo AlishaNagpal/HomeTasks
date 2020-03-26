@@ -31,13 +31,14 @@ export default function SignINComponent(props: SignINProps) {
             resetCall(true)
         } else {
             setEmail(email)
+            submit()
         }
     }
 
     const submit = () => {
         if (Email !== '') {
             props.navigation.navigate('VerificationCode')
-        }else{
+        } else {
             Alert.alert('Please enter your Email!')
         }
     }
@@ -62,7 +63,8 @@ export default function SignINComponent(props: SignINProps) {
                 placeholderStyle={Strings.loginEmailField}
                 secureTextEntry={false}
                 onSubmitEditing={() => { emailValidation(Email), setonEmailFocus(false) }}
-                _handleFocus={setonEmailFocus}
+                _handleFocus={() => setonEmailFocus(true)}
+                _handleBlur={() => setonEmailFocus(false)}
             />
             <CustomButton styleButton={styles.buttonStyle} pressMethod={submit} text={Strings.submit} Social={false} />
             {call &&

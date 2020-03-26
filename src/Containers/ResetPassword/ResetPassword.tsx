@@ -21,7 +21,7 @@ export default function SignINComponent(props: SignINProps) {
     const [callNoMatch, setcallNoMatch] = useState(false);
 
     const submit = () => {
-        props.navigation.navigate('SignIn')
+        props.navigation.pop(3)
     }
     const resetCall = (value: boolean) => {
         setCall(value);
@@ -78,7 +78,8 @@ export default function SignINComponent(props: SignINProps) {
                 placeholderStyle={Strings.NewPassword}
                 secureTextEntry={true}
                 onSubmitEditing={() => { passwordValidation(Password), setonPasswordFocus(false), passwordConfirmRef.current.focus() }}
-                _handleFocus={setonPasswordFocus}
+                _handleFocus={() => setonPasswordFocus(true)}
+                _handleBlur={() => setonPasswordFocus(false)}
             />
             <CustomTextInput
                 value={ConfirmPassword}
@@ -91,7 +92,8 @@ export default function SignINComponent(props: SignINProps) {
                 placeholderStyle={Strings.confirmPassword}
                 secureTextEntry={true}
                 onSubmitEditing={() => { passwordValidation(ConfirmPassword), setonConfirmPasswordFocus(false), passwordMAtchValidation(Password, ConfirmPassword) }}
-                _handleFocus={setonConfirmPasswordFocus}
+                _handleFocus={() => setonConfirmPasswordFocus(true)}
+                _handleBlur={() => setonConfirmPasswordFocus(false)}
             />
             <CustomButton styleButton={styles.buttonStyle} pressMethod={submit} text={Strings.submit} Social={false} />
             {call &&
