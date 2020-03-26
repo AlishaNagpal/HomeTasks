@@ -19,6 +19,7 @@ import SignIn from '../Containers/SignIn/SignIn';
 import ForgotPassword from '../Containers/ForgotPassword/ForgotPassword';
 import VerificationCode from '../Containers/VerificationCode/VerificationCode';
 import ResetPassword from '../Containers/ResetPassword/ResetPassword';
+import VerifiedSuccesfully from '../Containers/VerifiedSuccesfully/VerifiedSuccesfully';
 
 console.disableYellowBox = true
 
@@ -114,6 +115,9 @@ const AuthNavigator = () => (
     <AuthStack.Screen name="ResetPassword" component={ResetPassword} options={{
       headerShown: false
     }} />
+    <AuthStack.Screen name="VerifiedSuccesfully" component={VerifiedSuccesfully} options={{
+      headerShown: false
+    }} />
   </AuthStack.Navigator>
 );
 
@@ -133,7 +137,7 @@ export default class Navigator extends React.PureComponent<Props>  {
     return (
       <NavigationContainer>
         <RootStack.Navigator headerMode="none">
-            <RootStack.Screen name="NotMuch" component={ResetPassword} />
+            <RootStack.Screen name="NotMuch" component={VerifiedSuccesfully} />
         </RootStack.Navigator>
       </NavigationContainer>
     )

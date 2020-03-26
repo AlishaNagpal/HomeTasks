@@ -75,7 +75,7 @@ export default function SignINComponent(props: SignINProps) {
                 updateMasterState={_updateMasterState}
                 keyboardType={'default'}
                 returnKeyType={'next'}
-                placeholderStyle={Strings.Password}
+                placeholderStyle={Strings.NewPassword}
                 secureTextEntry={true}
                 onSubmitEditing={() => { passwordValidation(Password), setonPasswordFocus(false), passwordConfirmRef.current.focus() }}
                 _handleFocus={setonPasswordFocus}

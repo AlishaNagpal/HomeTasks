@@ -35,6 +35,9 @@ const Strings = {
   resetPassword:'Reset Password',
   passwordNoMatch:'Your Password\'s do not match!',
   resetPasswordText:'Enter new password below to reset your password.',
-  confirmPassword:'Confirm Password'
+  confirmPassword:'Confirm Password',
+  NewPassword:'New Password',
+  proceed:'proceed',
+  verifiedText:'You have successfully verified. Let’s proceed to reset your password.'
 };
 export default Strings;
