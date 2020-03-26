@@ -33,33 +33,6 @@ const styles = StyleSheet.create({
         marginTop: vh(20),
         marginRight: vw(115)
     },
-    key: {
-        height: vh(130),
-        width: vw(150),
-        marginTop: vh(66),
-    },
-    text: {
-        marginTop: vh(55),
-        fontFamily: 'Poppins-Regular',
-        fontSize: vh(14),
-        textAlign: 'center',
-        color: Colors.black,
-        marginHorizontal: vw(40)
-    },
-    passwordField: {
-        height: vh(50),
-        width: vw(314),
-        borderRadius: vh(25),
-        borderWidth: vw(1),
-        backgroundColor: Colors.white,
-        textAlign: 'center',
-        fontSize: vh(14),
-        alignSelf: 'center',
-        shadowColor: Colors.gray,
-        shadowOpacity:1,
-        marginTop:vh(35.5),
-        shadowRadius: 10,
-    },
     buttonStyle: {
         marginTop: vh(23.5),
         width: vw(140),
@@ -70,7 +43,43 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: vh(25)
     },
-
+    text:{
+        textAlign:'center',
+        fontSize:vh(14),
+        marginTop:vh(40),
+        marginHorizontal:vw(53)
+    },
+    pinBoxView:{
+        flexDirection:'row',
+        marginTop:vh(65.5),
+        alignItems:'center'
+    },
+    pinField:{
+        width:vw(40),
+        height:vh(50),
+        shadowColor: Colors.gray,
+        shadowOpacity: 1,
+        shadowRadius: 10,
+        backgroundColor:Colors.white,
+        marginRight:vw(10),
+        textAlign:'center',
+        fontSize:vh(16)
+    },
+    bottomTextView:{
+        flexDirection:'row',
+        alignItems:'center',
+        marginTop:vh(40)
+    },
+    noCode:{
+        fontFamily:'Poppins-Regular',
+        fontSize:vh(14),
+    },
+    resend:{
+        fontFamily:'Poppins-Regular',
+        fontSize:vh(14),
+        color:Colors.oldSchool,
+        textTransform:'uppercase'
+    }
 });
 
 export default styles;

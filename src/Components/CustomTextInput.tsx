@@ -15,6 +15,7 @@ export interface AppProps {
     onSubmitEditing: any,
     ref?: any;
     secureTextEntry: any,
+    onKeyPress:any
 };
 
 const TextField = React.forwardRef((props: AppProps, ref) => {
@@ -26,6 +27,11 @@ const TextField = React.forwardRef((props: AppProps, ref) => {
     const handleOnSubmitEditing = () => {
         if (props.onSubmitEditing)
             props.onSubmitEditing()
+    }
+
+    const handleonKeyPress = (event:any, ref:any) => {
+        if (props.onKeyPress)
+            props.onKeyPress(event,ref)
     }
 
     return (
@@ -42,6 +48,7 @@ const TextField = React.forwardRef((props: AppProps, ref) => {
             onSubmitEditing={handleOnSubmitEditing}
             {...props.otherTextInputProps}
             secureTextEntry={props.secureTextEntry}
+            onKeyPress={(e)=>handleonKeyPress(e,ref)}
         />
     )
 });

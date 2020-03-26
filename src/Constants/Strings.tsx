@@ -27,6 +27,10 @@ const Strings = {
   noAccount:'Don’t have an account?',
   forgotPasswordText:'Enter email address or mobile number to reset your password.',
   inValidPassword:'Password must contain atleast a symbol and 6 characters!',
-  submit:'Submit'
+  verification:'Verification Code',
+  submit:'Submit',
+  verifyText:'The Verification Code was sent to your email address. Please enter below:',
+  noCode:'Didn’t receive code?',
+  resend:'RESEND (0:30)'
 };
 export default Strings;
