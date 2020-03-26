@@ -66,7 +66,6 @@ export function fbLogin(dataCallback: Function, errorCallback: Function) {
 
 export function logOut() {
     LoginManager.logOut();
-    Alert.alert('You have been Logged out!');
 }
 
 export function linkedInLogin(callBack: Function, num: number) {

@@ -88,11 +88,11 @@ const FullHomeNavigator = () => (
       component={HomeBottomNavigator}
       options={{ title: 'Home' }}
     />
-    {/* <Drawer.Screen
+    <Drawer.Screen
           name={'LogOut'}
           component={LogOut}
-          options={{ title: 'LogOut!' }}
-      /> */}
+          options={{ title: 'LogOut' }}
+      />
   </Drawer.Navigator>
 );
 
