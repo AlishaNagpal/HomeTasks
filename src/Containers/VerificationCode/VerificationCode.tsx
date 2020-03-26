@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import styles from './styles';
 import { Images, Strings, Colors } from '../../Constants';
@@ -25,6 +25,7 @@ export default function SignINComponent(props: SignINProps) {
     const [onFocusPin6, setonFocusPin6] = useState(false);
 
     const [CodeEntered, setOnCodeEntered] = useState(false);
+    const [time, setTime] = useState(30);
 
     const pin1Ref = React.createRef();
     const pin2Ref = React.createRef();
@@ -32,6 +33,14 @@ export default function SignINComponent(props: SignINProps) {
     const pin4Ref = React.createRef();
     const pin5Ref = React.createRef();
     const pin6Ref = React.createRef();
+
+    useEffect(() => {
+        time >= 0
+        ? setTimeout(() => {
+            setTime(time - 1);
+        }, 1000) 
+        : setTime(30)
+    });
 
 
     const goBack = () => {
@@ -203,7 +212,7 @@ export default function SignINComponent(props: SignINProps) {
                 <CustomButton styleButton={styles.buttonStyle} pressMethod={submit} text={Strings.submit} Social={false} />
                 <View style={styles.bottomTextView} >
                     <Text style={styles.noCode} > {Strings.noCode} </Text>
-                    <Text style={styles.resend} > {Strings.resend} </Text>
+                    <Text style={styles.resend} > {Strings.resend}(00:{time}) </Text>
                 </View>
 
             </View>

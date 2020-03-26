@@ -20,6 +20,7 @@ import ForgotPassword from '../Containers/ForgotPassword/ForgotPassword';
 import VerificationCode from '../Containers/VerificationCode/VerificationCode';
 import ResetPassword from '../Containers/ResetPassword/ResetPassword';
 import VerifiedSuccesfully from '../Containers/VerifiedSuccesfully/VerifiedSuccesfully';
+import ResetSuccess from '../Containers/PasswordResetSucces/PasswordResetSucces';
 
 console.disableYellowBox = true
 
@@ -116,6 +117,9 @@ const AuthNavigator = () => (
       headerShown: false
     }} />
     <AuthStack.Screen name="VerifiedSuccesfully" component={VerifiedSuccesfully} options={{
+      headerShown: false
+    }} />
+    <AuthStack.Screen name="ResetSuccess" component={ResetSuccess} options={{
       headerShown: false
     }} />
   </AuthStack.Navigator>

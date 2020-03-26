@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
         marginRight: vw(115)
     },
     key: {
-        height: vh(130),
-        width: vw(150),
+        height: vh(150),
+        width: vw(200),
         marginTop: vh(66),
     },
     text: {

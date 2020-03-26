@@ -8,7 +8,7 @@ export interface SignINProps {
     navigation?: any,
 }
 
-export default function verifiedSuccesfully(props: SignINProps) {
+export default function PasswordResetSucces(props: SignINProps) {
     const verify = new Animated.Value(0);
 
     useEffect(() => {
@@ -27,21 +27,21 @@ export default function verifiedSuccesfully(props: SignINProps) {
 
     const logoScale = verify.interpolate({
         inputRange: [0, 1],
-        outputRange: [0.2, 1],
+        outputRange: [0, 1],
         extrapolate: 'clamp'
     })
 
 
     const proceed = () => {
-        props.navigation.navigate('ResetPassword');
+        props.navigation.pop(4);
     }
 
     return (
         <View style={styles.container}>
             <Animated.Image source={Images.verifiedSuccesfully} style={[styles.key, { transform: [{ scale: logoScale }] }]} />
-            <Text style={styles.verified} > {Strings.verified} </Text>
-            <Text style={styles.text} > {Strings.verifiedText} </Text>
-            <CustomButton styleButton={styles.buttonStyle} pressMethod={proceed} text={Strings.proceed} Social={false} />
+            <Text style={styles.verified} > {Strings.resetSucces} </Text>
+            <Text style={styles.text} > {Strings.resetSuccesText} </Text>
+            <CustomButton styleButton={styles.buttonStyle} pressMethod={proceed} text={Strings.signIn} Social={false} />
         </View>
     );
 };

@@ -31,7 +31,7 @@ const Strings = {
   submit:'Submit',
   verifyText:'The Verification Code was sent to your email address. Please enter below:',
   noCode:'Didn’t receive code?',
-  resend:'RESEND (0:30)',
+  resend:'RESEND ',
   resetPassword:'Reset Password',
   passwordNoMatch:'Your Password\'s do not match!',
   resetPasswordText:'Enter new password below to reset your password.',
@@ -39,6 +39,9 @@ const Strings = {
   NewPassword:'New Password',
   proceed:'proceed',
   verifiedText:'You have successfully verified. Let’s proceed to reset your password.',
-  validEmail:'Enter a valid email address!'
+  verified:'Verified Successfully',
+  validEmail:'Enter a valid email address!',
+  resetSucces:'Password Reset Successfully',
+  resetSuccesText:'You have successfully reset your password. Please use your new password when signing in.',
 };
 export default Strings;

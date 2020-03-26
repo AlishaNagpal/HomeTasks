@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import styles from './styles';
 import { Images, Strings, Colors } from '../../Constants';
 import { CustomTextInput, Toast, CustomButton } from '../../Components';
+import ResetSuccess from '../PasswordResetSucces/PasswordResetSucces';
 
 export interface SignINProps {
     navigation?: any,
@@ -19,9 +20,10 @@ export default function SignINComponent(props: SignINProps) {
     const [onConfirmPasswordFocus, setonConfirmPasswordFocus] = useState(false);
     const [call, setCall] = useState(false);
     const [callNoMatch, setcallNoMatch] = useState(false);
+    const [reset, setreset] = useState(false);
 
     const submit = () => {
-        props.navigation.pop(3)
+        setreset(true)
     }
     const resetCall = (value: boolean) => {
         setCall(value);
@@ -30,7 +32,7 @@ export default function SignINComponent(props: SignINProps) {
         setcallNoMatch(value);
     };
     const goBack = () => {
-        props.navigation.goBack();
+        props.navigation.pop(2);
     }
     const _updateMasterState = (attrName: any, value: any) => {
         return attrName(value);
@@ -57,51 +59,57 @@ export default function SignINComponent(props: SignINProps) {
         }
     }
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.header} >
-                <TouchableOpacity style={styles.backArrowButton} onPress={goBack} >
-                    <Image source={Images.forgotPasswordBackArrow} style={styles.backArrow} />
-                </TouchableOpacity>
-                <Text style={styles.headerText} >{Strings.resetPassword}</Text>
+    if(reset){
+        return(
+            <ResetSuccess navigation={props.navigation} />
+        )
+    }else{
+        return (
+            <View style={styles.container}>
+                <View style={styles.header} >
+                    <TouchableOpacity style={styles.backArrowButton} onPress={goBack} >
+                        <Image source={Images.forgotPasswordBackArrow} style={styles.backArrow} />
+                    </TouchableOpacity>
+                    <Text style={styles.headerText} >{Strings.resetPassword}</Text>
+                </View>
+                <Image source={Images.resetPasswordKey} style={styles.key} />
+                <Text style={styles.text} > {Strings.resetPasswordText} </Text>
+                <CustomTextInput
+                    value={Password}
+                    ref={passwordRef}
+                    style={[styles.passwordField, { borderColor: onPasswordFocus ? Colors.socialColor : Colors.white }]}
+                    attrName={setPassword}
+                    updateMasterState={_updateMasterState}
+                    keyboardType={'default'}
+                    returnKeyType={'next'}
+                    placeholderStyle={Strings.NewPassword}
+                    secureTextEntry={true}
+                    onSubmitEditing={() => { passwordValidation(Password), setonPasswordFocus(false), passwordConfirmRef.current.focus() }}
+                    _handleFocus={() => setonPasswordFocus(true)}
+                    _handleBlur={() => setonPasswordFocus(false)}
+                />
+                <CustomTextInput
+                    value={ConfirmPassword}
+                    ref={passwordConfirmRef}
+                    style={[styles.confirmPasswordField, { borderColor: onConfirmPasswordFocus ? Colors.socialColor : Colors.white }]}
+                    attrName={setConfirmPassword}
+                    updateMasterState={_updateMasterState}
+                    keyboardType={'default'}
+                    returnKeyType={'done'}
+                    placeholderStyle={Strings.confirmPassword}
+                    secureTextEntry={true}
+                    onSubmitEditing={() => { passwordValidation(ConfirmPassword), setonConfirmPasswordFocus(false), passwordMAtchValidation(Password, ConfirmPassword) }}
+                    _handleFocus={() => setonConfirmPasswordFocus(true)}
+                    _handleBlur={() => setonConfirmPasswordFocus(false)}
+                />
+                <CustomButton styleButton={styles.buttonStyle} pressMethod={submit} text={Strings.submit} Social={false} />
+                {call &&
+                    <Toast top={-40} from={30} to={-40} message={Strings.inValidPassword} call={(value: boolean) => resetCall(value)} />
+                }
+                {callNoMatch &&
+                    <Toast top={-40} from={30} to={-40} message={Strings.passwordNoMatch} call={(value: boolean) => resetcallNoMatch(value)} />
+                }
             </View>
-            <Image source={Images.resetPasswordKey} style={styles.key} />
-            <Text style={styles.text} > {Strings.resetPasswordText} </Text>
-            <CustomTextInput
-                value={Password}
-                ref={passwordRef}
-                style={[styles.passwordField, { borderColor: onPasswordFocus ? Colors.socialColor : Colors.white }]}
-                attrName={setPassword}
-                updateMasterState={_updateMasterState}
-                keyboardType={'default'}
-                returnKeyType={'next'}
-                placeholderStyle={Strings.NewPassword}
-                secureTextEntry={true}
-                onSubmitEditing={() => { passwordValidation(Password), setonPasswordFocus(false), passwordConfirmRef.current.focus() }}
-                _handleFocus={() => setonPasswordFocus(true)}
-                _handleBlur={() => setonPasswordFocus(false)}
-            />
-            <CustomTextInput
-                value={ConfirmPassword}
-                ref={passwordConfirmRef}
-                style={[styles.confirmPasswordField, { borderColor: onConfirmPasswordFocus ? Colors.socialColor : Colors.white }]}
-                attrName={setConfirmPassword}
-                updateMasterState={_updateMasterState}
-                keyboardType={'default'}
-                returnKeyType={'done'}
-                placeholderStyle={Strings.confirmPassword}
-                secureTextEntry={true}
-                onSubmitEditing={() => { passwordValidation(ConfirmPassword), setonConfirmPasswordFocus(false), passwordMAtchValidation(Password, ConfirmPassword) }}
-                _handleFocus={() => setonConfirmPasswordFocus(true)}
-                _handleBlur={() => setonConfirmPasswordFocus(false)}
-            />
-            <CustomButton styleButton={styles.buttonStyle} pressMethod={submit} text={Strings.submit} Social={false} />
-            {call &&
-                <Toast top={-40} from={30} to={-40} message={Strings.inValidPassword} call={(value: boolean) => resetCall(value)} />
-            }
-            {callNoMatch &&
-                <Toast top={-40} from={30} to={-40} message={Strings.passwordNoMatch} call={(value: boolean) => resetcallNoMatch(value)} />
-            }
-        </View>
-    );
+        );
+    }
 };
