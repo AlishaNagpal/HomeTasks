@@ -19,7 +19,7 @@ const Strings = {
   linkedLogin:'Login with LinkedIn',
   signUpWork:'Stuff will happen!',
   loginEmailField:'Email Address/Mobile Number',
-  Invalid:'The entered values are invalid!',
+  Invalid:'The values are invalid!',
   Password:'Password',
   underWork:'Under Construction!',
   forgotPassword:'Forgot Password?',

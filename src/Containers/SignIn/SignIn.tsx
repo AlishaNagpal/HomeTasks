@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, Image,TouchableOpacity, ActivityIndicator } from 'react-native';
 import styles from './styles';
 import { Images, Strings, Colors } from '../../Constants';
-import { CustomButton, Toast } from '../../Components';
+import { CustomButton, Toast, CustomTextInput } from '../../Components';
 import * as  SocialLogin from '../../Components/SocialLoginHandler'
 import { useDispatch } from 'react-redux';
 import { updateToken, getResult } from '../../Modules/SignUP/Action';
@@ -88,6 +88,10 @@ export default function SignINComponent(props: SignINProps) {
         );
     };
 
+    const _updateMasterState = (attrName: any, value: any) => {
+        // [attrName](value);
+    }
+
     return (
         <View style={styles.container}>
             <Image
@@ -98,27 +102,28 @@ export default function SignINComponent(props: SignINProps) {
                 <Text style={styles.moreSocial} >{Strings.appName}</Text>
                 <Text style={styles.tagLine}>{Strings.appTagLine}</Text>
                 <View style={styles.textinputAll} >
-                    <TextInput
-                        onChangeText={(text) => { setEmail(text), setonFocus(true) }}
-                        placeholder={Strings.loginEmailField}
+                    <CustomTextInput
+                        value={email}
                         style={[styles.emailField, { borderColor: onFocus ? Colors.socialColor : Colors.white }]}
-                        defaultValue={email}
+                        attrName='setEmail'
+                        updateMasterState={_updateMasterState}
                         keyboardType={'email-address'}
                         returnKeyType={'next'}
+                        placeholderStyle={Strings.loginEmailField}
                         secureTextEntry={false}
                         onSubmitEditing={() => { emailValidation(email), setonFocus(false) }}
-                        clearButtonMode={'while-editing'}
                     />
-                    <TextInput
-                        onChangeText={(text) => { setPassword(text), setonPasswordFocus(true) }}
-                        placeholder={Strings.Password}
+
+                    <CustomTextInput
+                        value={Password}
                         style={[styles.passwordField, { borderColor: onPasswordFocus ? Colors.socialColor : Colors.white }]}
-                        defaultValue={Password}
+                        attrName='setPassword'
+                        updateMasterState={_updateMasterState}
                         keyboardType={'default'}
                         returnKeyType={'done'}
+                        placeholderStyle={Strings.Password}
                         secureTextEntry={true}
-                        onSubmitEditing={() => { passwordValidation(Password), setonPasswordFocus(false) }}
-                        clearButtonMode={'while-editing'}
+                        onSubmitEditing={() => { passwordValidation(email), setonPasswordFocus(false) }}
                     />
 
                     <CustomButton styleButton={styles.buttonStyle} pressMethod={signIn} text={Strings.signIn} Social={false} />

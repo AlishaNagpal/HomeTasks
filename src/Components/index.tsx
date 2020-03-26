@@ -1,9 +1,9 @@
 import CustomButton from './CustomButtons';
-import TextInput from './CustomTextInput';
+import CustomTextInput from './CustomTextInput';
 import Toast from './Toast/Toast';
 
 export {
     CustomButton,
-    TextInput,
+    CustomTextInput,
     Toast
 };
