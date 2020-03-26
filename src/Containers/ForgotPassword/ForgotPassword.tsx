@@ -60,7 +60,7 @@ export default function SignINComponent(props: SignINProps) {
                 keyboardType={'email-address'}
                 returnKeyType={'done'}
                 placeholderStyle={Strings.loginEmailField}
-                secureTextEntry={true}
+                secureTextEntry={false}
                 onSubmitEditing={() => { emailValidation(Email), setonEmailFocus(false) }}
                 _handleFocus={setonEmailFocus}
             />
