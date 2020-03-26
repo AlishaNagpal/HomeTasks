@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
-        opacity: 0.05
     },
     mainView: {
         position: 'absolute',
@@ -39,6 +38,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: vh(14),
         alignSelf: 'center',
+        shadowColor: Colors.gray,
+        shadowOpacity: 1,
+        shadowRadius: 10,
     },
     passwordField: {
         height: vh(50),
@@ -50,6 +52,9 @@ const styles = StyleSheet.create({
         fontSize: vh(14),
         marginTop: vh(13),
         alignSelf: 'center',
+        shadowColor: Colors.gray,
+        shadowOpacity: 1,
+        shadowRadius: 10,
     },
     textinputAll: {
         marginTop: vh(100)

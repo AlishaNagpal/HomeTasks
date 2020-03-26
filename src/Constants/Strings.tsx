@@ -22,8 +22,11 @@ const Strings = {
   Invalid:'The values are invalid!',
   Password:'Password',
   underWork:'Under Construction!',
-  forgotPassword:'Forgot Password?',
+  forgotPassword:'Forgot Password',
   orSignIn:'or sign in with',
   noAccount:'Don’t have an account?',
+  forgotPasswordText:'Enter email address or mobile number to reset your password.',
+  inValidPassword:'Password must contain atleast a symbol and 6 characters!',
+  submit:'Submit'
 };
 export default Strings;

@@ -9,7 +9,7 @@ const  styles = StyleSheet.create({
         backgroundColor: Colors.white,
     },
     errorMessage: {
-        fontSize: vh(18),
+        fontSize: vh(13),
         color: Colors.black,
         marginTop: vh(15),
         marginLeft: vw(20),

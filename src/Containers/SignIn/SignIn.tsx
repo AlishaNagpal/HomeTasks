@@ -98,7 +98,7 @@ export default function SignINComponent(props: SignINProps) {
     return (
         <View style={styles.container}>
             <Image
-                source={Images.TutorialScreen1}
+                source={Images.loginImage}
                 style={styles.image}
             />
             <View style={styles.mainView} >
@@ -116,6 +116,7 @@ export default function SignINComponent(props: SignINProps) {
                         secureTextEntry={false}
                         onSubmitEditing={() => { emailValidation(email), setonFocus(false), passwordRef.current.focus() }}
                         ref={emailRef}
+                        _handleFocus={setonFocus}
                     />
 
                     <CustomTextInput
@@ -127,8 +128,9 @@ export default function SignINComponent(props: SignINProps) {
                         returnKeyType={'done'}
                         placeholderStyle={Strings.Password}
                         secureTextEntry={true}
-                        onSubmitEditing={() => { passwordValidation(email), setonPasswordFocus(false) }}
+                        onSubmitEditing={() => { passwordValidation(Password), setonPasswordFocus(false) }}
                         ref={passwordRef}
+                        _handleFocus={setonPasswordFocus}
                     />
 
                     <CustomButton styleButton={styles.buttonStyle} pressMethod={signIn} text={Strings.signIn} Social={false} />
@@ -138,7 +140,7 @@ export default function SignINComponent(props: SignINProps) {
                         color={Colors.socialColor}
                         style={styles.indicator}
                     />
-                    <Text style={styles.forgotPassword} > {Strings.forgotPassword} </Text>
+                    <Text style={styles.forgotPassword} > {Strings.forgotPassword}? </Text>
                     <Text style={styles.orSign} > {Strings.orSignIn} </Text>
                     <View style={styles.socialButtons} >
                         <TouchableOpacity style={styles.facebook} onPress={login} >

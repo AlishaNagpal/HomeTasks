@@ -9,6 +9,9 @@ const Images = {
   fb:require('../Assets/Images/ic_loginoption_fb.png'),
   linkedIn:require('../Assets/Images/linkedin.png'),
   swipe:require('../Assets/Images/ic_loginoption_swipe.png'),
+  loginImage:require('../Assets/Images/ic_email_login_bg.png'),
+  forgotPasswordImage:require('../Assets/Images/ic_forgot_password_illustration.png'),
+  forgotPasswordBackArrow:require('../Assets/Images/ic_forgot_password_back.png'),
 };
 
 export default Images;
