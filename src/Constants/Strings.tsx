@@ -38,6 +38,7 @@ const Strings = {
   confirmPassword:'Confirm Password',
   NewPassword:'New Password',
   proceed:'proceed',
-  verifiedText:'You have successfully verified. Let’s proceed to reset your password.'
+  verifiedText:'You have successfully verified. Let’s proceed to reset your password.',
+  validEmail:'Enter a valid email address!'
 };
 export default Strings;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import styles from './styles';
 import { Images, Strings, Colors } from '../../Constants';
 import { CustomButton, Toast, CustomTextInput } from '../../Components';
@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { updateToken, getResult } from '../../Modules/SignUP/Action';
 
 export interface SignINProps {
+    navigation: any
 }
 
 export default function SignINComponent(props: SignINProps) {
@@ -15,7 +16,7 @@ export default function SignINComponent(props: SignINProps) {
 
     const emailRef = React.createRef();
     const passwordRef = React.createRef();
-    
+
     const [isAnimating, setisAnimating] = useState(false);
     const [email, setEmail] = useState('');
     const [Password, setPassword] = useState('');
@@ -32,16 +33,16 @@ export default function SignINComponent(props: SignINProps) {
         setCallWork(value);
     };
 
-    const emailValidation = (mail: string) => {
+    const emailValidation = (email: string) => {
         if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) || email === '') {
             resetCall(true)
         } else {
-            setEmail(mail)
+            setEmail(email)
         }
     }
 
     const passwordValidation = (password: string) => {
-        if (!(/^(?=.{6,})(?=.*[@#$%^&+=]).*$/.test(password)) || Password === '') {
+        if (!(/^(?=.{6,})(?=.*[@#$%^&+=]).*$/.test(password)) || password === '') {
             resetCall(true)
         } else {
             setPassword(password)
@@ -49,13 +50,15 @@ export default function SignINComponent(props: SignINProps) {
     }
 
     const signIn = () => {
-        return (
-            <>
-                {callWork &&
-                    <Toast top={-40} from={30} to={-40} message={Strings.underWork} call={(value: boolean) => resetCallWork(value)} />
-                }
-            </>
-        )
+        if (Password !== '' || email !== '') {
+            return (
+                setCallWork(true)
+            )
+        } else {
+            return (
+                Alert.alert('Please enter details!')
+            )
+        }
     }
 
     const data = (token: any, result: any) => {
@@ -93,6 +96,10 @@ export default function SignINComponent(props: SignINProps) {
 
     const _updateMasterState = (attrName: any, value: any) => {
         return attrName(value);
+    }
+
+    const goToForgotPassword = () => {
+        props.navigation.navigate('ForgotPassword')
     }
 
     return (
@@ -140,7 +147,9 @@ export default function SignINComponent(props: SignINProps) {
                         color={Colors.socialColor}
                         style={styles.indicator}
                     />
-                    <Text style={styles.forgotPassword} > {Strings.forgotPassword}? </Text>
+                    <TouchableOpacity onPress={goToForgotPassword} >
+                        <Text style={styles.forgotPassword} > {Strings.forgotPassword}? </Text>
+                    </TouchableOpacity>
                     <Text style={styles.orSign} > {Strings.orSignIn} </Text>
                     <View style={styles.socialButtons} >
                         <TouchableOpacity style={styles.facebook} onPress={login} >
@@ -156,6 +165,9 @@ export default function SignINComponent(props: SignINProps) {
             </View>
             {call &&
                 <Toast top={-40} from={30} to={-40} message={Strings.Invalid} call={(value: boolean) => resetCall(value)} />
+            }
+            {callWork &&
+                <Toast top={-40} from={30} to={-40} message={Strings.underWork} call={(value: boolean) => resetCallWork(value)} />
             }
         </View>
     );

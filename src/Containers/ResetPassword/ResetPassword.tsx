@@ -21,7 +21,7 @@ export default function SignINComponent(props: SignINProps) {
     const [callNoMatch, setcallNoMatch] = useState(false);
 
     const submit = () => {
-        Alert.alert('Your response has been submitted!')
+        props.navigation.navigate('SignIn')
     }
     const resetCall = (value: boolean) => {
         setCall(value);

@@ -14,9 +14,10 @@ export default function SignINComponent(props: SignINProps) {
     useEffect(() => {
         Animated.timing(verify, {
             toValue: 1,
-            duration: 600,
+            duration: 800,
             useNativeDriver: true,
             easing: Easing.bounce,
+            delay:400
         }).start();
 
     });

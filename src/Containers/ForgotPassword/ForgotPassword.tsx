@@ -10,8 +10,8 @@ export interface SignINProps {
 
 export default function SignINComponent(props: SignINProps) {
 
-    const [Password, setPassword] = useState('');
-    const [onPasswordFocus, setonPasswordFocus] = useState(false);
+    const [Email, setEmail] = useState('');
+    const [onEmailFocus, setonEmailFocus] = useState(false);
     const [call, setCall] = useState(false);
 
     const resetCall = (value: boolean) => {
@@ -26,16 +26,20 @@ export default function SignINComponent(props: SignINProps) {
         return attrName(value);
     }
 
-    const passwordValidation = (password: string) => {
-        if (!(/^(?=.{6,})(?=.*[@#$%^&+=]).*$/.test(password)) || Password === '') {
+    const emailValidation = (email: string) => {
+        if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) || email === '') {
             resetCall(true)
         } else {
-            setPassword(password)
+            setEmail(email)
         }
     }
 
     const submit = () => {
-        Alert.alert('Your response has been submitted!')
+        if (Email !== '') {
+            props.navigation.navigate('VerificationCode')
+        }else{
+            Alert.alert('Please enter your Email!')
+        }
     }
 
     return (
@@ -49,20 +53,20 @@ export default function SignINComponent(props: SignINProps) {
             <Image source={Images.forgotPasswordImage} style={styles.key} />
             <Text style={styles.text} > {Strings.forgotPasswordText} </Text>
             <CustomTextInput
-                value={Password}
-                style={[styles.passwordField, { borderColor: onPasswordFocus ? Colors.socialColor : Colors.white }]}
-                attrName={setPassword}
+                value={Email}
+                style={[styles.passwordField, { borderColor: onEmailFocus ? Colors.socialColor : Colors.white }]}
+                attrName={setEmail}
                 updateMasterState={_updateMasterState}
-                keyboardType={'default'}
+                keyboardType={'email-address'}
                 returnKeyType={'done'}
                 placeholderStyle={Strings.loginEmailField}
                 secureTextEntry={true}
-                onSubmitEditing={() => { passwordValidation(Password), setonPasswordFocus(false) }}
-                _handleFocus={setonPasswordFocus}
+                onSubmitEditing={() => { emailValidation(Email), setonEmailFocus(false) }}
+                _handleFocus={setonEmailFocus}
             />
             <CustomButton styleButton={styles.buttonStyle} pressMethod={submit} text={Strings.submit} Social={false} />
             {call &&
-                <Toast top={-40} from={30} to={-40} message={Strings.inValidPassword} call={(value: boolean) => resetCall(value)} />
+                <Toast top={-40} from={30} to={-40} message={Strings.validEmail} call={(value: boolean) => resetCall(value)} />
             }
         </View>
     );
