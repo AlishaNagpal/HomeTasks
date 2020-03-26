@@ -1,52 +1,50 @@
 import React from 'react';
-import {TextInput} from 'react-native';
+import { TextInput } from 'react-native';
 
 export interface AppProps {
     value: any,
-    style:any,
-    _handleFocus?:any,
-    _handleBlur?:any,
-    attrName: string,
+    style: any,
+    _handleFocus?: any,
+    _handleBlur?: any,
+    attrName: any,
     updateMasterState: Function,
     keyboardType: any,
     placeholderStyle: string,
-    returnKeyType:any,
+    returnKeyType: any,
     otherTextInputProps?: object,
     onSubmitEditing: any,
     ref?: any;
-    secureTextEntry: any,  
+    secureTextEntry: any,
 };
 
-export interface AppState {};
-
-
-export default class CustomTextInput extends React.Component<AppProps, AppState> {
-
-    _onChangeText = (updatedValue: any) => {
-        const { attrName, updateMasterState } = this.props;
+const TextField = React.forwardRef((props: AppProps, ref) => {
+    const _onChangeText = (updatedValue: any) => {
+        const { attrName, updateMasterState } = props;
         updateMasterState(attrName, updatedValue);
     }
 
-    handleOnSubmitEditing = () => {
-        if (this.props.onSubmitEditing)
-            this.props.onSubmitEditing()
+    const handleOnSubmitEditing = () => {
+        if (props.onSubmitEditing)
+            props.onSubmitEditing()
     }
 
-    render() {
-        return (
-            <TextInput
-                value={this.props.value}
-                placeholder={this.props.placeholderStyle}
-                style={this.props.style}
-                ref={"FloatingLabelInput"}
-                onFocus={this.props._handleFocus}
-                onBlur={this.props._handleBlur}
-                onChangeText={this._onChangeText}
-                returnKeyType={this.props.returnKeyType}
-                keyboardType={this.props.keyboardType}
-                onSubmitEditing={this.handleOnSubmitEditing}
-                {...this.props.otherTextInputProps}
-            />
-        )
-    }
-};
+    return (
+        <TextInput
+            value={props.value}
+            placeholder={props.placeholderStyle}
+            style={props.style}
+            ref={ref}
+            onFocus={props._handleFocus}
+            onBlur={props._handleBlur}
+            onChangeText={_onChangeText}
+            returnKeyType={props.returnKeyType}
+            keyboardType={props.keyboardType}
+            onSubmitEditing={handleOnSubmitEditing}
+            {...props.otherTextInputProps}
+            secureTextEntry={props.secureTextEntry}
+        />
+    )
+});
+
+export default TextField;
+
