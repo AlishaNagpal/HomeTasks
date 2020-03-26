@@ -12,6 +12,7 @@ const Images = {
   loginImage:require('../Assets/Images/ic_email_login_bg.png'),
   forgotPasswordImage:require('../Assets/Images/ic_forgot_password_illustration.png'),
   forgotPasswordBackArrow:require('../Assets/Images/ic_forgot_password_back.png'),
+  resetPasswordKey:require('../Assets/Images/ic_reset_password_illustration.png'),
 };
 
 export default Images;

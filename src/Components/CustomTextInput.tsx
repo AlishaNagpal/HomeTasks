@@ -15,7 +15,7 @@ export interface AppProps {
     onSubmitEditing: any,
     ref?: any;
     secureTextEntry: any,
-    onKeyPress:any
+    onKeyPress?:any
 };
 
 const TextField = React.forwardRef((props: AppProps, ref) => {
