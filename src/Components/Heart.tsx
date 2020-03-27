@@ -4,7 +4,6 @@ import { Colors, vh, VectorIcons } from '../Constants';
 
 export interface HeartProps {
     isCheck: boolean,
-    clicked: Function,
     id: number,
     style:any
 }
@@ -14,7 +13,6 @@ export default function CheckBox(props: HeartProps) {
 
     const checkClicked = async (value: boolean) => {
         await setisCheck(value)
-        props.clicked && props.clicked(props.id, isCheck);
     }
 
     return (

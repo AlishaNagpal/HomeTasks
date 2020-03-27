@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, TouchableOpacity, ActivityIndicator, FlatList, Linking, ImageBackground } from 'react-native';
+import { View, Image, Text, TouchableOpacity, ActivityIndicator, FlatList, ImageBackground } from 'react-native';
 import styles from './styles'
 import { Strings, Images, Colors } from '../../Constants';
-import { CustomTextInput } from '../../Components';
+import { CustomTextInput, Heart } from '../../Components';
 import axios from 'axios'
 
 const apiKey = '&apiKey=f9369259f8b04692b061c132b5ad6dea'
@@ -14,7 +14,7 @@ export interface HomeProps {
 
 export default function Home(props: HomeProps) {
 
-  const [Search, setSearch] = useState('');
+  const [Search, setSearch] = useState('Noida');
   const [SearchFocus, setSearchFocus] = useState(false);
   const [Loader, setLoader] = useState(false);
   const [Data, setData] = useState([]);
@@ -35,6 +35,10 @@ export default function Home(props: HomeProps) {
       .catch(error => console.log(error));
   }
 
+  useEffect(() => {
+    getFunction('Noida');
+  });
+
   const toggleNumberOfLines = (index: number) => {
     setTextShown((TextShown === index) ? -1 : index)
   }
@@ -43,34 +47,24 @@ export default function Home(props: HomeProps) {
     const { item, index } = rowData;
     return (
       <View style={styles.flatlistContainer}>
-        {/* <Image
-          style={styles.imagestyle}
-          source={item.urlToImage == null ? Images.placeholderImage : { uri: item.urlToImage }}
+        <Heart
+          isCheck={false}
+          id={index}
+          style={styles.heart}
         />
-        <Text style={styles.dateStyle}>
-          Date: {item.publishedAt}
-        </Text>
-        <Text style={styles.text}> Title : {item.title} </Text>
-        <Text
-          numberOfLines={TextShown === index ? 0 : 2}
-          ellipsizeMode="tail"
-          style={styles.text}>
-          Description : {item.content} {'\n\n\n'}
-          <Text style={styles.text}>
-            Link:{'  '}
-          </Text>
-          <Text
-            style={{ color: '#4e4eff', fontWeight: 'normal' }}
-            onPress={() => Linking.openURL('http://google.com')} >
-            {item.url}
-          </Text>
-        </Text>
-
-        <TouchableOpacity onPress={() => toggleNumberOfLines(index)} >
-          <Text style={styles.buttonTextStyle}>
-            {TextShown === index ? 'Go Less' : 'Read More'}
-          </Text>
-        </TouchableOpacity> */}
+        <View>
+          <Text style={styles.heading} numberOfLines={1} > {item.title} </Text>
+          <TouchableOpacity onPress={() => toggleNumberOfLines(index)} >
+            <Text
+              numberOfLines={TextShown === index ? 0 : 2}
+              ellipsizeMode="tail"
+              style={styles.description} >{item.description}</Text>
+          </TouchableOpacity>
+        </View>
+        <Image
+          source={item.urlToImage == null ? Images.placeholderImage : { uri: item.urlToImage }}
+          style={styles.image}
+        />
       </View>
     )
   }
@@ -86,35 +80,35 @@ export default function Home(props: HomeProps) {
           <Image source={Images.searchIcon} />
         </TouchableOpacity>
       </View>
-        <View style={[styles.textInput, { borderColor: SearchFocus ? Colors.socialColor : Colors.white }]} >
-          <Image source={Images.searchPin} style={styles.searchPin} />
-          <CustomTextInput
-            value={Search}
-            style={styles.searchField}
-            attrName={setSearch}
-            updateMasterState={_updateMasterState}
-            keyboardType={'default'}
-            returnKeyType={'done'}
-            placeholderStyle={Strings.appTagLine}
-            secureTextEntry={false}
-            onSubmitEditing={() => { getFunction(Search), setSearchFocus(false) }}
-            _handleFocus={() => setSearchFocus(true)}
-            _handleBlur={() => setSearchFocus(false)}
-            otherTextInputProps={{ autoCorrect: false, clearButtonMode: 'while-editing'}}
-          />
-        </View>
-        <ActivityIndicator
-          size="large"
-          color={Colors.oldSchool}
-          style={styles.indicator}
-          animating={Loader}
+      <View style={[styles.textInput, { borderColor: SearchFocus ? Colors.socialColor : Colors.white }]} >
+        <Image source={Images.searchPin} style={styles.searchPin} />
+        <CustomTextInput
+          value={Search}
+          style={styles.searchField}
+          attrName={setSearch}
+          updateMasterState={_updateMasterState}
+          keyboardType={'default'}
+          returnKeyType={'done'}
+          placeholderStyle={Strings.appTagLine}
+          secureTextEntry={false}
+          onSubmitEditing={() => { getFunction(Search), setSearchFocus(false) }}
+          _handleFocus={() => setSearchFocus(true)}
+          _handleBlur={() => setSearchFocus(false)}
+          otherTextInputProps={{ autoCorrect: false, clearButtonMode: 'while-editing' }}
         />
-        <FlatList
-          data={Data}
-          keyExtractor={(item: any, index: number) => index.toString()}
-          renderItem={renderData}
-          showsVerticalScrollIndicator={false}
-        />
+      </View>
+      <ActivityIndicator
+        size="large"
+        color={Colors.oldSchool}
+        style={styles.indicator}
+        animating={Loader}
+      />
+      <FlatList
+        data={Data}
+        keyExtractor={(item: any, index: number) => index.toString()}
+        renderItem={renderData}
+        showsVerticalScrollIndicator={false}
+      />
     </ImageBackground>
   );
 };

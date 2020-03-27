@@ -24,6 +24,7 @@
 		5008508BC1A6417AA8CC06C7 /* NordiquePro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31E54EEFF8AC48A99D7F2B50 /* NordiquePro-Regular.ttf */; };
 		E45C2AAA9D724846A2AC817C /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A3C947A350A34228BC0539D0 /* Poppins-Regular.ttf */; };
 		B8A0D3EB25CA41AE8CD3A29D /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21AE0924F962494D902AE690 /* Poppins-Medium.ttf */; };
+		27BEB663A7D54A2782493202 /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E97DAB31C054329BEF97055 /* Poppins-Light.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		31E54EEFF8AC48A99D7F2B50 /* NordiquePro-Regular.ttf */ = {isa = PBXFileReference; name = "NordiquePro-Regular.ttf"; path = "../src/Assets/Fonts/NordiquePro-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		A3C947A350A34228BC0539D0 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; name = "Poppins-Regular.ttf"; path = "../src/Assets/Fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		21AE0924F962494D902AE690 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; name = "Poppins-Medium.ttf"; path = "../src/Assets/Fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5E97DAB31C054329BEF97055 /* Poppins-Light.ttf */ = {isa = PBXFileReference; name = "Poppins-Light.ttf"; path = "../src/Assets/Fonts/Poppins-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,6 +247,7 @@
 				31E54EEFF8AC48A99D7F2B50 /* NordiquePro-Regular.ttf */,
 				A3C947A350A34228BC0539D0 /* Poppins-Regular.ttf */,
 				21AE0924F962494D902AE690 /* Poppins-Medium.ttf */,
+				5E97DAB31C054329BEF97055 /* Poppins-Light.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 				5008508BC1A6417AA8CC06C7 /* NordiquePro-Regular.ttf in Resources */,
 				E45C2AAA9D724846A2AC817C /* Poppins-Regular.ttf in Resources */,
 				B8A0D3EB25CA41AE8CD3A29D /* Poppins-Medium.ttf in Resources */,
+				27BEB663A7D54A2782493202 /* Poppins-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

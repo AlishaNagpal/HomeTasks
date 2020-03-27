@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     },
     flatlistContainer: {
         width:vw(350),
-        height:vh(83),
         borderRadius:vh(10),
         backgroundColor:Colors.white,
         marginBottom:vh(10),
@@ -88,59 +87,38 @@ const styles = StyleSheet.create({
         shadowOpacity:1,
         shadowRadius:vw(10),
         borderWidth:1,
-        borderColor:Colors.white
+        borderColor:Colors.white,
+        flexDirection: 'row',
+        paddingBottom:vh(10)
     },
-
-    text: {
-        // paddingBottom: 10,
-        paddingLeft: 20,
-        fontSize: 16,
-        color: 'white',
-        fontWeight: 'bold',
-        paddingTop: 10
+    heart:{
+        marginLeft:vw(19),
+        marginTop:vh(19)
     },
-    
-    buttonTextStyle: {
-        color: '#1b4e55',
-        height: 30,
-        width: 100,
-        fontSize: 20,
-        borderRadius: 20,
-        marginLeft: 110
+    row:{
+        flexDirection: 'row',
     },
-    textInputStyle: {
-        marginLeft: 20,
-        marginRight: 20,
-        borderRadius: 10,
-        borderColor: 'lightgray',
-        borderWidth: 0.5,
-        shadowOpacity: 0.3,
-        shadowColor: 'lightgray',
-        height: 50,
-        paddingLeft: 40,
-        marginTop: 30,
-        fontSize: 20,
+    heading:{
+        marginLeft:vw(10),
+        marginTop:vh(17),
+        width:vw(220),
+        fontFamily:'Poppins-Regular',
+        fontSize:vh(15)
     },
-    imagestyle: {
-        height: 100,
-        width: 100,
-        position: 'absolute',
-        backgroundColor: 'white',
-        top: -20,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: 'darkgray'
+    image:{
+        height:vh(50),
+        width:vh(50),
+        borderRadius:vh(25),
+        borderColor:Colors.oldSchool,
+        borderWidth:1,
+        marginTop:vh(22)
     },
-    dateStyle: {
-        paddingLeft: 10,
-        fontSize: 12,
-        color: 'white',
-        fontWeight: 'bold',
-    },
-    iconPos:{
-    position:'absolute', 
-    top:38, 
-    left: 30
+    description:{
+        width:vw(220),
+        marginLeft:vw(10),
+        marginTop:vh(5),
+        fontSize:vh(12),
+        fontFamily:'Poppins-Light'
     }
 });
 
