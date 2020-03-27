@@ -19,12 +19,14 @@ export default function Home(props: HomeProps) {
   const [Loader, setLoader] = useState(false);
   const [Data, setData] = useState([]);
   const [TextShown, setTextShown] = useState(-1)
+  const [runOnce, setRunOnce] = useState(true);
 
   const _updateMasterState = (attrName: any, value: any) => {
     return attrName(value);
   }
 
   const getFunction = (key: string) => {
+    setRunOnce(false)
     axios.get(frontPart + key + apiKey)
       .then(response => {
         console.log(response.data.articles)
@@ -36,7 +38,8 @@ export default function Home(props: HomeProps) {
   }
 
   useEffect(() => {
-    getFunction('Noida');
+    {runOnce &&
+      getFunction('Noida')}
   });
 
   const toggleNumberOfLines = (index: number) => {
