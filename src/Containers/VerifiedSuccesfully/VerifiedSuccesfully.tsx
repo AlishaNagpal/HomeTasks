@@ -9,14 +9,14 @@ export interface SignINProps {
 }
 
 export default function verifiedSuccesfully(props: SignINProps) {
-    const verify = new Animated.Value(0);
+    const ticking = new Animated.Value(0);
 
     useEffect(() => {
         tick()
     });
 
     const tick = () => {
-        Animated.timing(verify, {
+        Animated.timing(ticking, {
             toValue: 1,
             duration: 800,
             useNativeDriver: true,
@@ -25,7 +25,7 @@ export default function verifiedSuccesfully(props: SignINProps) {
         }).start(()=>tick());
     }
 
-    const logoScale = verify.interpolate({
+    const logoScale = ticking.interpolate({
         inputRange: [0, 1],
         outputRange: [0.2, 1],
         extrapolate: 'clamp'

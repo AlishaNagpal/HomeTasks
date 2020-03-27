@@ -89,10 +89,10 @@ const FullHomeNavigator = () => (
       options={{ title: 'Home' }}
     />
     <Drawer.Screen
-          name={'LogOut'}
-          component={LogOut}
-          options={{ title: 'LogOut' }}
-      />
+      name={'LogOut'}
+      component={LogOut}
+      options={{ title: 'LogOut' }}
+    />
   </Drawer.Navigator>
 );
 
@@ -138,31 +138,33 @@ export interface Props {
 
 export default class Navigator extends React.PureComponent<Props>  {
   render() {
-    // return (
-    //   <NavigationContainer>
-    //     <RootStack.Navigator headerMode="none">
-    //         <RootStack.Screen name="NotMuch" component={VerifiedSuccesfully} />
-    //     </RootStack.Navigator>
-    //   </NavigationContainer>
-    // )
-    if (this.props.splashRan) {
-      return (
-        <NavigationContainer>
-          <RootStack.Navigator headerMode="none">
-            {this.props.token === '' ?
-              <RootStack.Screen name="AuthNavigator" component={AuthNavigator} /> :
-              <RootStack.Screen name="HomeNavigator" component={FullHomeNavigator} />}
-          </RootStack.Navigator>
-        </NavigationContainer>
-      )
-    } else {
-      return (
-        <NavigationContainer>
-          <RootStack.Navigator headerMode="none">
-            <RootStack.Screen name="SplashNavigator" component={SplashNavigator} />
-          </RootStack.Navigator>
-        </NavigationContainer>
-      )
-    }
+    return (
+      <NavigationContainer>
+        <RootStack.Navigator headerMode="none">
+          <RootStack.Screen name="NotMuch" component={Home} />
+        </RootStack.Navigator>
+      </NavigationContainer>
+    )
+    
+      // if (this.props.splashRan) {
+      //   return (
+      //     <NavigationContainer>
+      //       <RootStack.Navigator headerMode="none">
+      //         {this.props.token === '' ?
+      //           <RootStack.Screen name="AuthNavigator" component={AuthNavigator} /> :
+      //           <RootStack.Screen name="HomeNavigator" component={FullHomeNavigator} />}
+      //       </RootStack.Navigator>
+      //     </NavigationContainer>
+      //   )
+      // } else {
+      //   return (
+      //     <NavigationContainer>
+      //       <RootStack.Navigator headerMode="none">
+      //         <RootStack.Screen name="SplashNavigator" component={SplashNavigator} />
+      //       </RootStack.Navigator>
+      //     </NavigationContainer>
+      //   )
+      // }
+  
   }
 }

@@ -13,7 +13,12 @@ const Images = {
   forgotPasswordImage:require('../Assets/Images/ic_forgot_password_illustration.png'),
   forgotPasswordBackArrow:require('../Assets/Images/ic_forgot_password_back.png'),
   resetPasswordKey:require('../Assets/Images/ic_reset_password_illustration.png'),
-  verifiedSuccesfully:require('../Assets/Images/ic_verified_successfully_tick.png')
+  verifiedSuccesfully:require('../Assets/Images/ic_verified_successfully_tick.png'),
+  blurMapBackground:require('../Assets/Images/blur_map_background.png'),
+  menuIcon:require('../Assets/Images/ic_home_menu.png'),
+  searchIcon:require('../Assets/Images/ic_home_search.png'),
+  placeholderImage:require('../Assets/Images/placeholder.jpg'),
+  searchPin:require('../Assets/Images/ic_home_search_pin.png')
 };
 
 export default Images;

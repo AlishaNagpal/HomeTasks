@@ -17,6 +17,8 @@ const Colors = {
   socialColor:'#25A6E9',
   warmGrey:'#727272',
   warmGrey2:'#515151',
+  heart:'#ED5C58',
+  unHeart:'#DADADA'
 };
 
 export default Colors;
