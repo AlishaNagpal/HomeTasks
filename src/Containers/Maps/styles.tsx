@@ -69,6 +69,18 @@ const styles = StyleSheet.create({
         width: vw(DesignWidth),
         // marginTop: vh(10)
     },
+    marker:{
+        height:vh(30),
+        width:vh(30),
+        borderRadius:vh(15)
+    },
+    markerView:{
+        height:vh(30),
+        width:vh(30),
+        borderRadius:vh(15),
+        borderColor:Colors.socialColor,
+        borderWidth:vw(1)
+    }
 });
 
 export default styles;
