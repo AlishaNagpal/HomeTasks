@@ -5,7 +5,7 @@ import { Strings, Images, Colors } from '../../Constants';
 import { CustomTextInput, Heart } from '../../Components';
 import axios from 'axios'
 
-const apiKey = '&apiKey=f9369259f8b04692b061c132b5ad6dea'
+const apiKey = '&apiKey=d1d4bf49ff254d9ab4efca5f072bc2eb'
 const frontPart = 'https://newsapi.org/v2/everything?q='
 
 export interface HomeProps {
