@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import styles from './styles';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 import { Images, Strings, Colors } from '../../Constants';
 import { CustomTextInput } from '../../Components';
 import Geolocation from '@react-native-community/geolocation';
+import axios from 'axios';
 export interface MapsProps {
   navigation: any,
 }
@@ -15,7 +16,8 @@ export interface MapsState {
   currentPosition: any,
   region: any,
   queryS: string,
-  searchCoordinates: any
+  searchCoordinates: any,
+  resultS: Array<any>
 }
 
 export default class MapsComponent extends React.Component<MapsProps, MapsState> {
@@ -32,7 +34,8 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
         longitudeDelta: 0,
       },
       queryS: '',
-      searchCoordinates: null
+      searchCoordinates: null,
+      resultS: []
     };
   }
 
@@ -48,7 +51,6 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
       }, () => this.setState({
         region: this.state.currentPosition,
         queryS: 'Current Location',
-        searchCoordinates: this.state.currentPosition
       }))
     });
 
@@ -78,10 +80,65 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
 
   _updateMasterState = (attrName: any, value: any) => {
     this.setState({ [attrName]: value });
+    setTimeout(() => {
+      this.getFunction(this.state.Search)
+    }, 200);
+    
   }
 
-  getFunction = (key: string) => {
+  getFunction = (query: string) => {
+    if (query.length >= 2) {
+      try {
+        axios.get(`https://api.tomtom.com/search/2/search/+${query}+.json?key=P6TSGrQgZwug3PtS8MuyiLR4j33bOLeJ&limit=7`)
+          .then(response => {
+            this.setState({ resultS: response.data.results })
+            console.log(response.data.results);
 
+          })
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      this.setState({ resultS: [] })
+    }
+  }
+
+  getMapRegion = (coordinates: any, place: string) => {
+    console.log('setting ', coordinates, place);
+    this.setState({ resultS: [], queryS: place })
+    const r: any = {
+      latitude: coordinates.lat,
+      longitude: coordinates.lon,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    }
+    this.setState({
+      searchCoordinates: r
+    }, () => this.mapView.animateToRegion(r, 2000))
+  }
+
+  itemSeparator = () => {
+    return (
+      <View style={styles.separator} />
+    )
+  }
+
+  renderItems = (rowData: any) => {
+    const { item } = rowData
+    let address: any
+    const { position } = item
+    this.state.resultS.length === 0
+      ? address = item.address
+      : address = item.address.freeformAddress
+
+    return (
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={styles.searchFlatList}
+        onPress={() => { this.getMapRegion(position, address) }}>
+        <Text numberOfLines={1} style={styles.searchedText}>{address} </Text>
+      </TouchableOpacity>
+    )
   }
 
   public render() {
@@ -107,11 +164,20 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
             returnKeyType={'done'}
             placeholderStyle={Strings.appTagLine}
             secureTextEntry={false}
-            onSubmitEditing={() => { this.getFunction(this.state.Search), this.setState({ SearchFocus: false }) }}
+            onSubmitEditing={() => { this.setState({ SearchFocus: false }) }}
             _handleFocus={() => this.setState({ SearchFocus: true })}
             _handleBlur={() => this.setState({ SearchFocus: false })}
             otherTextInputProps={{ autoCorrect: false, clearButtonMode: 'while-editing' }}
           />
+          <View style={[styles.searchBarFlat, this.state.resultS === null ? { padding: vw(10), borderWidth: vw(2) } : { padding: 0, borderWidth: 0 }]}>
+            <FlatList
+              data={this.state.resultS}
+              keyExtractor={(item, index) => index.toString()}
+              ItemSeparatorComponent={this.itemSeparator}
+              renderItem={this.renderItems}
+              keyboardShouldPersistTaps='always'
+            />
+          </View>
         </View>
         <MapView
           style={styles.mapStyle}
@@ -129,6 +195,23 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
               <View style={styles.markerView} >
                 <Image source={Images.user} style={styles.marker} />
               </View>
+              <Callout>
+                <View style={styles.callOutView} >
+                  <Text style={styles.callOut} >{this.state.queryS}</Text>
+                </View>
+              </Callout>
+            </Marker>
+          }
+          {this.state.searchCoordinates &&
+            <Marker
+              coordinate={{ latitude: this.state.searchCoordinates.latitude, longitude: this.state.searchCoordinates.longitude }}
+            >
+              <Image source={Images.searchPinInMap} style={styles.markerSearch} />
+              <Callout>
+                <View style={styles.callOutView} >
+                  <Text style={styles.callOut} >{this.state.queryS}</Text>
+                </View>
+              </Callout>
             </Marker>
           }
         </MapView>

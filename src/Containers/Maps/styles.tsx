@@ -80,7 +80,46 @@ const styles = StyleSheet.create({
         borderRadius:vh(15),
         borderColor:Colors.socialColor,
         borderWidth:vw(1)
-    }
+    },
+    searchBarFlat: {
+        position: 'absolute',
+        marginTop:vh(50),
+        alignItems:'center',
+        backgroundColor: Colors.white,
+        borderRadius: vw(5),
+        zIndex: 99,
+    },
+    separator: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: vw(0.7),
+        backgroundColor: Colors.socialColor,
+        marginHorizontal: vw(30)
+    },
+    searchFlatList:{
+        height:vh(30),
+        width:vw(350),
+    },
+    searchedText:{
+        fontSize:vh(13),
+        fontFamily:'Poppins-Regular',
+        textAlign:'center',
+        marginTop:vh(10)
+    },
+    callOut:{
+        textAlign:'center',
+        fontFamily:'NordiquePro-Regular',
+        fontSize:vh(14),
+    },
+    callOutView:{
+        width:vw(150)
+    },
+    markerSearch:{
+        height:vh(70),
+        width:vh(60),
+    },
+
 });
 
 export default styles;

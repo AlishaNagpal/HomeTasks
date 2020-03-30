@@ -24,6 +24,7 @@ const Images = {
   homePageIcon:require('../Assets/Images/ic_home_enable_event.png'),
   mapPageIcon:require('../Assets/Images/ic_home_enable_map.png'),
   user:require('../Assets/Images/lady.png'),
+  searchPinInMap:require('../Assets/Images/ic_blue_pin_glass.png')
 };
 
 export default Images;
