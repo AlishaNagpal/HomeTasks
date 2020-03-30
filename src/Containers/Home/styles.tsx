@@ -30,9 +30,9 @@ const styles = StyleSheet.create({
     moreSocial:{
         color: Colors.white,
         alignSelf: 'center',
-        fontSize: vh(21),
-        fontFamily: 'Poppins-Medium',
-        marginTop: vh(20),
+        fontSize: vh(25),
+        fontFamily: 'NordiquePro-Regular',
+        marginTop: vh(25),
         marginLeft:vw(60)
     },
     searchIconButton:{

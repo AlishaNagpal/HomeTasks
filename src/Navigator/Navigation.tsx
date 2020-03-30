@@ -62,17 +62,6 @@ const HomeNavigator = () => (
   </HomeStack.Navigator>
 );
 
-// const HomeTabIcon = (props: any) => {
-//   if (route.name === 'Home') {
-//     return (focused ? <Image
-//       source={require('./images/home.png')}
-//       style={styles.img}
-//     /> : <Image source={require('./images/home.png')} style={styles.img2} />)
-//   } else if (route.name === 'Setting') {
-//     return (focused ? <Image resizeMethod="resize" resizeMode='contain' source={require('./images/settings.png')} style={styles.img} /> : <Image source={require('./images/settings.png')} style={styles.img2} />)
-//   }
-// }
-
 const HomeBottomNavigator = () => (
   <BottomTab.Navigator
     tabBarOptions={{
