@@ -18,7 +18,8 @@ const Colors = {
   warmGrey:'#727272',
   warmGrey2:'#515151',
   heart:'#ED5C58',
-  unHeart:'#DADADA'
+  unHeart:'#DADADA',
+  inactiveIconColor:'#505050'
 };
 
 export default Colors;

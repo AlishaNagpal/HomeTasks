@@ -18,7 +18,11 @@ const Images = {
   menuIcon:require('../Assets/Images/ic_home_menu.png'),
   searchIcon:require('../Assets/Images/ic_home_search.png'),
   placeholderImage:require('../Assets/Images/placeholder.jpg'),
-  searchPin:require('../Assets/Images/ic_home_search_pin.png')
+  searchPin:require('../Assets/Images/ic_home_search_pin.png'),
+  homePageDisableIcon:require('../Assets/Images/ic_home_disable_event.png'),
+  mapPageDisableIcon:require('../Assets/Images/ic_home_disable_map.png'),
+  homePageIcon:require('../Assets/Images/ic_home_enable_event.png'),
+  mapPageIcon:require('../Assets/Images/ic_home_enable_map.png'),
 };
 
 export default Images;

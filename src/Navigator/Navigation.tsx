@@ -1,11 +1,12 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
+import { Image, StyleSheet, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { vh, Colors } from '../Constants';
+import { vh, Colors, Images, vw } from '../Constants';
 
 
 import Home from '../Containers/Home/Home';
@@ -21,6 +22,7 @@ import VerificationCode from '../Containers/VerificationCode/VerificationCode';
 import ResetPassword from '../Containers/ResetPassword/ResetPassword';
 import VerifiedSuccesfully from '../Containers/VerifiedSuccesfully/VerifiedSuccesfully';
 import ResetSuccess from '../Containers/PasswordResetSucces/PasswordResetSucces';
+import Maps from '../Containers/Maps/Maps';
 
 console.disableYellowBox = true
 
@@ -60,23 +62,74 @@ const HomeNavigator = () => (
   </HomeStack.Navigator>
 );
 
+// const HomeTabIcon = (props: any) => {
+//   if (route.name === 'Home') {
+//     return (focused ? <Image
+//       source={require('./images/home.png')}
+//       style={styles.img}
+//     /> : <Image source={require('./images/home.png')} style={styles.img2} />)
+//   } else if (route.name === 'Setting') {
+//     return (focused ? <Image resizeMethod="resize" resizeMode='contain' source={require('./images/settings.png')} style={styles.img} /> : <Image source={require('./images/settings.png')} style={styles.img2} />)
+//   }
+// }
+
 const HomeBottomNavigator = () => (
   <BottomTab.Navigator
     tabBarOptions={{
-      activeTintColor: Colors.brown,
-      inactiveTintColor: Colors.gray,
-      labelStyle: { fontSize: vh(22) },
+      activeTintColor: Colors.white,
+      inactiveTintColor: Colors.inactiveIconColor,
+      // labelStyle: { fontSize: vh(22) },
+      showIcon: true,
+      showLabel: false
     }}
   >
     <BottomTab.Screen
       name={'Home'}
       component={HomeNavigator}
-      options={{ title: 'Home' }}
+      options={{
+        // title: 'Home',
+        tabBarIcon: ({ focused }) => (
+          focused ?
+            <View style={styles.viewStyle} >
+              <Image
+                source={Images.homePageIcon} resizeMode='contain'
+                style={styles.icon}
+              />
+            </View>
+            : <View style={styles.viewStyleDisabled}  >
+              <Image
+                source={Images.homePageDisableIcon} resizeMode='contain'
+                style={styles.icon}
+              />
+            </View>
+        ),
+      }}
     />
-    <BottomTab.Screen
+    {/* <BottomTab.Screen
       name={'NotMuch'}
       component={NotMuchNavigator}
       options={{ title: 'Advice' }}
+    /> */}
+    <BottomTab.Screen
+      name={'Maps'}
+      component={Maps}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          focused ?
+            <View style={styles.viewStyle} >
+              <Image
+                source={Images.mapPageIcon} resizeMode='contain'
+                style={styles.icon}
+              />
+            </View>
+            : <View style={styles.viewStyleDisabled}  >
+              <Image
+                source={Images.mapPageDisableIcon} resizeMode='contain'
+                style={styles.icon}
+              />
+            </View>
+        ),
+      }}
     />
   </BottomTab.Navigator >
 );
@@ -145,26 +198,55 @@ export default class Navigator extends React.PureComponent<Props>  {
     //     </RootStack.Navigator>
     //   </NavigationContainer>
     // )
-    
-      if (this.props.splashRan) {
-        return (
-          <NavigationContainer>
-            <RootStack.Navigator headerMode="none">
-              {this.props.token === '' ?
-                <RootStack.Screen name="AuthNavigator" component={AuthNavigator} /> :
-                <RootStack.Screen name="HomeNavigator" component={FullHomeNavigator} />}
-            </RootStack.Navigator>
-          </NavigationContainer>
-        )
-      } else {
-        return (
-          <NavigationContainer>
-            <RootStack.Navigator headerMode="none">
-              <RootStack.Screen name="SplashNavigator" component={SplashNavigator} />
-            </RootStack.Navigator>
-          </NavigationContainer>
-        )
-      }
-  
+
+    if (this.props.splashRan) {
+      return (
+        <NavigationContainer>
+          <RootStack.Navigator headerMode="none">
+            {this.props.token === '' ?
+              <RootStack.Screen name="AuthNavigator" component={AuthNavigator} /> :
+              <RootStack.Screen name="HomeNavigator" component={FullHomeNavigator} />}
+          </RootStack.Navigator>
+        </NavigationContainer>
+      )
+    } else {
+      return (
+        <NavigationContainer>
+          <RootStack.Navigator headerMode="none">
+            <RootStack.Screen name="SplashNavigator" component={SplashNavigator} />
+          </RootStack.Navigator>
+        </NavigationContainer>
+      )
+    }
+
   }
 }
+
+const styles = StyleSheet.create({
+  icon: {
+    height: vh(55),
+    width: vw(45),
+  },
+  viewStyle: {
+    alignItems: 'center',
+    marginTop: vh(25),
+    height: vh(60),
+    width: vh(60),
+    borderRadius: vh(30),
+    backgroundColor: Colors.socialColor,
+    shadowColor: Colors.gray,
+    shadowRadius: vh(10),
+    shadowOpacity: 2,
+  },
+  viewStyleDisabled: {
+    alignItems: 'center',
+    marginTop: vh(25),
+    height: vh(60),
+    width: vh(60),
+    borderRadius: vh(30),
+    shadowColor: Colors.gray,
+    shadowRadius: vh(10),
+    shadowOpacity: 2,
+    backgroundColor: Colors.white
+  }
+})
