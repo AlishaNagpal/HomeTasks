@@ -1,11 +1,11 @@
 import * as Actions from '../../Reducer/types';
 const initialState = {
-  value: 0,
+  value: [],
 };
 
 const Reducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case Actions.HOME_VALUE:
+    case Actions.HOME_DATA:
       return {...state, value: action.payload.data};
     default:
       return state;

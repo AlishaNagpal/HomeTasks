@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         marginTop:vh(20)
     },
     flatlistContainer: {
-        width:vw(350),
+        width: vw(350),
         borderRadius:vh(10),
         backgroundColor:Colors.white,
         marginBottom:vh(10),
@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderColor:Colors.white,
         flexDirection: 'row',
-        paddingBottom:vh(10)
+        paddingBottom:vh(10),
+        marginLeft:vw(20)
     },
     heart:{
         marginLeft:vw(19),
@@ -119,7 +120,26 @@ const styles = StyleSheet.create({
         marginTop:vh(5),
         fontSize:vh(12),
         fontFamily:'Poppins-Light'
+    },
+    button:{
+        height:vh(50),
+        width:vh(50),
+        borderRadius:vh(25),
+        backgroundColor:Colors.socialColor,
+        alignItems:'center',
+        justifyContent: 'center',
+        marginTop:vh(25),
+    },
+    button2:{
+        height:vh(50),
+        width:vh(50),
+        borderRadius:vh(25),
+        backgroundColor:'red',
+        alignItems:'center',
+        justifyContent: 'center',
+        marginTop:vh(25),
     }
+
 });
 
 export default styles;

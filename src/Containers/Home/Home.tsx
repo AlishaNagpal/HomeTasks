@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Image, Text, TouchableOpacity, ActivityIndicator, FlatList, ImageBackground } from 'react-native';
 import styles from './styles'
 import { Strings, Images, Colors } from '../../Constants';
-import { CustomTextInput, Heart } from '../../Components';
+import { CustomTextInput } from '../../Components';
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux';
+import { updateValueHome } from '../../Modules/Home/HomeAction';
+import FlatListData from './FlatListData';
 
 const apiKey = '&apiKey=d1d4bf49ff254d9ab4efca5f072bc2eb'
 const frontPart = 'https://newsapi.org/v2/everything?q='
@@ -17,9 +20,14 @@ export default function Home(props: HomeProps) {
   const [Search, setSearch] = useState('Noida');
   const [SearchFocus, setSearchFocus] = useState(false);
   const [Loader, setLoader] = useState(false);
-  const [Data, setData] = useState([]);
   const [TextShown, setTextShown] = useState(-1)
   const [runOnce, setRunOnce] = useState(true);
+  const [enable, setEnable] = useState(true);
+
+  const { value } = useSelector((state: { HomeReducer: any }) => ({
+    value: state.HomeReducer.value,
+  }));
+  const dispatch = useDispatch();
 
   const _updateMasterState = (attrName: any, value: any) => {
     return attrName(value);
@@ -29,17 +37,19 @@ export default function Home(props: HomeProps) {
     setRunOnce(false)
     axios.get(frontPart + key + apiKey)
       .then(response => {
-        console.log(response.data.articles)
         const userData1 = response.data.articles;
         setLoader(false)
-        setData(userData1)
+        // setData(userData1)
+        dispatch(updateValueHome(userData1))
       })
       .catch(error => console.log(error));
   }
 
   useEffect(() => {
-    {runOnce &&
-      getFunction('Noida')}
+    {
+      runOnce &&
+      getFunction('Noida')
+    }
   });
 
   const toggleNumberOfLines = (index: number) => {
@@ -48,27 +58,14 @@ export default function Home(props: HomeProps) {
 
   const renderData = (rowData: any) => {
     const { item, index } = rowData;
+    console.log(item)
     return (
-      <View style={styles.flatlistContainer}>
-        <Heart
-          isCheck={false}
-          id={index}
-          style={styles.heart}
-        />
-        <View>
-          <Text style={styles.heading} numberOfLines={1} > {item.title} </Text>
-          <TouchableOpacity onPress={() => toggleNumberOfLines(index)} >
-            <Text
-              numberOfLines={TextShown === index ? 0 : 2}
-              ellipsizeMode="tail"
-              style={styles.description} >{item.description}</Text>
-          </TouchableOpacity>
-        </View>
-        <Image
-          source={item.urlToImage == null ? Images.placeholderImage : { uri: item.urlToImage }}
-          style={styles.image}
-        />
-      </View>
+      <FlatListData
+        index={index}
+        item={item}
+        toggleNumberOfLines={toggleNumberOfLines}
+        TextShown = {TextShown}
+      />
     )
   }
 
@@ -107,7 +104,7 @@ export default function Home(props: HomeProps) {
         animating={Loader}
       />
       <FlatList
-        data={Data}
+        data={value}
         keyExtractor={(item: any, index: number) => index.toString()}
         renderItem={renderData}
         showsVerticalScrollIndicator={false}

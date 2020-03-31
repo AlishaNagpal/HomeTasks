@@ -6,6 +6,8 @@ import { Images, Strings, Colors } from '../../Constants';
 import { CustomTextInput } from '../../Components';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
+import { ClusterMap } from 'react-native-cluster-map';
+import { Cluster } from './Cluster';
 export interface MapsProps {
   navigation: any,
 }
@@ -17,7 +19,8 @@ export interface MapsState {
   region: any,
   queryS: string,
   searchCoordinates: any,
-  resultS: Array<any>
+  resultS: Array<any>,
+  markers: Array<object>
 }
 
 export default class MapsComponent extends React.Component<MapsProps, MapsState> {
@@ -35,7 +38,8 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
       },
       queryS: '',
       searchCoordinates: null,
-      resultS: []
+      resultS: [],
+      markers: [],
     };
   }
 
@@ -83,7 +87,7 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
     setTimeout(() => {
       this.getFunction(this.state.Search)
     }, 200);
-    
+
   }
 
   getFunction = (query: string) => {
@@ -141,6 +145,8 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
     )
   }
 
+  renderCustomClusterMarker = (count: any) => <Cluster count={count} />;
+
   public render() {
     return (
       <View style={styles.container} >
@@ -179,7 +185,7 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
             />
           </View>
         </View>
-        <MapView
+        {/* <MapView
           style={styles.mapStyle}
           ref={ref => (this.mapView = ref)}
           provider={PROVIDER_GOOGLE}
@@ -187,8 +193,32 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
           showsUserLocation={true}
           scrollEnabled={true}
           region={this.state.region}
-        >
-          {this.state.currentPosition &&
+        > */}
+        <ClusterMap
+          onPress={(e) => this.setState({
+            markers: [...this.state.markers, {
+              latlng: e.nativeEvent.coordinate
+            }]
+          })}
+          renderClusterMarker={this.renderCustomClusterMarker}
+          region={this.state.region}
+          ref={ref => (this.mapView = ref)}
+          provider={PROVIDER_GOOGLE}
+          zoomEnabled={true}
+          showsUserLocation={true}
+          scrollEnabled={true}
+          style={styles.mapStyle}>
+
+          {
+            this.state.markers.map((marker, i) => (
+              <Marker
+                // pinColor="green"
+                key={i} coordinate={marker.latlng}
+              icon={Images.searchPinInMap}
+              />
+            ))
+          }
+          {/* {this.state.currentPosition &&
             <Marker
               coordinate={{ latitude: this.state.currentPosition.latitude, longitude: this.state.currentPosition.longitude }}
             >
@@ -213,8 +243,9 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
                 </View>
               </Callout>
             </Marker>
-          }
-        </MapView>
+          } */}
+        </ClusterMap>
+        {/* </MapView> */}
       </View >
     );
   }
