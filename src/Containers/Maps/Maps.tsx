@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import styles from './styles';
-import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
-import { Images, Strings, Colors } from '../../Constants';
+import MapView, { PROVIDER_GOOGLE, Marker, Callout, LatLng, Polyline } from 'react-native-maps';
+import { Images, Strings, Colors, vw } from '../../Constants';
 import { CustomTextInput } from '../../Components';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
-import { ClusterMap } from 'react-native-cluster-map';
-import { Cluster } from './Cluster';
+// import { ClusterMap } from 'react-native-cluster-map';
+// import { Cluster } from './Cluster';
 export interface MapsProps {
   navigation: any,
 }
@@ -20,8 +20,14 @@ export interface MapsState {
   queryS: string,
   searchCoordinates: any,
   resultS: Array<any>,
-  markers: Array<object>
+  markers: Array<object>,
+  animate: boolean,
+  transport: any,
+  route: Array<any>
 }
+
+const key = 'DgwCSLp1xsWqNPGjLvG4QlA5fzyYA85k';
+const car = 'car';
 
 export default class MapsComponent extends React.Component<MapsProps, MapsState> {
   constructor(props: MapsProps) {
@@ -40,6 +46,9 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
       searchCoordinates: null,
       resultS: [],
       markers: [],
+      animate: false,
+      transport: {},
+      route: []
     };
   }
 
@@ -58,7 +67,7 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
       }))
     });
 
-    this.ToConstantlyWatch()
+    // this.ToConstantlyWatch()
   }
 
   ToConstantlyWatch = () => {
@@ -93,11 +102,9 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
   getFunction = (query: string) => {
     if (query.length >= 2) {
       try {
-        axios.get(`https://api.tomtom.com/search/2/search/+${query}+.json?key=P6TSGrQgZwug3PtS8MuyiLR4j33bOLeJ&limit=7`)
+        axios.get(`https://api.tomtom.com/search/2/search/+${query}+.json?key=${key}&limit=7`)
           .then(response => {
             this.setState({ resultS: response.data.results })
-            console.log(response.data.results);
-
           })
       } catch (error) {
         console.log(error)
@@ -108,7 +115,6 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
   }
 
   getMapRegion = (coordinates: any, place: string) => {
-    console.log('setting ', coordinates, place);
     this.setState({ resultS: [], queryS: place })
     const r: any = {
       latitude: coordinates.lat,
@@ -119,6 +125,7 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
     this.setState({
       searchCoordinates: r
     }, () => this.mapView.animateToRegion(r, 2000))
+      , this.getDirections()
   }
 
   itemSeparator = () => {
@@ -145,7 +152,76 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
     )
   }
 
-  renderCustomClusterMarker = (count: any) => <Cluster count={count} />;
+  // renderCustomClusterMarker = (count: any) => <Cluster count={count} />;
+
+  setMarkers = (coordinate: LatLng) => {
+    let temp: any = this.state.markers;
+    temp = temp.concat({
+      coordinates: coordinate
+    });
+    this.setState({ markers: temp });
+  }
+
+  hitRouteAPI = (callback: Function) => {
+    const { currentPosition, searchCoordinates } = this.state;
+    try {
+      axios.get(`https://api.tomtom.com/routing/1/calculateRoute/${searchCoordinates.latitude}%2C${searchCoordinates.longitude}%3A${currentPosition.latitude}%2C${currentPosition.longitude}/json?avoid=unpavedRoads&travelMode=${car}&key=${key}`)
+        .then((response: any) => {
+          callback(response.data.routes)
+        }).catch((error) => {
+          console.log(error)
+        })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  getPaths = (title: string) => {
+
+    const sa = this.state.searchCoordinates.latitude
+    const so = this.state.searchCoordinates.longitude
+    const la = this.state.currentPosition.latitude
+    const lo = this.state.currentPosition.longitude
+    const zoom = 0.07
+
+    let averageCoordinate = {
+      latitude: (sa + la) / 2,
+      longitude: (so + lo) / 2,
+      latitudeDelta: sa > la ? (sa - la) + zoom : (la - sa) + zoom,
+      longitudeDelta: so > lo ? (so - lo) + zoom : (lo - so) + zoom,
+    }
+    this.setState({
+      region: averageCoordinate
+    }, () => this.mapView.animateToRegion(averageCoordinate, 2000))
+
+    const data: Array<any> = this.state.transport[title];
+    data.forEach(itemData => {
+      const legArr: Array<any> = itemData.legs;
+      legArr.forEach(legData => {
+        const legPoints = legData.points;
+        this.setState({
+          route: legPoints
+        })
+      });
+    });
+  }
+
+  getDirections = async () => {
+    this.setState({ animate: true }, async () => {
+      const result = await new Promise((resolve, reject) => {
+        this.hitRouteAPI((response: any) => {
+          resolve(response)
+        })
+      })
+      const temp = this.state.transport
+      const newType = 'car'
+      Object.assign(temp, { [newType]: result })
+      this.setState({
+        transport: temp
+      })
+      this.setState({ animate: false }, () => this.getPaths(car))
+    })
+  }
 
   public render() {
     return (
@@ -185,7 +261,7 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
             />
           </View>
         </View>
-        {/* <MapView
+        <MapView
           style={styles.mapStyle}
           ref={ref => (this.mapView = ref)}
           provider={PROVIDER_GOOGLE}
@@ -193,8 +269,15 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
           showsUserLocation={true}
           scrollEnabled={true}
           region={this.state.region}
-        > */}
-        <ClusterMap
+          // onPress={(e) => this.setState({
+          //   markers: [...this.state.markers, {
+          //     latlng: e.nativeEvent.coordinate
+          //   }]
+          // })}
+          onPress={(e: { nativeEvent: { coordinate: LatLng } }) =>
+            this.setMarkers(e.nativeEvent.coordinate)}
+        >
+          {/* <ClusterMap
           onPress={(e) => this.setState({
             markers: [...this.state.markers, {
               latlng: e.nativeEvent.coordinate
@@ -207,18 +290,19 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
           zoomEnabled={true}
           showsUserLocation={true}
           scrollEnabled={true}
-          style={styles.mapStyle}>
-
+          style={styles.mapStyle}> */}
           {
             this.state.markers.map((marker, i) => (
               <Marker
                 // pinColor="green"
-                key={i} coordinate={marker.latlng}
-              icon={Images.searchPinInMap}
+                key={i}
+                // coordinate={marker.latlng}
+                coordinate={marker.coordinates}
+                icon={Images.searchPinInMap}
               />
             ))
           }
-          {/* {this.state.currentPosition &&
+          {this.state.currentPosition &&
             <Marker
               coordinate={{ latitude: this.state.currentPosition.latitude, longitude: this.state.currentPosition.longitude }}
             >
@@ -243,9 +327,14 @@ export default class MapsComponent extends React.Component<MapsProps, MapsState>
                 </View>
               </Callout>
             </Marker>
-          } */}
-        </ClusterMap>
-        {/* </MapView> */}
+          }
+          <Polyline
+            coordinates={this.state.route}
+            strokeColor={Colors.socialColor}
+            strokeWidth={vw(5)}
+          />
+          {/* </ClusterMap> */}
+        </MapView>
       </View >
     );
   }

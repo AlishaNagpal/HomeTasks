@@ -34,7 +34,7 @@ export default function FlatListDataComponent(props: FlatListDataProps) {
           Share.open(options).then((response: any) => {
               Alert.alert('Your response has been shared!')
               row[props.index].close()
-            console.log('_openShareForAll ', response);
+            // console.log('_openShareForAll ', response);
           });
         } catch (error) {
           console.log('Error ', error);
@@ -52,10 +52,10 @@ export default function FlatListDataComponent(props: FlatListDataProps) {
     }
 
     const renderLeftActions = (progress: any, dragX: any) => {
-        console.log(dragX)
+        // console.log(dragX)
         const trans = dragX.interpolate({
             inputRange: [0, 50, 100, 301],
-            outputRange: [-5, 0, 0, 50],
+            outputRange: [-5, 0, 0, 50]
         });
         const trans2 = dragX.interpolate({
             inputRange: [0, 50, 100, 301],
@@ -88,9 +88,9 @@ export default function FlatListDataComponent(props: FlatListDataProps) {
         <Swipeable
             ref={ref => row[props.index] = ref}
             renderRightActions={renderLeftActions}
-            onSwipeableOpen={closeRow(props.index)}
+            // onSwipeableOpen={closeRow(props.index)}
             containerStyle={{ paddingRight: vw(20) }}
-            rightThreshold={50} >
+            >
             <View style={styles.flatlistContainer}>
                 <Heart
                     isCheck={false}

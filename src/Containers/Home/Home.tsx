@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, TouchableOpacity, ActivityIndicator, FlatList, ImageBackground } from 'react-native';
+import { View, Image, Text, TouchableOpacity, ActivityIndicator, FlatList, ImageBackground} from 'react-native';
 import styles from './styles'
 import { Strings, Images, Colors } from '../../Constants';
 import { CustomTextInput } from '../../Components';
@@ -22,7 +22,7 @@ export default function Home(props: HomeProps) {
   const [Loader, setLoader] = useState(false);
   const [TextShown, setTextShown] = useState(-1)
   const [runOnce, setRunOnce] = useState(true);
-  const [enable, setEnable] = useState(true);
+  const [refreshing, setRefresh] = useState(false);
 
   const { value } = useSelector((state: { HomeReducer: any }) => ({
     value: state.HomeReducer.value,
@@ -48,7 +48,7 @@ export default function Home(props: HomeProps) {
   useEffect(() => {
     {
       runOnce &&
-      getFunction('Noida')
+        getFunction('Noida')
     }
   });
 
@@ -58,15 +58,22 @@ export default function Home(props: HomeProps) {
 
   const renderData = (rowData: any) => {
     const { item, index } = rowData;
-    console.log(item)
     return (
       <FlatListData
         index={index}
         item={item}
         toggleNumberOfLines={toggleNumberOfLines}
-        TextShown = {TextShown}
+        TextShown={TextShown}
       />
     )
+  }
+
+  const refresh  = () => {
+    setRefresh(true)
+    getFunction(Search)
+    setTimeout(() => {
+      setRefresh(false)
+    }, 300);
   }
 
   return (
@@ -108,6 +115,11 @@ export default function Home(props: HomeProps) {
         keyExtractor={(item: any, index: number) => index.toString()}
         renderItem={renderData}
         showsVerticalScrollIndicator={false}
+        // bounces={false}
+        pagingEnabled={true}
+        disableIntervalMomentum={true}
+        refreshing={refreshing}
+        onRefresh={refresh}
       />
     </ImageBackground>
   );
