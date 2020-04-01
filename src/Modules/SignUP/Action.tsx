@@ -6,19 +6,25 @@ export const updateToken = (value: string) => {
     }
 }
 
+export const userLoggedInFrom = (value: string) => {
+  return (dispatch: any) => {
+      dispatch({ type: Actions.LoginFrom, payload: { data: value } });
+  }
+}
+
 export const getResult = (
     email: string,
     name: string,
     profilePic: string,
-    callback: Function,
+    callBack: Function,
   ) => {
     return (dispatch: any) => {
       let temp = {
-        email: email,
-        name: name,
-        profilePic: profilePic,
+        email,
+        name,
+        profilePic,
       };
       dispatch({type: Actions.GET_RESULT, payload: {data: temp}});
-      callback();
+      callBack()
     };
   };

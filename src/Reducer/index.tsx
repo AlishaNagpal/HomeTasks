@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['SignUpReducer'],
+  whitelist: ['SignUpReducer', 'ProfileReducer'],
   blacklist: ['SplashReducer'],
 };
 

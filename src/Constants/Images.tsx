@@ -24,7 +24,10 @@ const Images = {
   homePageIcon:require('../Assets/Images/ic_home_enable_event.png'),
   mapPageIcon:require('../Assets/Images/ic_home_enable_map.png'),
   user:require('../Assets/Images/lady.png'),
-  searchPinInMap:require('../Assets/Images/icon4_without_gredient.png')
+  searchPinInMap:require('../Assets/Images/icon4_without_gredient.png'),
+  camera:require('../Assets/Images/ic_signup_camera.png'),
+  approved:require('../Assets/Images/ic_signup_approve.png'),
+  blurredMap:require('../Assets/Images/ic_map_bg.png'),
 };
 
 export default Images;

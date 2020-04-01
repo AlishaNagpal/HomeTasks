@@ -4,7 +4,7 @@ import { Strings, Images, Colors, VectorIcons, vh } from '../../Constants';
 import styles from './styles';
 import * as  SocialLogin from '../../Components/SocialLoginHandler'
 import { useDispatch } from 'react-redux';
-import { updateToken, getResult } from '../../Modules/SignUP/Action';
+import { updateToken, getResult, userLoggedInFrom } from '../../Modules/SignUP/Action';
 import CustomButton from '../../Components/CustomButtons';
 
 interface TutorialScreenProps {
@@ -30,6 +30,7 @@ export default function SignUP(props: TutorialScreenProps) {
             getResult(result.email, result.name, result.picture.data.url, () => {
                 setisAnimating(false);
                 dispatch(updateToken(token));
+                dispatch(userLoggedInFrom('Facebook'));
             }),
         );
     }
@@ -53,6 +54,7 @@ export default function SignUP(props: TutorialScreenProps) {
                 () => {
                     setisAnimating(false);
                     dispatch(updateToken(token));
+                    dispatch(userLoggedInFrom('LinkedIN'));
                 },
             ),
         );

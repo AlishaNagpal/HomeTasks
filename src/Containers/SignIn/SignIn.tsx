@@ -5,7 +5,7 @@ import { Images, Strings, Colors } from '../../Constants';
 import { CustomButton, Toast, CustomTextInput } from '../../Components';
 import * as  SocialLogin from '../../Components/SocialLoginHandler'
 import { useDispatch } from 'react-redux';
-import { updateToken, getResult } from '../../Modules/SignUP/Action';
+import { updateToken, getResult, userLoggedInFrom } from '../../Modules/SignUP/Action';
 
 export interface SignINProps {
     navigation: any
@@ -65,9 +65,10 @@ export default function SignINComponent(props: SignINProps) {
 
     const data = (token: any, result: any) => {
         dispatch(
-            getResult(result.email, result.name, result.picture.data.url, () => {
+            getResult(result.email, result.name, result.picture.data.url,() => {
                 setisAnimating(false);
                 dispatch(updateToken(token));
+                dispatch(userLoggedInFrom('Facebook'));
             }),
         );
     }
@@ -88,9 +89,11 @@ export default function SignINComponent(props: SignINProps) {
                 result.localizedFirstName + ' ' + result.localizedLastName,
                 result.profilePicture['displayImage~'].elements[3].identifiers[0]
                     .identifier,
+                    
                 () => {
                     setisAnimating(false);
                     dispatch(updateToken(token));
+                    dispatch(userLoggedInFrom('LinkedIN'));
                 },
             ),
         );

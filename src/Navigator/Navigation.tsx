@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { vh, Colors, Images, vw } from '../Constants';
+import { vh, Colors, Images, vw, VectorIcons } from '../Constants';
 
 
 import Home from '../Containers/Home/Home';
@@ -23,6 +23,7 @@ import ResetPassword from '../Containers/ResetPassword/ResetPassword';
 import VerifiedSuccesfully from '../Containers/VerifiedSuccesfully/VerifiedSuccesfully';
 import ResetSuccess from '../Containers/PasswordResetSucces/PasswordResetSucces';
 import Maps from '../Containers/Maps/Maps';
+import Profile from '../Containers/Profile/Profile';
 
 console.disableYellowBox = true
 
@@ -117,6 +118,17 @@ const HomeBottomNavigator = () => (
                 style={styles.icon}
               />
             </View>
+        ),
+      }}
+    />
+    <BottomTab.Screen
+      name={'Profile'}
+      component={Profile}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          <View style={focused ? styles.viewStyle : styles.viewStyleDisabled}>
+            <VectorIcons.Fontisto name={'person'} size={vh(28)} color={focused ? Colors.white : Colors.inactiveIconColor} style={styles.center} />
+          </View>
         ),
       }}
     />
@@ -226,6 +238,7 @@ const styles = StyleSheet.create({
     shadowColor: Colors.gray,
     shadowRadius: vh(10),
     shadowOpacity: 2,
+    justifyContent: 'center',
   },
   viewStyleDisabled: {
     alignItems: 'center',
@@ -236,6 +249,10 @@ const styles = StyleSheet.create({
     shadowColor: Colors.gray,
     shadowRadius: vh(10),
     shadowOpacity: 2,
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
+    justifyContent: 'center',
+  },
+  center: {
+    alignSelf: 'center'
   }
 })
