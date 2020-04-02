@@ -1,18 +1,18 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { vh, vw, Colors } from '../../Constants';
 const hei = Dimensions.get('screen').height
 const wi = Dimensions.get('screen').width
 
 const styles = StyleSheet.create({
-    main:{
+    main: {
         flex: 1,
         alignSelf: 'center',
-        justifyContent:'center',
+        justifyContent: 'center',
     },
     container: {
         flex: 1,
         alignSelf: 'center',
-        backgroundColor:Colors.white
+        backgroundColor: Colors.white
     },
     backgroundImage: {
         height: hei,
@@ -26,18 +26,20 @@ const styles = StyleSheet.create({
         color: Colors.white,
         fontFamily: 'NordiquePro-Regular',
         fontSize: vh(60),
-        top: vh(63.5),
-        left: vw(43.5)
+        marginTop: vh(63.5),
+        // marginLeft: vw(63.5)
+        alignSelf: 'center',
     },
     tagLine: {
         color: Colors.white,
         fontFamily: 'Poppins-Regular',
         fontSize: vh(16.5),
-        top: vh(40),
-        left: vw(43.5)
+        marginTop: Platform.OS === 'ios' ? vh(-10) : vh(20),
+        // left: vw(43.5)
+        alignSelf: 'center',
     },
     buttons: {
-        top: vh(360)
+        marginTop: vh(280)
     },
     facebook: {
         marginLeft: vw(38),
@@ -76,47 +78,47 @@ const styles = StyleSheet.create({
         top: vh(200),
     },
     swipe: {
-        left:vw(146.5),
+        left: Platform.OS === 'ios' ? vw(156.5) : vw(176.5),
         color: 'white',
         fontSize: vh(18),
-        fontFamily:'Poppins-Regular'
+        fontFamily: 'Poppins-Regular',
     },
     swipeHeading: {
-        flexDirection:'row',
-        top:vh(240),
-        alignItems:'center'
+        flexDirection: 'row',
+        marginTop: vh(280),
+        alignItems: 'center'
     },
-    swipeImage:{
-        height:vh(17.5),
-        width:vw(17.5),
-        marginLeft:vw(160),
+    swipeImage: {
+        height: vh(17.5),
+        width: vw(17.5),
+        marginLeft: Platform.OS === 'ios' ? vw(160) : vw(180),
     },
     tutorialHeading: {
-        top:vh(335),
-        alignItems:'center',
+        top: vh(335),
+        alignItems: 'center',
     },
-    heading:{
-        color:Colors.white,
-        fontSize:vh(25),
-        fontFamily:'Poppins-Medium',
-        fontWeight:'500'
+    heading: {
+        color: Colors.white,
+        fontSize: vh(25),
+        fontFamily: 'Poppins-Medium',
+        fontWeight: '500'
     },
-    text:{
-        color:Colors.white,
-        fontSize:vh(15),
-        fontFamily:'Poppins-Regular',
-        textAlign:'center',
-        marginTop:vh(17.5),
-        fontWeight:'500'
+    text: {
+        color: Colors.white,
+        fontSize: vh(15),
+        fontFamily: 'Poppins-Regular',
+        textAlign: 'center',
+        marginTop: vh(17.5),
+        fontWeight: '500'
     },
-    dotView:{
-        top:(hei-50),
-        left:wi/2.3,
-        flexDirection:'row',
-        position:'absolute',
+    dotView: {
+        top: (hei - 50),
+        left: wi / 2.3,
+        flexDirection: 'row',
+        position: 'absolute',
     },
-    dot:{
-        marginLeft:vw(5)
+    dot: {
+        marginLeft: vw(5)
     }
 });
 

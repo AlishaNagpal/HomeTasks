@@ -6,11 +6,12 @@ import { CustomButton, Toast, CustomTextInput } from '../../Components';
 import * as  SocialLogin from '../../Components/SocialLoginHandler'
 import { useDispatch } from 'react-redux';
 import { updateToken, getResult, userLoggedInFrom } from '../../Modules/SignUP/Action';
+import FirebaseService from '../../Components/Firebase';
 
 export interface SignINProps {
     navigation: any
 }
-
+const image = 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60';
 export default function SignINComponent(props: SignINProps) {
     const dispatch = useDispatch()
 
@@ -54,7 +55,8 @@ export default function SignINComponent(props: SignINProps) {
             return (
                 setCallWork(true),
                 setEmail(''),
-                setPassword('')
+                setPassword(''),
+                onPressLogin()
             )
         } else {
             return (
@@ -106,6 +108,42 @@ export default function SignINComponent(props: SignINProps) {
     const goToForgotPassword = () => {
         props.navigation.navigate('ForgotPassword')
     }
+
+    const onPressLogin = () => {
+        const user = {
+            name: 'Alisha',
+            email,
+            password: Password,
+            avatar: image
+        };
+
+        if (email !== '' && Password !== '') {
+            FirebaseService.login(
+                user,
+                loginSuccess,
+                loginFailed
+            );
+        } else {
+            Alert.alert('Fill all the details please!')
+        }
+
+
+    };
+
+    const loginSuccess = (data: any) => {
+        dispatch(updateToken(Math.random().toString()));
+        dispatch(userLoggedInFrom('Firebase'));
+        props.navigation.navigate('Chat', {
+            name: data.user.displayName,
+            email: data.user.email,
+            avatar: image,
+            userId: data.user._user.uid,
+        });
+    };
+
+    const loginFailed = () => {
+        Alert.alert('Invalid Details!')
+    };
 
     return (
         <View style={styles.container}>
@@ -174,7 +212,7 @@ export default function SignINComponent(props: SignINProps) {
                 <Toast top={-40} from={30} to={-40} message={Strings.Invalid} call={(value: boolean) => resetCall(value)} />
             }
             {callWork &&
-                <Toast top={-40} from={30} to={-40} message={Strings.underWork} call={(value: boolean) => resetCallWork(value)} />
+                <Toast top={-40} from={30} to={-40} message={Strings.invalidCreds} call={(value: boolean) => resetCallWork(value)} />
             }
         </View>
     );

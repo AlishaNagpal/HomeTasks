@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "296447278093",
+    "firebase_url": "https://hometasks-a67b0.firebaseio.com",
+    "project_id": "hometasks-a67b0",
+    "storage_bucket": "hometasks-a67b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296447278093:android:3afcdcf9f17f891cdee944",
+        "android_client_info": {
+          "package_name": "com.hometasks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296447278093-na7iovsdvpm5jq7bcc3m9fgmk729abak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUQvE1PMNfn-HdieFvZUGKdaFPgMiKRBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296447278093-na7iovsdvpm5jq7bcc3m9fgmk729abak.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "296447278093-43i3qasj8orsgnceq4ev2dbd2vikmn85.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.alisha.HomeTasks"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

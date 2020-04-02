@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 1,
         marginTop: vh(46),
         shadowRadius: 10,
-        fontFamily: 'Poppins-Regular'
+        fontFamily: 'Poppins-Regular',
+        elevation:6
     },
     approved: {
         position: 'absolute',
@@ -106,7 +107,8 @@ const styles = StyleSheet.create({
         marginTop: vh(10),
         shadowRadius: 10,
         fontFamily: 'Poppins-Regular',
-        paddingTop: vh(10)
+        paddingTop: vh(10),
+        elevation:6
     },
     number: {
         position: 'absolute',

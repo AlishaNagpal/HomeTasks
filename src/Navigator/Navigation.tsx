@@ -24,6 +24,7 @@ import VerifiedSuccesfully from '../Containers/VerifiedSuccesfully/VerifiedSucce
 import ResetSuccess from '../Containers/PasswordResetSucces/PasswordResetSucces';
 import Maps from '../Containers/Maps/Maps';
 import Profile from '../Containers/Profile/Profile';
+import Chat from '../Containers/Chat/Chat';
 
 console.disableYellowBox = true
 
@@ -128,6 +129,17 @@ const HomeBottomNavigator = () => (
         tabBarIcon: ({ focused }) => (
           <View style={focused ? styles.viewStyle : styles.viewStyleDisabled}>
             <VectorIcons.Fontisto name={'person'} size={vh(28)} color={focused ? Colors.white : Colors.inactiveIconColor} style={styles.center} />
+          </View>
+        ),
+      }}
+    />
+    <BottomTab.Screen
+      name={'Chat'}
+      component={Chat}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          <View style={focused ? styles.viewStyle : styles.viewStyleDisabled}>
+            <VectorIcons.Ionicons name={'ios-chatbubbles'} size={vh(28)} color={focused ? Colors.white : Colors.inactiveIconColor} style={styles.center} />
           </View>
         ),
       }}

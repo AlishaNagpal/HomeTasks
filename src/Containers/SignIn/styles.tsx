@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { vh, vw, Colors } from '../../Constants';
 
 const styles = StyleSheet.create({
@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
         color: Colors.socialColor,
         fontFamily: 'NordiquePro-Regular',
         fontSize: vh(60),
-        top: vh(63.5),
+        marginTop: vh(63.5),
+        alignSelf: 'center',
     },
     indicator: {
         marginTop: vh(10)
@@ -19,7 +20,8 @@ const styles = StyleSheet.create({
         color: Colors.black,
         fontFamily: 'Poppins-Regular',
         fontSize: vh(16.5),
-        top: vh(40),
+        marginTop: Platform.OS === 'ios' ? vh(-10) : vh(20),
+        alignSelf: 'center',
     },
     image: {
         flex: 1,
@@ -41,6 +43,7 @@ const styles = StyleSheet.create({
         shadowColor: Colors.gray,
         shadowOpacity: 1,
         shadowRadius: 10,
+        elevation:6
     },
     passwordField: {
         height: vh(50),
@@ -55,9 +58,11 @@ const styles = StyleSheet.create({
         shadowColor: Colors.gray,
         shadowOpacity: 1,
         shadowRadius: 10,
+        elevation:6,
     },
     textinputAll: {
-        marginTop: vh(100)
+        marginTop: vh(60),
+        alignItems:'center'
     },
     buttonStyle: {
         marginTop: vh(22),

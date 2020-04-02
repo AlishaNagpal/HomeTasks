@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { vh, vw, Colors } from '../../Constants';
 
 const styles = StyleSheet.create({
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         color: Colors.white,
         fontFamily: 'Poppins-Regular',
         fontSize: vh(16.5),
-        marginTop: vh(-24.5),
+        marginTop: Platform.OS === 'ios' ? vh(-24.5) : vh(20),
     },
     logoImage: {
         height: vh(71),

@@ -22,7 +22,7 @@ const Strings = {
   EmailChange:'Email Address',
   Invalid:'The values are invalid!',
   Password:'Password',
-  underWork:'Under Construction!',
+  invalidCreds:'Your Credentials are Invalid!',
   forgotPassword:'Forgot Password',
   orSignIn:'or sign in with',
   noAccount:'Don’t have an account?',
@@ -55,5 +55,6 @@ const Strings = {
   LinkedInUrl:'https://www.linkedin.com/Alisha',
   connectFb:'Connect Your Facebook',
   connectLi:'Connect Your LinkedIn',
+  fillDetails: 'Please fill the details below',
 };
 export default Strings;
