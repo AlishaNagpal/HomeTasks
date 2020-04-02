@@ -25,6 +25,7 @@ import ResetSuccess from '../Containers/PasswordResetSucces/PasswordResetSucces'
 import Maps from '../Containers/Maps/Maps';
 import Profile from '../Containers/Profile/Profile';
 import Chat from '../Containers/Chat/Chat';
+import ChatRoom from '../Containers/Chat/ChatRoom/ChatRoom';
 
 console.disableYellowBox = true
 
@@ -35,6 +36,7 @@ const SplashStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
+const ChatStack = createStackNavigator();
 
 const NotMuchNavigator = () => (
   <TopTab.Navigator
@@ -58,11 +60,25 @@ const NotMuchNavigator = () => (
   </TopTab.Navigator>
 );
 
+
+
 const HomeNavigator = () => (
   <HomeStack.Navigator headerMode="screen" initialRouteName="HOME">
     <HomeStack.Screen name={'HOME'} component={Home} options={{ headerShown: false }} />
   </HomeStack.Navigator>
 );
+
+
+
+function ChatNavigator({ navigation, route }) {
+  navigation.setOptions({ tabBarVisible: route.state ? route.state.index > 0 ? false : true : null });
+  return (
+    <ChatStack.Navigator headerMode="screen" initialRouteName="Chat">
+      <ChatStack.Screen name={'Chat'} component={Chat} options={{ headerShown: false }} />
+      <ChatStack.Screen name={'Chatroom'} component={ChatRoom} options={{ headerShown: false }} />
+    </ChatStack.Navigator>
+  )
+};
 
 const HomeBottomNavigator = () => (
   <BottomTab.Navigator
@@ -134,8 +150,8 @@ const HomeBottomNavigator = () => (
       }}
     />
     <BottomTab.Screen
-      name={'Chat'}
-      component={Chat}
+      name={'ChatTab'}
+      component={ChatNavigator}
       options={{
         tabBarIcon: ({ focused }) => (
           <View style={focused ? styles.viewStyle : styles.viewStyleDisabled}>
@@ -207,7 +223,7 @@ export default class Navigator extends React.PureComponent<Props>  {
     // return (
     //   <NavigationContainer>
     //     <RootStack.Navigator headerMode="none">
-    //       <RootStack.Screen name="NotMuch" component={Home} />
+    //       <RootStack.Screen name="NotMuch" component={ChatRoom} />
     //     </RootStack.Navigator>
     //   </NavigationContainer>
     // )

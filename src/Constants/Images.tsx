@@ -30,6 +30,7 @@ const Images = {
   blurredMap: require('../Assets/Images/ic_map_bg.png'),
   eyeEnabled: require('../Assets/Images/icEyeEnabled.png'),
   eyeDisabled: require('../Assets/Images/icEyeDisabled.png'),
+  social:require('../Assets/Images/social.png'),
 };
 
 export default Images;

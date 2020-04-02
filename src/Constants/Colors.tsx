@@ -19,7 +19,10 @@ const Colors = {
   warmGrey2:'#515151',
   heart:'#ED5C58',
   unHeart:'#DADADA',
-  inactiveIconColor:'#505050'
+  inactiveIconColor:'#505050',
+  fadedGray: 'rgb(140,140,140)',
+  textInput: 'rgb(244,244,244)',
+  pinkishGrey: 'rgb(191,191,191)',
 };
 
 export default Colors;

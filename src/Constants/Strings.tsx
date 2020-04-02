@@ -56,5 +56,8 @@ const Strings = {
   connectFb:'Connect Your Facebook',
   connectLi:'Connect Your LinkedIn',
   fillDetails: 'Please fill the details below',
+  messages:'messages',
+  typeMsg:'Your message!',
+  delete:'delete'
 };
 export default Strings;
