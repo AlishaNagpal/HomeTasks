@@ -89,6 +89,7 @@ class FirebaseSDK {
     // Load msgs from Database to Chat, first 20 messages to be loaded people
     refOn = (chatPerson: string, callback: Function) => {
         const onReceive = (data: any) => {
+            console.log('onreceive',data)
             if (data._snapshot) {
                 const message = data._snapshot.value;
                 const keys = Object.keys(message)

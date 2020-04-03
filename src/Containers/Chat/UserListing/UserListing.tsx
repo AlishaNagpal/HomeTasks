@@ -15,7 +15,7 @@ export default function UserListingComponent(props: UserListingProps) {
     const [userArray, setUserArray] = useState<any>([]);
     const [Loader, setLoader] = useState(false);
 
-    const {userUID } = useSelector((state: { SignUpReducer: any }) => ({
+    const { userUID } = useSelector((state: { SignUpReducer: any }) => ({
         userUID: state.SignUpReducer.userUID,
     }));
 
@@ -32,6 +32,8 @@ export default function UserListingComponent(props: UserListingProps) {
             const indexToFind = emptyArray.findIndex((item: any) => item[0] === userUID)
             if (indexToFind !== -1) {
                 emptyArray.splice(indexToFind, 1)
+                setUserArray(emptyArray)
+            } else if (indexToFind === -1) {
                 setUserArray(emptyArray)
             }
         }
@@ -59,7 +61,7 @@ export default function UserListingComponent(props: UserListingProps) {
             <View>
                 <View style={styles.row} >
                     <Image source={{ uri: item[1].image }} style={styles.chatImage} />
-                    <TouchableOpacity style={styles.root} onPress={()=>onChatPress(item[0], item[1].name, item[1].image)} activeOpacity={1} >
+                    <TouchableOpacity style={styles.root} onPress={() => onChatPress(item[0], item[1].name, item[1].image)} activeOpacity={1} >
                         <View style={styles.row2} >
                             <Text style={styles.nameSet} >{item[1].name}</Text>
                         </View>

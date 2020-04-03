@@ -26,8 +26,6 @@ export default function Home(props: ProfileProps) {
 
     const dispatch = useDispatch();
 
-    console.log(result)
-
     const [edit, setEdit] = useState(false);
     const [call, setCall] = useState(false);
     const [newImage, setNewImage] = useState(result.profilePic);
@@ -75,7 +73,7 @@ export default function Home(props: ProfileProps) {
                 newNumber,
             ),
         );
-        console.log('in profile',userUID)
+        console.log('in profile',newName, newEmail, userUID, newImage)
         firebaseSDK.writeTheUserToDatabase(newName, newEmail, userUID, newImage)
     }
 

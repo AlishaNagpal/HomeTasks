@@ -11,7 +11,7 @@ import FirebaseServices from '../../../Components/Firebase';
 export interface Props {
     navigation?: any,
     route: any,
-    result:any,
+    result: any,
     userUID: string,
 }
 
@@ -56,31 +56,33 @@ class ChatRoom extends React.Component<Props, State> {
         };
     }
     _isMounted = false
-    
+
     componentDidMount() {
         this._isMounted = true
         FirebaseServices.refOn(this.state.roomId, (message: any) => {
-            console.log(message)
-            const ans = message.sort(compare)
-            const data: any[] = []
-            for (let i = 0; i < ans.length; i++) {
-                let mess = ans[i].mess
-                data.push(mess)
-            }
-            this.setState(previousState => ({
-                messages: data
-                // GiftedChat.append(previousState.messages, message),
-            }),()=> console.log(data)
-            )
-            this.setState({
-                lengthMessage: this.state.messages.length
-            })
-            if (this.state.lengthMessage === 20) {
-                const getLastMessageKey = ans[19].id
+            console.log( 'in refon', message)
+            if (message) {
+                const ans = message.sort(compare)
+                const data: any[] = []
+                for (let i = 0; i < ans.length; i++) {
+                    let mess = ans[i].mess
+                    data.push(mess)
+                }
+                this.setState(previousState => ({
+                    messages: data
+                    // GiftedChat.append(previousState.messages, message),
+                }), () => console.log(data)
+                )
                 this.setState({
-                    lastMessageKey: getLastMessageKey,
-                    loadEarlier: true
+                    lengthMessage: this.state.messages.length
                 })
+                if (this.state.lengthMessage === 20) {
+                    const getLastMessageKey = ans[19].id
+                    this.setState({
+                        lastMessageKey: getLastMessageKey,
+                        loadEarlier: true
+                    })
+                }
             }
         })
     }
@@ -189,9 +191,9 @@ class ChatRoom extends React.Component<Props, State> {
         return (
             <View style={styles.main} >
                 <TouchableOpacity style={styles.headerView} activeOpacity={1} onPress={() => this.props.navigation.goBack()}  >
-                <Image source={Images.forgotPasswordBackArrow} style={styles.icon} />
+                    <Image source={Images.forgotPasswordBackArrow} style={styles.icon} />
                     <Image
-                        source={{ uri:this.state.avatar_otherPerson }}
+                        source={{ uri: this.state.avatar_otherPerson }}
                         style={styles.imageStyle}
                     />
                     <View>
