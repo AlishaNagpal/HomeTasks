@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { vh, vw, Colors } from '../../Constants';
 
 const wi = Dimensions.get('screen').width;
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     header:{
         backgroundColor:Colors.oldSchool,
         width:wi,
-        height:vh(73.5),
+        height: Platform.OS === 'ios' ? vh(73.5) : vh(53.5),
         alignItems: 'center',
         flexDirection: 'row',
     },
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         width:vw(60),
         marginLeft:vw(12.5),
         justifyContent: 'center',
-        top:vh(10)
+        top: Platform.OS === 'ios' ? vh(10) : vh(0),
     },
     menuIcon:{
       height:vh(20.5),
@@ -32,14 +32,14 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontSize: vh(25),
         fontFamily: 'NordiquePro-Regular',
-        marginTop: vh(25),
+        marginTop: Platform.OS === 'ios' ? vh(25) : vh(0),
         marginLeft:vw(60)
     },
     searchIconButton:{
         width:vw(60),
         justifyContent: 'center',
-        top:vh(10),
-        marginLeft:vw(80),
+        top: Platform.OS === 'ios' ? vh(10) : vh(0),
+        marginLeft: Platform.OS === 'ios' ? vw(80): vw(120),
         height:vh(50),
     },
     map:{
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         height:vh(50),
         width:vw(350),
         borderRadius:vh(25),
-        marginTop:vh(64),
+        marginTop: Platform.OS === 'ios' ? vh(64) : vh(40),
         flexDirection:'row',
         borderWidth:1,
         position:'absolute'
