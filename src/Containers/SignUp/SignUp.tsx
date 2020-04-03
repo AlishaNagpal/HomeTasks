@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Image, Text, TouchableOpacity, ImageBackground, ActivityIndicator, Alert } from 'react-native';
+import { View, Image, Text, TouchableOpacity, ImageBackground, ActivityIndicator} from 'react-native';
 import { useDispatch } from 'react-redux';
 import styles from './styles'
-import { Colors, vh, Strings, Images, vw, VectorIcons } from '../../Constants';
+import { Colors, vh, Strings, Images, VectorIcons } from '../../Constants';
 import { CustomTextInput, Toast, CustomButton } from '../../Components';
-import { getResult, updateToken } from '../../Modules/SignUP/Action';
+import { getResult, updateToken} from '../../Modules/SignUP/Action';
 import { userLoggedInFrom } from '../../Modules/SignUP/Action';
+import {userFirebaseUID} from '../../Modules/Chat/ChatAction';
 import ImagePicker from 'react-native-image-crop-picker';
 import firebaseSDK from '../../Components/Firebase';
 
@@ -75,13 +76,9 @@ export default function SignUp(props: SignUpProps) {
     const userUid = (data: any) => {
         setLoader(false)
         setTimeout(() => {
-            firebaseSDK.writeTheUserToDatabase(newName, newEmail, data, newImage)
-            props.navigation.navigate('Chat', {
-                name: newName,
-                email: newEmail,
-                imageURI: newImage,
-                userId: data,
-            });
+            // firebaseSDK.writeTheUserToDatabase(newName, newEmail, data, newImage)
+            dispatch(userFirebaseUID(data));
+            props.navigation.navigate('MainHome');
         }, 1000);
         dispatch(updateToken(Math.random().toString()));
     }
@@ -169,7 +166,7 @@ export default function SignUp(props: SignUpProps) {
                 returnKeyType={'done'}
                 placeholderStyle={Strings.Password}
                 secureTextEntry={true}
-                onSubmitEditing={() => { passwordValidation(Password), setonPasswordFocus(false) }}
+                onSubmitEditing={() => { passwordValidation(Password), setonPasswordFocus(false), CallSave() }}
                 ref={passwordRef}
                 _handleFocus={() => setonPasswordFocus(true)}
                 _handleBlur={() => setonPasswordFocus(false)}

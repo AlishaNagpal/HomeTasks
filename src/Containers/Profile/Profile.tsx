@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { View, Image, Text, TouchableOpacity, ImageBackground } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './styles'
@@ -7,6 +7,7 @@ import { CustomTextInput, Toast } from '../../Components';
 import { getResult } from '../../Modules/SignUP/Action';
 import { ProfileDataOverHere } from '../../Modules/Profile/ProfileAction';
 import ImagePicker from 'react-native-image-crop-picker';
+import firebaseSDK from '../../Components/Firebase';
 
 export interface ProfileProps {
     navigation?: any,
@@ -16,11 +17,18 @@ export default function Home(props: ProfileProps) {
     const { result, LoginFrom } = useSelector((state: { SignUpReducer: any }) => ({
         result: state.SignUpReducer.result,
         LoginFrom: state.SignUpReducer.LoginFrom,
+
     }));
     const { profileData } = useSelector((state: { ProfileReducer: any }) => ({
         profileData: state.ProfileReducer.profileData,
     }));
+    const { userUID } = useSelector((state: { ChatReducer: any }) => ({
+        userUID: state.ChatReducer.userUID,
+    }));
+
     const dispatch = useDispatch();
+
+    console.log(result, LoginFrom, userUID)
 
     const [edit, setEdit] = useState(false);
     const [call, setCall] = useState(false);
@@ -56,9 +64,6 @@ export default function Home(props: ProfileProps) {
     }
 
     const CallSave = () => {
-        console.log('is the call getting here?', newEmail,
-            newName,
-            newImage)
         dispatch(
             getResult(
                 newEmail,
@@ -73,6 +78,8 @@ export default function Home(props: ProfileProps) {
                 newNumber,
             ),
         );
+        console.log(userUID)
+        firebaseSDK.writeTheUserToDatabase(newName, newEmail, userUID, newImage)
     }
 
     const makeItEditable = () => {
@@ -114,7 +121,7 @@ export default function Home(props: ProfileProps) {
                 </TouchableOpacity>
             </View>
             <View>
-                <Image source={{ uri: newImage }} style={styles.image} />
+                <Image source={newImage ? { uri: newImage } : Images.placeholderImage} style={styles.image} />
                 {edit &&
                     <TouchableOpacity style={styles.cameraStyle} onPress={PickNewImage} >
                         <Image source={Images.camera} style={styles.camera} />

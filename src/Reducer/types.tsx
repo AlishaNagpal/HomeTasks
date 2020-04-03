@@ -6,3 +6,4 @@ export const LoginFrom = 'LoginFrom?';
 export const ProfileData = 'ProfileData';
 export const CHAT_DATA = 'chatDATA';
 export const DELETE_CHAT_DATA = 'DeleteChatDATA';
+export const FIREBASE_UID = 'Firebase_Login_user_UID';

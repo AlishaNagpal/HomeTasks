@@ -49,6 +49,7 @@ target 'HomeTasks' do
    pod 'RNShare', :path => '../node_modules/react-native-share'
   #  pod 'RNFirebase', :path => '../node_modules/@react-native-firebase' 
   pod 'RNFBAuth', :path => '../node_modules/@react-native-firebase/auth'
+  pod 'RNFBDatabase', :path => '../node_modules/@react-native-firebase/database'
 
   target 'HomeTasksTests' do
     inherit! :search_paths

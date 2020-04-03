@@ -2,7 +2,7 @@ import * as Actions from '../../Reducer/types'
 const initialState = {
     token: '',
     result: {},
-    LoginFrom: ''
+    LoginFrom: '',
 }
 
 const Reducer = (state = initialState, action: any) => {

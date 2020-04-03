@@ -18,3 +18,9 @@ export const deleteChatDATA = (newValue: number) => {
         dispatch({ type: Actions.DELETE_CHAT_DATA, payload: { data: emptyArray } });
     }
 };
+
+export const userFirebaseUID = (value: string) => {
+    return (dispatch: any) => {
+        dispatch({ type: Actions.FIREBASE_UID, payload: { userUID: value } });
+    }
+  }

@@ -26,10 +26,10 @@ class FirebaseSDK {
         }
     }
     login = async (user: any, success_callback: any, failed_callback: any) => {
-        console.log('in login') 
+        console.log('in login')
         try {
             await auth().signInWithEmailAndPassword(user.email, user.password)
-            .then(success_callback, failed_callback);
+                .then(success_callback, failed_callback);
         } catch (e) {
             console.error(e.message);
         }
@@ -39,48 +39,43 @@ class FirebaseSDK {
         //     .then(success_callback, failed_callback);
     };
 
-    // writeTheUserToDatabase = (name: string, email: string, uid: string, image: string) => {
-    //     let selected = false
-    //     firebase.database().ref('Users/' + uid).set({
-    //         email,
-    //         name,
-    //         uid,
-    //         image,
-    //         selected,
-    //     }).then((data: any) => {
-    //         console.log('data ', data)
-    //     }).catch((error: any) => {
-    //         console.log('error ', error)
-    //     })
-    // }
+    writeTheUserToDatabase = (name: string, email: string, uid: string, image: string) => {
+        database().ref('Users/' + uid).set({
+            email,
+            name,
+            uid,
+            image,
+        }).then((data: any) => {
+            console.log('data ', data)
+        }).catch((error: any) => {
+            console.log('error ', error)
+        })
+    }
 
-    // createAccount = (user: any, callback: Function) => {
-    //     console.log('in here')
-    //     firebase
-    //         .auth()
-    //         .createUserWithEmailAndPassword(user.email, user.password)
-    //         .then(
-    //             function () {
-    //                 console.log('created user successfully. User email:' + user.email + ' name:' + user.name);
-    //                 var userf = firebase.auth().currentUser
-    //                 //@ts-ignore
-    //                 callback(userf._user.uid),
-    //                     //@ts-ignore
-    //                     userf.updateProfile({ displayName: user.name }).then(
-    //                         function () {
-    //                             console.log('Updated displayName successfully. name:' + user.name, user);
-    //                         },
-    //                         function (error: any) {
-    //                             console.warn('Error update displayName.');
-    //                         }
-    //                     );
-    //             },
-    //             function (error: any) {
-    //                 console.error('got error:' + typeof error + ' string:' + error.message);
-    //                 Alert.alert('Create account failed. Error: ' + error.message);
-    //             }
-    //         )
-    // };
+    createAccount = (user: any, callback: Function) => {
+        auth()
+            .createUserWithEmailAndPassword(user.email, user.password)
+            .then(
+                function () {
+                    console.log('created user successfully. User email:' + user.email + ' name:' + user.name);
+                    const userf = auth().currentUser
+                    // @ts-ignore
+                    callback(userf._user.uid)
+                    // ,userf.updateProfile({ displayName: user.name }).then(
+                    //     function () {
+                    //         console.log('Updated displayName successfully. name:' + user.name, user);
+                    //     },
+                    //     function (error: any) {
+                    //         console.warn('Error update displayName.');
+                    //     }
+                    // );
+                },
+                function (error: any) {
+                    console.error('got error:' + typeof error + ' string:' + error.message);
+                    Alert.alert('Create account failed. Error: ' + error.message);
+                }
+            )
+    };
 
     //reading entire users
     readUserData(callback: Function) {
