@@ -26,7 +26,7 @@ export default function SignUp(props: SignUpProps) {
     const [onPasswordFocus, setonPasswordFocus] = useState(false);
     const [Loader, setLoader] = useState(false);
     const emailRef = React.createRef();
-    const passwordRef = React.createRef();
+    const passwordRef = React.createRef(); 
 
 
     const resetCall = (value: boolean) => {
