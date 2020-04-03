@@ -34,7 +34,6 @@ export default function SignUp(props: SignUpProps) {
     };
 
     const _updateMasterState = (attrName: any, value: any) => {
-        console.log(attrName, value)
         return attrName(value);
     }
 
@@ -83,6 +82,7 @@ export default function SignUp(props: SignUpProps) {
     }
 
     const CallSave = async () => {
+        console.log(newEmail, newName, newImage);
         try {
             dispatch(
                 getResult(

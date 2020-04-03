@@ -26,6 +26,8 @@ export default function Home(props: ProfileProps) {
 
     const dispatch = useDispatch();
 
+    console.log(result)
+
     const [edit, setEdit] = useState(false);
     const [call, setCall] = useState(false);
     const [newImage, setNewImage] = useState(result.profilePic);

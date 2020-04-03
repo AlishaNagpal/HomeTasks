@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import styles from './styles';
 import { Images, Strings, Colors } from '../../Constants';
 import { CustomButton, Toast, CustomTextInput } from '../../Components';
 import * as  SocialLogin from '../../Components/SocialLoginHandler'
 import { useDispatch } from 'react-redux';
-import { updateToken, getResult, userLoggedInFrom, userFirebaseUID} from '../../Modules/SignUP/Action';
+import { updateToken, getResult, userLoggedInFrom, userFirebaseUID } from '../../Modules/SignUP/Action';
 import FirebaseService from '../../Components/Firebase';
 
 export interface SignINProps {
     navigation: any
 }
+
 const image = 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60';
+
 export default function SignINComponent(props: SignINProps) {
     const dispatch = useDispatch()
-
     const emailRef = React.createRef();
     const passwordRef = React.createRef();
-
     const [isAnimating, setisAnimating] = useState(false);
     const [email, setEmail] = useState('');
     const [Password, setPassword] = useState('');
@@ -25,6 +25,20 @@ export default function SignINComponent(props: SignINProps) {
     const [callWork, setCallWork] = useState(false);
     const [onFocus, setonFocus] = useState(false);
     const [onPasswordFocus, setonPasswordFocus] = useState(false);
+    const [Users, setUsers] = useState<any>([]);
+
+    useEffect(() => {
+        FirebaseService.readUserData(getUsers)
+    })
+
+    const getUsers = (users: any) => {
+        if (users) {
+            const result = Object.keys(users).map(function (key) {
+                return [String(key), users[key]];
+            })
+            setUsers(result)
+        }
+    }
 
 
     const resetCall = (value: boolean) => {
@@ -134,27 +148,27 @@ export default function SignINComponent(props: SignINProps) {
     };
 
     const loginSuccess = (data: any) => {
-        dispatch(
-            getResult(
-                email,
-                Strings.appName,
-                image,
+        const emptyArray = Users;
+        const indexToFind = emptyArray.findIndex((item: any) => item[0] === data.user._user.uid)
+        const array = emptyArray.splice(indexToFind, 1)
+        console.log(array[0][1])
+        setTimeout(() => {
+            dispatch(
+                getResult(
+                    email,
+                    array[0][1].name,
+                    array[0][1].image,
 
-                () => {
-                    setisAnimating(false);
-                    dispatch(updateToken(Math.random().toString()));
-                    dispatch(userLoggedInFrom('Firebase'));
-                    dispatch(userFirebaseUID(data.user._user.uid))
-                    console.log(data.user._user.uid)
-                },
-            ),
-        );
-        props.navigation.navigate('Home', {
-            name: data.user.displayName,
-            email: data.user.email,
-            avatar: image,
-            userId: data.user._user.uid,
-        });
+                    () => {
+                        setisAnimating(false);
+                        dispatch(updateToken(Math.random().toString()));
+                        dispatch(userLoggedInFrom('Firebase'));
+                        dispatch(userFirebaseUID(data.user._user.uid))
+                    },
+                ),
+            );
+            props.navigation.navigate('Home');
+        }, 1000);
     };
 
     const loginFailed = () => {
