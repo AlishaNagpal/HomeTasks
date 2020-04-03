@@ -5,7 +5,7 @@ import { Images, Strings, Colors } from '../../Constants';
 import { CustomButton, Toast, CustomTextInput } from '../../Components';
 import * as  SocialLogin from '../../Components/SocialLoginHandler'
 import { useDispatch } from 'react-redux';
-import { updateToken, getResult, userLoggedInFrom } from '../../Modules/SignUP/Action';
+import { updateToken, getResult, userLoggedInFrom, userFirebaseUID} from '../../Modules/SignUP/Action';
 import FirebaseService from '../../Components/Firebase';
 
 export interface SignINProps {
@@ -144,6 +144,8 @@ export default function SignINComponent(props: SignINProps) {
                     setisAnimating(false);
                     dispatch(updateToken(Math.random().toString()));
                     dispatch(userLoggedInFrom('Firebase'));
+                    dispatch(userFirebaseUID(data.user._user.uid))
+                    console.log(data.user._user.uid)
                 },
             ),
         );

@@ -23,6 +23,8 @@ const Colors = {
   fadedGray: 'rgb(140,140,140)',
   textInput: 'rgb(244,244,244)',
   pinkishGrey: 'rgb(191,191,191)',
+  day:'rgb(214,231,230)',
+  dayText: 'rgb(89,89,89)',
 };
 
 export default Colors;

@@ -26,6 +26,7 @@ import Maps from '../Containers/Maps/Maps';
 import Profile from '../Containers/Profile/Profile';
 import Chat from '../Containers/Chat/Chat';
 import ChatRoom from '../Containers/Chat/ChatRoom/ChatRoom';
+import UserListing from '../Containers/Chat/UserListing/UserListing';
 
 console.disableYellowBox = true
 
@@ -73,9 +74,10 @@ const HomeNavigator = () => (
 function ChatNavigator({ navigation, route }) {
   navigation.setOptions({ tabBarVisible: route.state ? route.state.index > 0 ? false : true : null });
   return (
-    <ChatStack.Navigator headerMode="screen" initialRouteName="Chat">
+    <ChatStack.Navigator headerMode="screen" initialRouteName="UserListing">
       <ChatStack.Screen name={'Chat'} component={Chat} options={{ headerShown: false }} />
       <ChatStack.Screen name={'Chatroom'} component={ChatRoom} options={{ headerShown: false }} />
+      <ChatStack.Screen name={'UserListing'} component={UserListing} options={{ headerShown: false }} />
     </ChatStack.Navigator>
   )
 };
@@ -223,7 +225,7 @@ export default class Navigator extends React.PureComponent<Props>  {
     // return (
     //   <NavigationContainer>
     //     <RootStack.Navigator headerMode="none">
-    //       <RootStack.Screen name="NotMuch" component={ChatRoom} />
+    //       <RootStack.Screen name="NotMuch" component={UserListing} />
     //     </RootStack.Navigator>
     //   </NavigationContainer>
     // )

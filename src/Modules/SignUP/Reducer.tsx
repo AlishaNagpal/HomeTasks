@@ -3,6 +3,7 @@ const initialState = {
     token: '',
     result: {},
     LoginFrom: '',
+    userUID: '',
 }
 
 const Reducer = (state = initialState, action: any) => {
@@ -13,6 +14,8 @@ const Reducer = (state = initialState, action: any) => {
             return { ...state, result: action.payload.data }
         case Actions.LoginFrom:
             return { ...state, LoginFrom: action.payload.data }
+        case Actions.FIREBASE_UID:
+            return { ...state, ...action.payload }
         default:
             return state
     }

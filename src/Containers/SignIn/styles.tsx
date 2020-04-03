@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
         shadowColor: Colors.gray,
         shadowOpacity: 1,
         shadowRadius: 10,
-        elevation:6
+        elevation:6,
+        paddingLeft:vh(15)
     },
     passwordField: {
         height: vh(50),
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 1,
         shadowRadius: 10,
         elevation:6,
+        paddingLeft:vh(15)
     },
     textinputAll: {
         marginTop: vh(60),

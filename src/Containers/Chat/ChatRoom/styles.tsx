@@ -6,20 +6,23 @@ const Styles = StyleSheet.create({
         flex: 1
     },
     headerView: {
-        height: vh(80),
-        width: vw(DesignWidth),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.oldSchool,
+        width: DesignWidth,
+        height: vh(83.5),
         flexDirection: 'row',
-        paddingTop: vh(20),
-        alignItems: 'center'
+        alignItems: 'center',
     },
     icon: {
-        marginLeft: vw(20)
+        marginLeft: vw(12.5),
+        marginTop: vh(20),
+        height:vh(20)
     },
     nameText: {
         fontSize: vh(18),
         marginLeft: vw(10),
-        marginTop: vh(15),
+        marginTop: vh(25),
+        color: Colors.white,
+        fontFamily:'Poppins-Medium'
         // marginBottom: Platform.OS === 'ios' ? vw(8) : 0
     },
     typingText: {
@@ -29,7 +32,7 @@ const Styles = StyleSheet.create({
         marginBottom: vw(5)
     },
     sendView: {
-        backgroundColor: Colors.tealBlue,
+        // backgroundColor: Colors.white,
         height: vw(45),
         width: vw(45),
         alignItems: 'center',
@@ -38,12 +41,11 @@ const Styles = StyleSheet.create({
         marginLeft: vw(7.5),
     },
     sendBtn: {
-        backgroundColor: Colors.tealBlue,
+        backgroundColor: Colors.white,
         height: vw(45),
         width: vw(45),
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: vw(5)
+        alignSelf:'center',
+        borderRadius: vw(25)
     },
     messagesContainerStyle: {
         paddingBottom: vh(30),
@@ -54,7 +56,8 @@ const Styles = StyleSheet.create({
         width: vh(40),
         marginLeft: vw(10),
         borderRadius:vh(20),
-        backgroundColor:'black'
+        backgroundColor:'black',
+        marginTop:vh(25)
     },
     footerView: {
         backgroundColor: Colors.socialColor,
@@ -96,8 +99,9 @@ const Styles = StyleSheet.create({
         marginTop: vw(10)
     },
     sendIcon:{
-        marginBottom:vh(10),
-        marginRight:vw(20)
+        alignSelf:'center',
+        marginTop:vh(5),
+        marginRight:vw(4)
     },
 })
 export default Styles;

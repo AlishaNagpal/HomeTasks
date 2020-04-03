@@ -14,21 +14,17 @@ export interface ProfileProps {
 }
 
 export default function Home(props: ProfileProps) {
-    const { result, LoginFrom } = useSelector((state: { SignUpReducer: any }) => ({
+    const { result, LoginFrom, userUID } = useSelector((state: { SignUpReducer: any }) => ({
         result: state.SignUpReducer.result,
         LoginFrom: state.SignUpReducer.LoginFrom,
+        userUID: state.SignUpReducer.userUID,
 
     }));
     const { profileData } = useSelector((state: { ProfileReducer: any }) => ({
         profileData: state.ProfileReducer.profileData,
     }));
-    const { userUID } = useSelector((state: { ChatReducer: any }) => ({
-        userUID: state.ChatReducer.userUID,
-    }));
 
     const dispatch = useDispatch();
-
-    console.log(result, LoginFrom, userUID)
 
     const [edit, setEdit] = useState(false);
     const [call, setCall] = useState(false);
@@ -51,7 +47,6 @@ export default function Home(props: ProfileProps) {
     };
 
     const _updateMasterState = (attrName: any, value: any) => {
-        console.log(attrName, value)
         return attrName(value);
     }
 
@@ -78,7 +73,7 @@ export default function Home(props: ProfileProps) {
                 newNumber,
             ),
         );
-        console.log(userUID)
+        console.log('in profile',userUID)
         firebaseSDK.writeTheUserToDatabase(newName, newEmail, userUID, newImage)
     }
 

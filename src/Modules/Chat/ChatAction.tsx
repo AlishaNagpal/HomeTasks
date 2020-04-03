@@ -19,8 +19,3 @@ export const deleteChatDATA = (newValue: number) => {
     }
 };
 
-export const userFirebaseUID = (value: string) => {
-    return (dispatch: any) => {
-        dispatch({ type: Actions.FIREBASE_UID, payload: { userUID: value } });
-    }
-  }

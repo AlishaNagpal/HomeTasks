@@ -4,9 +4,8 @@ import { useDispatch } from 'react-redux';
 import styles from './styles'
 import { Colors, vh, Strings, Images, VectorIcons } from '../../Constants';
 import { CustomTextInput, Toast, CustomButton } from '../../Components';
-import { getResult, updateToken} from '../../Modules/SignUP/Action';
+import { getResult, updateToken, userFirebaseUID} from '../../Modules/SignUP/Action';
 import { userLoggedInFrom } from '../../Modules/SignUP/Action';
-import {userFirebaseUID} from '../../Modules/Chat/ChatAction';
 import ImagePicker from 'react-native-image-crop-picker';
 import firebaseSDK from '../../Components/Firebase';
 

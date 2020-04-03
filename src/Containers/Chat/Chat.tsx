@@ -1,21 +1,24 @@
 import React from 'react';
 import { View, Image, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import styles from './styles'
-import { Colors, vh, Strings, Images, vw, VectorIcons } from '../../Constants';
-import { connect } from 'react-redux'
-import { getChatDATA, deleteChatDATA } from '../../Modules/Chat/ChatAction';
+import { Colors, vh, Strings, Images, VectorIcons } from '../../Constants';
+import { connect } from 'react-redux';
+import { getChatDATA, deleteChatDATA, } from '../../Modules/Chat/ChatAction';
+import firebaseSDK from '../../Components/Firebase';
 
 export interface ChatProps {
     navigation?: any,
-    value: Array<any>,
+    value: any[],
     getChatDATA: Function,
-    deleteChatDATA: Function
+    deleteChatDATA: Function,
+    userUID: string
 }
 
 export interface ChatState {
     Loader: boolean,
     onLongPress: boolean,
-    id: number
+    id: number,
+    userArray: any[],
 }
 
 class ChatComponent extends React.Component<ChatProps, ChatState> {
@@ -24,12 +27,30 @@ class ChatComponent extends React.Component<ChatProps, ChatState> {
         this.state = {
             Loader: true,
             onLongPress: false,
-            id: 0
+            id: 0,
+            userArray: []
         };
     }
 
     componentDidMount() {
         this.props.getChatDATA()
+        firebaseSDK.readUserData(this.getUsers)
+    }
+
+    getUsers = (users: any) => {
+        if (users) {
+            var result = Object.keys(users).map(function (key) {
+                return [String(key), users[key]];
+            })
+            const emptyArray = result;
+            const indexToFind = emptyArray.findIndex((item: any) => item[0] === this.props.userUID)
+            if (indexToFind !== -1) {
+                emptyArray.splice(indexToFind, 1)
+                this.setState({
+                    userArray: emptyArray
+                })
+            }
+        }
     }
 
     deletingData = (id: number) => {
@@ -38,7 +59,7 @@ class ChatComponent extends React.Component<ChatProps, ChatState> {
             onLongPress: true,
             id,
         })
-       
+
     }
 
     deleteData = () => {
@@ -48,23 +69,36 @@ class ChatComponent extends React.Component<ChatProps, ChatState> {
         })
     }
 
-    onChatPress = () => {
-        this.props.navigation.navigate('Chatroom')
+    onChatPress = (id: string, name: string, imageURL: string) => {
+        let chatRoomId = '';
+        if (this.props.userUID > id) {
+            chatRoomId = this.props.userUID.concat(id)
+        } else {
+            chatRoomId = id.concat(this.props.userUID)
+        }
+        this.props.navigation.navigate('Chatroom',
+            {
+                id,
+                name,
+                imageURL,
+                chatRoomId
+            })
     }
 
     renderData = (rowData: any) => {
         const { item } = rowData
+        // console.log(item)
         return (
             <TouchableOpacity onLongPress={() => this.deletingData(item.id)} >
                 <View style={styles.row} >
-                    <Image source={{ uri: item.image }} style={styles.chatImage} />
-                    <TouchableOpacity style={styles.root} onPress={this.onChatPress} activeOpacity={1} >
+                    <Image source={{ uri: item[1].image }} style={styles.chatImage} />
+                    <TouchableOpacity style={styles.root} onPress={() => this.onChatPress(item[0], item[1].name, item[1].image)} activeOpacity={1} >
                         <View style={styles.row2} >
-                            <Text style={styles.nameSet} >{item.name}</Text>
-                            <Text style={styles.message2} >{item.time}</Text>
+                            <Text style={styles.nameSet} >{item[1].name}</Text>
+                            {/* <Text style={styles.message2} >{item[1].time}</Text> */}
                         </View>
                         <View style={styles.time} >
-                            <Text style={styles.message} >{item.message}</Text>
+                            <Text style={styles.message} >{item[1].email}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -88,7 +122,7 @@ class ChatComponent extends React.Component<ChatProps, ChatState> {
         if (this.props.value && !this.state.Loader) {
             return (
                 <FlatList
-                    data={this.props.value}
+                    data={this.state.userArray}
                     renderItem={this.renderData}
                     keyExtractor={(item, index) => index.toString()}
                 />
@@ -137,9 +171,10 @@ function mapDispatchToProps(dispatch: any) {
 }
 
 function mapStateToProps(state: any) {
-    const { value } = state.ChatReducer;
+    const { value, userUID } = state.ChatReducer;
     return {
-        value
+        value,
+        userUID
     }
 }
 

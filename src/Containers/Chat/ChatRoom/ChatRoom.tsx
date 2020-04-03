@@ -1,69 +1,131 @@
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
-import {TouchableOpacity, View, Text, Image, } from 'react-native';
+import { TouchableOpacity, View, Text, Image, } from 'react-native';
 import styles from './styles'
-import { Colors, vh, VectorIcons, vw } from '../../../Constants';
-import { Bubble, Composer, Day, InputToolbar } from '../../../Components'
+import { Colors, vh, VectorIcons, vw, Images } from '../../../Constants';
+import { Bubble, Composer, Day, InputToolbar } from '../../../Components';
+import { connect } from 'react-redux';
+import FirebaseServices from '../../../Components/Firebase';
 
 
 export interface Props {
     navigation?: any,
+    route: any,
+    result:any,
+    userUID: string,
 }
 
 interface State {
-    uid: string,
-    name: string,
-    avatar: string,
-    otherPersonName: string,
+    uid_otherPerson: string,
+    name_otherPerson: string,
+    avatar_otherPerson: string,
+    roomId: string,
+    loadEarlier: boolean,
+    isLoadingEarlier: boolean,
     messages: Array<any>,
     lastMessageKey: string,
+    lengthMessage: number,
 }
-const image = 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60';
 
-export default class Chat extends React.Component<Props, State> {
-    
+function compare(a: any, b: any) {
+    const bandA = a.mess.createdAt;
+    const bandB = b.mess.createdAt;
+    let comparison = 0;
+    if (bandA > bandB) {
+        comparison = 1;
+    } else if (bandA < bandB) {
+        comparison = -1;
+    }
+    return comparison * -1;
+}
+
+class ChatRoom extends React.Component<Props, State> {
+
     constructor(props: Props) {
         super(props);
         this.state = {
-            uid: Math.random().toString(),
-            name: 'Alisha Nagpal',
-            avatar: image,
-            otherPersonName: 'Roy',
+            uid_otherPerson: this.props.route.params.id,
+            name_otherPerson: this.props.route.params.name,
+            avatar_otherPerson: this.props.route.params.imageURL,
+            roomId: this.props.route.params.chatRoomId,
+            loadEarlier: false,
+            isLoadingEarlier: false,
             messages: [],
             lastMessageKey: '',
+            lengthMessage: 0,
         };
-        this.onSend = this.onSend.bind(this);
     }
-    componentWillMount() {
-        this.setState({
-            messages: [
-                {
-                    _id: 1,
-                    text: 'Hello developer',
-                    createdAt: new Date(Date.UTC(2016, 7, 30, 17, 20, 0)),
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                        avatar: 'https://reactjs.org/logo-og.png',
-                    },
-                },
-            ],
-        });
-    }
-    onSend(messages = []) {
-        this.setState((previousState) => {
-            return {
-                messages: GiftedChat.append(previousState.messages, messages),
-            };
-        });
+    _isMounted = false
+    
+    componentDidMount() {
+        this._isMounted = true
+        FirebaseServices.refOn(this.state.roomId, (message: any) => {
+            console.log(message)
+            const ans = message.sort(compare)
+            const data: any[] = []
+            for (let i = 0; i < ans.length; i++) {
+                let mess = ans[i].mess
+                data.push(mess)
+            }
+            this.setState(previousState => ({
+                messages: data
+                // GiftedChat.append(previousState.messages, message),
+            }),()=> console.log(data)
+            )
+            this.setState({
+                lengthMessage: this.state.messages.length
+            })
+            if (this.state.lengthMessage === 20) {
+                const getLastMessageKey = ans[19].id
+                this.setState({
+                    lastMessageKey: getLastMessageKey,
+                    loadEarlier: true
+                })
+            }
+        })
     }
 
-    get user() {
-        return {
-            name: this.state.name,
-            avatar: this.state.avatar,
-            _id: 1,
-        };
+    componentWillUnmount() {
+        this._isMounted = false
+    }
+
+    onLoadEarlier = () => {
+        if (this.state.lastMessageKey) {
+            this.setState(() => {
+                return {
+                    isLoadingEarlier: true,
+                }
+            })
+
+            setTimeout(() => {
+                if (this._isMounted === true) {
+                    FirebaseServices.getPreviousMessages(this.state.roomId, this.state.lastMessageKey, (message: any[]) => {
+                        const sorted = message.sort(compare)
+                        sorted.splice(0, 1)
+                        const data: any[] = []
+                        for (let i = 0; i < sorted.length; i++) {
+                            const mess = sorted[i].mess
+                            data.push(mess)
+                        }
+
+                        if (sorted.length === 19) {
+                            const getLastMessageKey = sorted[18].id
+                            this.setState({
+                                loadEarlier: true,
+                                lastMessageKey: getLastMessageKey,
+                            })
+                        } else {
+                            this.setState({ loadEarlier: false, })
+                        }
+
+                        this.setState(previousState => ({
+                            messages: [...this.state.messages, ...data],
+                            isLoadingEarlier: false,
+                        }))
+                    })
+                }
+            }, 1000)
+        }
     }
 
     renderSend = (props: any) => {
@@ -82,7 +144,7 @@ export default class Chat extends React.Component<Props, State> {
                         return;
                     }
                 }}>
-                    <VectorIcons.FontAwesome name='send' color={Colors.socialColor} size={vh(25)} style={styles.sendIcon} />
+                    <VectorIcons.FontAwesome name="send" color={Colors.socialColor} size={vh(20)} style={styles.sendIcon} />
                 </TouchableOpacity>
             </View>
         )
@@ -112,23 +174,36 @@ export default class Chat extends React.Component<Props, State> {
         )
     }
 
+    get user() {
+        return {
+            name: this.props.result.name,
+            avatar: this.props.result.profilePic,
+            idRoom: this.state.roomId,
+            _id: this.props.userUID,
+            otherID: this.state.uid_otherPerson,
+            otherPersonName: this.state.uid_otherPerson
+        };
+    }
+
     render() {
         return (
             <View style={styles.main} >
-                <TouchableOpacity style={styles.headerView} activeOpacity={1} onPress={()=>this.props.navigation.goBack()}  >
-                    <VectorIcons.Ionicons name={'md-arrow-back'} size={vh(30)} style={styles.icon} />
+                <TouchableOpacity style={styles.headerView} activeOpacity={1} onPress={() => this.props.navigation.goBack()}  >
+                <Image source={Images.forgotPasswordBackArrow} style={styles.icon} />
                     <Image
-                        source={{ uri:'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' }}
+                        source={{ uri:this.state.avatar_otherPerson }}
                         style={styles.imageStyle}
                     />
                     <View>
-                        <Text style={styles.nameText} >{this.state.otherPersonName}</Text>
-                        <Text style={styles.typingText} >{this.state.typingText ? 'typing...' : ''}</Text>
+                        <Text style={styles.nameText} >{this.state.name_otherPerson}</Text>
                     </View>
                 </TouchableOpacity>
                 <GiftedChat
                     messages={this.state.messages}
-                    onSend={this.onSend}
+                    onSend={FirebaseServices.send}
+                    loadEarlier={this.state.loadEarlier}
+                    onLoadEarlier={this.onLoadEarlier}
+                    isLoadingEarlier={this.state.isLoadingEarlier}
                     user={this.user}
                     renderAvatarOnTop={true}
                     alwaysShowSend={true}
@@ -141,14 +216,32 @@ export default class Chat extends React.Component<Props, State> {
                     renderSend={this.renderSend}
                     renderComposer={this.renderComposer}
                     messagesContainerStyle={styles.messagesContainerStyle}
-                    //@ts-ignore
+                    // @ts-ignore
                     ref={(ref) => this.inputText = ref}
                     renderDay={this.renderDay}
+                    renderInputToolbar={this.renderInputToolbar}
                     minComposerHeight={vw(45)}
                     maxComposerHeight={vw(80)}
-                    renderInputToolbar={this.renderInputToolbar}
                 />
             </View>
         );
     }
 }
+
+function mapDispatchToProps(dispatch: any) {
+    return {
+    }
+}
+
+function mapStateToProps(state: any) {
+    const { result, userUID } = state.SignUpReducer;
+    return {
+        userUID,
+        result
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ChatRoom);
