@@ -24,8 +24,6 @@ export default function Home(props: ProfileProps) {
         profileData: state.ProfileReducer.profileData,
     }));
 
-    console.log(result.profilePic)
-
     const dispatch = useDispatch();
 
     const [edit, setEdit] = useState(false);

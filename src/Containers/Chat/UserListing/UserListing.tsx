@@ -39,7 +39,7 @@ export default function UserListingComponent(props: UserListingProps) {
         }
     }
 
-    const onChatPress = (id: string, name: string, imageURL: string) => {
+    const onChatPress = (id: string, name: string) => {
         let chatRoomId = '';
         if (userUID > id) {
             chatRoomId = userUID.concat(id)
@@ -50,7 +50,7 @@ export default function UserListingComponent(props: UserListingProps) {
             {
                 id,
                 name,
-                imageURL,
+                // imageURL,
                 chatRoomId
             })
     }
@@ -60,8 +60,14 @@ export default function UserListingComponent(props: UserListingProps) {
         return (
             <View>
                 <View style={styles.row} >
-                    <Image source={{ uri: item[1].image }} style={styles.chatImage} />
-                    <TouchableOpacity style={styles.root} onPress={() => onChatPress(item[0], item[1].name, item[1].image)} activeOpacity={1} >
+                    <Image source={Images.dummyUserImage} style={styles.chatImage} />
+                    <TouchableOpacity style={styles.root}
+                        onPress={() =>
+                            onChatPress(
+                                item[0],
+                                item[1].name,
+                                // item[1].image
+                            )} activeOpacity={1} >
                         <View style={styles.row2} >
                             <Text style={styles.nameSet} >{item[1].name}</Text>
                         </View>
@@ -103,8 +109,8 @@ export default function UserListingComponent(props: UserListingProps) {
     return (
         <View style={styles.container} >
             <View style={styles.header}>
-                <TouchableOpacity style={styles.menuIconButton} onPress={() => props.navigation.openDrawer()} >
-                    <Image source={Images.menuIcon} style={styles.menuIcon} />
+                <TouchableOpacity style={styles.menuIconButton} onPress={() => props.navigation.goBack()} >
+                    <Image source={Images.forgotPasswordBackArrow} style={styles.menuIcon} />
                 </TouchableOpacity>
                 <Text style={styles.moreSocial} > {Strings.messages} </Text>
             </View>

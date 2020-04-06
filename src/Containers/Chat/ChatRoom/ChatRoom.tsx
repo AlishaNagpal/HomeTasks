@@ -18,7 +18,7 @@ export interface Props {
 interface State {
     uid_otherPerson: string,
     name_otherPerson: string,
-    avatar_otherPerson: string,
+    // avatar_otherPerson: string,
     roomId: string,
     loadEarlier: boolean,
     isLoadingEarlier: boolean,
@@ -47,7 +47,7 @@ class ChatRoom extends React.Component<Props, State> {
         this.state = {
             uid_otherPerson: this.props.route.params.id,
             name_otherPerson: this.props.route.params.name,
-            avatar_otherPerson: this.props.route.params.imageURL,
+            // avatar_otherPerson: this.props.route.params.imageURL,
             roomId: this.props.route.params.chatRoomId,
             loadEarlier: false,
             isLoadingEarlier: false,
@@ -201,7 +201,7 @@ class ChatRoom extends React.Component<Props, State> {
             idRoom: this.state.roomId,
             _id: this.props.userUID,
             otherID: this.state.uid_otherPerson,
-            otherPersonName: this.state.uid_otherPerson
+            otherPersonName: this.state.name_otherPerson
         };
     }
 
@@ -211,7 +211,7 @@ class ChatRoom extends React.Component<Props, State> {
                 <TouchableOpacity style={styles.headerView} activeOpacity={1} onPress={this.goBack}  >
                     <Image source={Images.forgotPasswordBackArrow} style={styles.icon} />
                     <Image
-                        source={{ uri: this.state.avatar_otherPerson }}
+                        source={Images.mainScreen}
                         style={styles.imageStyle}
                     />
                     <View>

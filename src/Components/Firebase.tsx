@@ -142,6 +142,8 @@ class FirebaseSDK {
         for (let i = 0; i < messages.length; i++) {
             const { text, user } = messages[i];
 
+            console.log('in send', user,user.name, user.otherPersonName)
+
             const dated = moment()
                 .utcOffset('+05:30')
                 .format(' hh:mm a');
@@ -150,7 +152,7 @@ class FirebaseSDK {
                 .utcOffset('+05:30')
                 .format('DD MMM,YYYY');
 
-            const message = { text, user, gettingTime: dated, createdAt: new Date().getTime(), onDay: DayTime };
+            const message = { text, user, gettingTime: dated, createdAt: new Date().getTime(), onDay: DayTime, messageRead: false };
             database().ref('ChatRooms/' + user.idRoom).push(message)
 
             // for Inbox, loading last messages
@@ -172,6 +174,13 @@ class FirebaseSDK {
         database().ref('Typing/' + chatRoomID + '/' + chatPerson + '/' + 'typing')
             .on('value', (snapshot: any) => { callback(snapshot.val()) });
     };
+
+    // reading last messages
+    readInboxData(uid: string, callback: Function) {
+        firebase.database().ref('Inbox/' + 'OneonOne/').child(uid).on('value', function (snapshot: any) {
+            callback(snapshot.val())
+        })
+    }
 
 }
 const firebaseSDK = new FirebaseSDK();

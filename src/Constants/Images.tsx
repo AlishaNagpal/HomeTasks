@@ -31,6 +31,7 @@ const Images = {
   eyeEnabled: require('../Assets/Images/icEyeEnabled.png'),
   eyeDisabled: require('../Assets/Images/icEyeDisabled.png'),
   social:require('../Assets/Images/social.png'),
+  dummyUserImage:require('../Assets/Images/m2.png'),
 };
 
 export default Images;

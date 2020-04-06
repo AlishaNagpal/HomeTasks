@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
         width: vw(60),
         marginLeft: vw(12.5),
         justifyContent: 'center',
-        marginTop: vh(20)
+        marginTop: vh(20),
+        flex:1
     },
     menuIcon: {
         height: vh(20.5),
@@ -36,7 +37,14 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Regular',
         marginTop: vh(25),
         marginLeft: vw(65),
-        textTransform: 'capitalize'
+        textTransform: 'capitalize',
+        flex:5
+    },
+    addUser:{
+        flex:1,
+        justifyContent: 'center',
+        marginTop:vh(25),
+        marginLeft:vw(10)
     },
     moreSocial2: {
         color: Colors.white,
@@ -57,7 +65,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flex: 1,
         marginTop: vh(15),
-        marginLeft: vw(20)
+        marginLeft: vw(20),
+        marginBottom:vh(5)
     },
     root: {
         flexDirection: 'column',
@@ -65,16 +74,18 @@ const styles = StyleSheet.create({
     },
     nameSet: {
         fontSize: vh(18),
+        marginBottom:vh(5)
     },
     time: {
         marginLeft: vw(20),
         flexDirection: 'row',
     },
     message: {
-        color: Colors.fadedGray,
+        color: Colors.socialColor,
         fontSize: vh(12),
-        flex: 1,
-        marginTop: vw(10)
+        marginRight:vw(10),
+        // flex: 1,
+        // marginTop: vw(10)
     },
     message2: {
         color: Colors.socialColor,
@@ -122,7 +133,11 @@ const styles = StyleSheet.create({
         top: 15,
         left: 20,
         position: 'absolute'
-    }
+    },
+    lastMessage: {
+        color: Colors.dayText,
+        fontSize:vh(12),
+    },
 });
 
 export default styles;

@@ -74,7 +74,7 @@ const HomeNavigator = () => (
 function ChatNavigator({ navigation, route }) {
   navigation.setOptions({ tabBarVisible: route.state ? route.state.index > 0 ? false : true : null });
   return (
-    <ChatStack.Navigator headerMode="screen" initialRouteName="UserListing">
+    <ChatStack.Navigator headerMode="screen" initialRouteName="Chat">
       <ChatStack.Screen name={'Chat'} component={Chat} options={{ headerShown: false }} />
       <ChatStack.Screen name={'Chatroom'} component={ChatRoom} options={{ headerShown: false }} />
       <ChatStack.Screen name={'UserListing'} component={UserListing} options={{ headerShown: false }} />

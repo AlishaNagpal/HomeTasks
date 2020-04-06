@@ -1,129 +1,112 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Image, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import styles from './styles'
-import { Colors, vh, Strings, Images, VectorIcons } from '../../Constants';
-import { connect } from 'react-redux';
-import { getChatDATA, deleteChatDATA, } from '../../Modules/Chat/ChatAction';
-import firebaseSDK from '../../Components/Firebase';
+import { Colors, Strings, Images, VectorIcons, vh } from '../../Constants';
+import { useSelector } from 'react-redux'
+import FirebaseServices from '../../Components/Firebase';
 
-export interface ChatProps {
-    navigation?: any,
-    value: any[],
-    getChatDATA: Function,
-    deleteChatDATA: Function,
-    userUID: string
+export interface UserListingProps {
+    navigation?: any
 }
 
-export interface ChatState {
-    Loader: boolean,
-    onLongPress: boolean,
-    id: number,
-    userArray: any[],
-}
 
-class ChatComponent extends React.Component<ChatProps, ChatState> {
-    constructor(props: ChatProps) {
-        super(props);
-        this.state = {
-            Loader: true,
-            onLongPress: false,
-            id: 0,
-            userArray: []
-        };
+export default function UserListingComponent(props: UserListingProps) {
+
+    const [userArray, setUserArray] = useState<any>([]);
+    const [Loader, setLoader] = useState(false);
+
+    const { userUID } = useSelector((state: { SignUpReducer: any }) => ({
+        userUID: state.SignUpReducer.userUID,
+    }));
+
+    useEffect(() => {
+        FirebaseServices.readInboxData(userUID, getLastMessages)
+    })
+
+    // sorting the data as per the timestamp
+    const getUniqueData = (data: any) => {
+        const emptyArray = userArray;
+        const index = emptyArray.findIndex((item: any) => item[0] === data[0])
+        if (index !== -1) {
+            emptyArray.splice(index, 1)
+            emptyArray.push(data)
+        } else {
+            emptyArray.push(data)
+        }
+        function compareWhole(a: any, b: any) {
+            const bandA = a[1].createdAt;
+            const bandB = b[1].createdAt;
+            let comparison = 0;
+            if (bandA > bandB) {
+                comparison = 1;
+            } else if (bandA < bandB) {
+                comparison = -1;
+            }
+            return comparison * -1;
+        }
+        emptyArray.sort(compareWhole)
+        setUserArray(emptyArray)
     }
 
-    componentDidMount() {
-        this.props.getChatDATA()
-        firebaseSDK.readUserData(this.getUsers)
-    }
-
-    getUsers = (users: any) => {
-        if (users) {
-            var result = Object.keys(users).map(function (key) {
-                return [String(key), users[key]];
+    // getting the last messages of the one-on-one chat
+    const getLastMessages = (data: any) => {
+        if (data) {
+            const result: any[] = Object.keys(data).map(function (key) {
+                return [String(key), data[key]];
             })
-            const emptyArray = result;
-            const indexToFind = emptyArray.findIndex((item: any) => item[0] === this.props.userUID)
-            if (indexToFind !== -1) {
-                emptyArray.splice(indexToFind, 1)
-                this.setState({
-                    userArray: emptyArray
-                })
+            for (let i = 0; i < result.length; i++) {
+                getUniqueData(result[i])
             }
         }
     }
 
-    deletingData = (id: number) => {
-        console.log(id)
-        this.setState({
-            onLongPress: true,
-            id,
-        })
-
-    }
-
-    deleteData = () => {
-        this.props.deleteChatDATA(this.state.id)
-        this.setState({
-            onLongPress: false,
-        })
-    }
-
-    onChatPress = (id: string, name: string, imageURL: string) => {
+    const onChatPress = (id: string, name: string) => {
         let chatRoomId = '';
-        if (this.props.userUID > id) {
-            chatRoomId = this.props.userUID.concat(id)
+        if (userUID > id) {
+            chatRoomId = userUID.concat(id)
         } else {
-            chatRoomId = id.concat(this.props.userUID)
+            chatRoomId = id.concat(userUID)
         }
-        this.props.navigation.navigate('Chatroom',
+        props.navigation.navigate('Chatroom',
             {
                 id,
                 name,
-                imageURL,
                 chatRoomId
             })
     }
 
-    renderData = (rowData: any) => {
+    const renderData = (rowData: any) => {
         const { item } = rowData
-        // console.log(item)
         return (
-            <TouchableOpacity onLongPress={() => this.deletingData(item.id)} >
+            <View>
                 <View style={styles.row} >
-                    <Image source={{ uri: item[1].image }} style={styles.chatImage} />
-                    <TouchableOpacity style={styles.root} onPress={() => this.onChatPress(item[0], item[1].name, item[1].image)} activeOpacity={1} >
+                    <Image source={Images.dummyUserImage} style={styles.chatImage} />
+                    <TouchableOpacity style={styles.root} onPress={() => onChatPress(item[0], item[1].otherName)} activeOpacity={1} >
                         <View style={styles.row2} >
-                            <Text style={styles.nameSet} >{item[1].name}</Text>
-                            {/* <Text style={styles.message2} >{item[1].time}</Text> */}
+                            <Text style={styles.nameSet} >{item[1].otherName}</Text>
+                            <Text style={styles.message} >{item[1].gettingTime}</Text>
+
                         </View>
                         <View style={styles.time} >
-                            <Text style={styles.message} >{item[1].email}</Text>
+                            <Text style={styles.lastMessage} >{item[1].text}</Text>
+
                         </View>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.separator} />
-                {this.state.onLongPress && (this.state.id === item.id) &&
-                    <>
-                        <View style={styles.selectView} />
-                        <VectorIcons.Feather name="check" color={Colors.white} size={vh(35)} style={styles.icon} />
-                    </>
-                }
-            </TouchableOpacity>
+            </View>
         )
     }
 
-    verifying = () => {
+    const verifying = () => {
         setTimeout(() => {
-            this.setState({
-                Loader: false
-            })
+            setLoader(false)
         }, 1000);
-        if (this.props.value && !this.state.Loader) {
+        if (userArray && !Loader) {
             return (
                 <FlatList
-                    data={this.state.userArray}
-                    renderItem={this.renderData}
+                    data={userArray}
+                    renderItem={renderData}
                     keyExtractor={(item, index) => index.toString()}
                 />
             )
@@ -134,51 +117,29 @@ class ChatComponent extends React.Component<ChatProps, ChatState> {
                         source={Images.social}
                         style={styles.noChatImage}
                     />
-                    <Text style={styles.noChat} >No Chats</Text>
+                    <Text style={styles.noChat} >No Users</Text>
                 </View>
             )
         }
     }
 
-    public render() {
-        return (
-            <View style={styles.container} >
-                <View style={styles.header}>
-                    <TouchableOpacity style={styles.menuIconButton} onPress={() => this.props.navigation.openDrawer()} >
-                        <Image source={Images.menuIcon} style={styles.menuIcon} />
-                    </TouchableOpacity>
-                    <Text style={styles.moreSocial} > {Strings.messages} </Text>
-                    {this.state.onLongPress && <TouchableOpacity onPress={this.deleteData} >
-                        <Text style={styles.moreSocial2} > {Strings.delete} </Text>
-                    </TouchableOpacity>}
-                </View>
-                {this.verifying()}
-                <ActivityIndicator
-                    size="large"
-                    color={Colors.socialColor}
-                    animating={this.state.Loader}
-                />
+    return (
+        <View style={styles.container} >
+            <View style={styles.header}>
+                <TouchableOpacity style={styles.menuIconButton} onPress={() => props.navigation.openDrawer()} >
+                    <Image source={Images.menuIcon} style={styles.menuIcon} />
+                </TouchableOpacity>
+                <Text style={styles.moreSocial} > {Strings.messages} </Text>
+                <TouchableOpacity style={styles.addUser} onPress={() => props.navigation.navigate('UserListing')}>
+                    <VectorIcons.Ionicons name={'ios-add-circle'} color={Colors.white} size={vh(23)} />
+                </TouchableOpacity>
             </View>
-        );
-    }
+            {verifying()}
+            <ActivityIndicator
+                size="large"
+                color={Colors.socialColor}
+                animating={Loader}
+            />
+        </View>
+    );
 }
-
-function mapDispatchToProps(dispatch: any) {
-    return {
-        getChatDATA: () => dispatch(getChatDATA()),
-        deleteChatDATA: (NewData: number) => dispatch(deleteChatDATA(NewData))
-    }
-}
-
-function mapStateToProps(state: any) {
-    const { value, userUID } = state.ChatReducer;
-    return {
-        value,
-        userUID
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ChatComponent);
