@@ -151,7 +151,7 @@ export default function SignINComponent(props: SignINProps) {
         const emptyArray = Users;
         const indexToFind = emptyArray.findIndex((item: any) => item[0] === data.user._user.uid)
         const array = emptyArray.splice(indexToFind, 1)
-        console.log(array[0][1])
+        // console.log(array[0][1])
         setTimeout(() => {
             dispatch(
                 getResult(

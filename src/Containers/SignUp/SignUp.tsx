@@ -82,7 +82,7 @@ export default function SignUp(props: SignUpProps) {
     }
 
     const CallSave = async () => {
-        console.log(newEmail, newName, newImage);
+        // console.log(newEmail, newName, newImage);
         try {
             dispatch(
                 getResult(
@@ -102,7 +102,7 @@ export default function SignUp(props: SignUpProps) {
             };
             firebaseSDK.createAccount(user, userUid);
         } catch ({ message }) {
-            console.log(message)
+            // console.log(message)
             setLoader(false)
         }
 

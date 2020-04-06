@@ -3,7 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import { vh, Colors, vw } from '../../Constants';
 
 export const Cluster = (props: any) => {
-    console.log(props)
+    // console.log(props)
   const {count} = props;
   return (
     <View style={styles.viewStyle}>

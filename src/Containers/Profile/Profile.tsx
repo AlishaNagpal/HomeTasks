@@ -73,7 +73,7 @@ export default function Home(props: ProfileProps) {
                 newNumber,
             ),
         );
-        console.log('in profile', newName, newEmail, userUID, newImage)
+        // console.log('in profile', newName, newEmail, userUID, newImage)
         firebaseSDK.writeTheUserToDatabase(newName, newEmail, userUID, newImage)
     }
 

@@ -110,7 +110,7 @@ export function linkedInLogin(callBack: Function, num: number) {
             linkText={'LinkedIN'}
             permissions={['r_liteprofile', 'r_emailaddress']}
             onSuccess={(token: any) => {
-                console.log('token ', token.access_token);
+                // console.log('token ', token.access_token);
                 axios
                     .get(
                         'https://api.linkedin.com/v2/me?projection=(id,localizedFirstName,localizedLastName,profilePicture(displayImage~:playableStreams))',
@@ -121,7 +121,7 @@ export function linkedInLogin(callBack: Function, num: number) {
                         },
                     )
                     .then((res: any) => {
-                        console.log('res ', res.data);
+                        // console.log('res ', res.data);
                         axios
                             .get(
                                 'https://api.linkedin.com/v2/clientAwareMemberHandles?q=members&projection=(elements*(primary,type,handle~))',
@@ -132,7 +132,7 @@ export function linkedInLogin(callBack: Function, num: number) {
                                 },
                             )
                             .then((response: any) => {
-                                console.log('email ', response);
+                                // console.log('email ', response);
                                 callBack(token.access_token,
                                     response.data.elements[0]['handle~'].emailAddress,
                                     res.data);
