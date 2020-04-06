@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
         width: vw(60),
         marginLeft: vw(12.5),
         justifyContent: 'center',
-        top: vh(10)
+        top: vh(10),
+        flex:1
     },
     menuIcon: {
         height: vh(20.5),
@@ -34,15 +35,18 @@ const styles = StyleSheet.create({
         fontSize: vh(22),
         fontFamily: 'Poppins-Regular',
         marginTop: vh(25),
-        marginLeft: vw(90),
-        textTransform: 'capitalize'
+        marginLeft: vw(120),
+        textTransform: 'capitalize',
+        flex:5
     },
     searchIconButton: {
-        width: vw(60),
+        // width: vw(60),
         justifyContent: 'center',
         marginTop: vh(30),
-        marginLeft: vw(90),
-        height: vh(50),
+        // marginLeft: vw(90),
+        // height: vh(50),
+        flex:1,
+        right:vw(20)
     },
     edit: {
         textTransform: 'uppercase',

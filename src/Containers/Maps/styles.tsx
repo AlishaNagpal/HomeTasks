@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
         width:wi,
         height:vh(73.5),
         alignItems: 'center',
+        justifyContent: 'center',
         flexDirection: 'row',
     },
     menuIconButton:{
@@ -21,7 +22,8 @@ const styles = StyleSheet.create({
         width:vw(60),
         marginLeft:vw(12.5),
         justifyContent: 'center',
-        top:vh(10)
+        top:vh(10),
+        flex:1
     },
     menuIcon:{
       height:vh(20.5),
@@ -32,15 +34,17 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontSize: vh(25),
         fontFamily: 'NordiquePro-Regular',
-        marginTop: vh(25),
-        marginLeft:vw(60)
+        marginTop: vw(25),
+        marginLeft:vh(60),
+        flex:5
     },
     searchIconButton:{
-        width:vw(60),
+        // width:vw(60),
         justifyContent: 'center',
         top:vh(10),
-        marginLeft:vw(80),
-        height:vh(50),
+        flex:1
+        // marginLeft:vw(80),
+        // height:vh(50),
     },
     textInput:{
         backgroundColor:Colors.white,

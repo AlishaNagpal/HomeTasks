@@ -22,9 +22,10 @@ interface State {
     roomId: string,
     loadEarlier: boolean,
     isLoadingEarlier: boolean,
-    messages: Array<any>,
+    messages: any[],
     lastMessageKey: string,
     lengthMessage: number,
+    typingText: boolean,
 }
 
 function compare(a: any, b: any) {
@@ -53,36 +54,34 @@ class ChatRoom extends React.Component<Props, State> {
             messages: [],
             lastMessageKey: '',
             lengthMessage: 0,
+            typingText: false
         };
     }
     _isMounted = false
 
     componentDidMount() {
         this._isMounted = true
+        FirebaseServices.getTypingValue(this.state.roomId, this.state.uid_otherPerson, this.getTyping)
         FirebaseServices.refOn(this.state.roomId, (message: any) => {
-            console.log( 'in refon', message)
-            if (message) {
-                const ans = message.sort(compare)
-                const data: any[] = []
-                for (let i = 0; i < ans.length; i++) {
-                    let mess = ans[i].mess
-                    data.push(mess)
-                }
-                this.setState(previousState => ({
-                    messages: data
-                    // GiftedChat.append(previousState.messages, message),
-                }), () => console.log(data)
-                )
+            const ans = message.sort(compare)
+            const data: any[] = []
+            for (let i = 0; i < ans.length; i++) {
+                let mess = ans[i].mess
+                data.push(mess)
+            }
+            this.setState(previousState => ({
+                messages: data
+                // GiftedChat.append(previousState.messages, message),
+            }))
+            this.setState({
+                lengthMessage: this.state.messages.length
+            })
+            if (this.state.lengthMessage === 20) {
+                const getLastMessageKey = ans[19].id
                 this.setState({
-                    lengthMessage: this.state.messages.length
+                    lastMessageKey: getLastMessageKey,
+                    loadEarlier: true
                 })
-                if (this.state.lengthMessage === 20) {
-                    const getLastMessageKey = ans[19].id
-                    this.setState({
-                        lastMessageKey: getLastMessageKey,
-                        loadEarlier: true
-                    })
-                }
             }
         })
     }
@@ -152,6 +151,25 @@ class ChatRoom extends React.Component<Props, State> {
         )
     }
 
+    goBack = () => {
+        this.props.navigation.goBack()
+        FirebaseServices.ChangeTypingText(this.state.roomId, this.props.userUID, false)
+    }
+
+    ontextChanged = (val: string) => {
+        if (val !== '') {
+            FirebaseServices.ChangeTypingText(this.state.roomId, this.props.userUID, true)
+        } else {
+            FirebaseServices.ChangeTypingText(this.state.roomId, this.props.userUID, false)
+        }
+    }
+
+    getTyping = (data: boolean) => {
+        this.setState({
+            typingText: data
+        })
+    }
+
     renderBubble = (props: any) => {
         return (
             <Bubble {...props} />
@@ -190,7 +208,7 @@ class ChatRoom extends React.Component<Props, State> {
     render() {
         return (
             <View style={styles.main} >
-                <TouchableOpacity style={styles.headerView} activeOpacity={1} onPress={() => this.props.navigation.goBack()}  >
+                <TouchableOpacity style={styles.headerView} activeOpacity={1} onPress={this.goBack}  >
                     <Image source={Images.forgotPasswordBackArrow} style={styles.icon} />
                     <Image
                         source={{ uri: this.state.avatar_otherPerson }}
@@ -198,6 +216,7 @@ class ChatRoom extends React.Component<Props, State> {
                     />
                     <View>
                         <Text style={styles.nameText} >{this.state.name_otherPerson}</Text>
+                        <Text style={styles.typingText} >{this.state.typingText ? 'typing...' : ''}</Text>
                     </View>
                 </TouchableOpacity>
                 <GiftedChat
@@ -224,6 +243,7 @@ class ChatRoom extends React.Component<Props, State> {
                     renderInputToolbar={this.renderInputToolbar}
                     minComposerHeight={vw(45)}
                     maxComposerHeight={vw(80)}
+                    onInputTextChanged={(val) => this.ontextChanged(val)} // changes over here
                 />
             </View>
         );

@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
         fontSize: vh(17),
         fontFamily: 'Poppins-Medium',
         marginTop: vh(20),
-        marginRight: vw(115)
+        marginRight: vw(115),
+        // flex:5
     },
     key: {
         height: vh(150),

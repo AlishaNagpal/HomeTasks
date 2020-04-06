@@ -89,12 +89,12 @@ class FirebaseSDK {
     // Load msgs from Database to Chat, first 20 messages to be loaded people
     refOn = (chatPerson: string, callback: Function) => {
         const onReceive = (data: any) => {
-            console.log('onreceive',data)
-            if (data._snapshot) {
+            // console.log('in refON receive,  ',data._snapshot)
+            if (data._snapshot.value) {
                 const message = data._snapshot.value;
                 const keys = Object.keys(message)
                 const messages = [];
-                
+
                 for (let i = 0; i < keys.length; i++) {
                     const a = keys[i]
                     const mess = message[a]
@@ -114,16 +114,19 @@ class FirebaseSDK {
 
     getPreviousMessages = (chatPerson: string, lastMessageKey: string, callback: Function) => {
         const onReceive = (data: any) => {
-            const message = data.val();
-            let keys = Object.keys(message)
-            let messages = [];
-            for (let i = 0; i < keys.length; i++) {
-                let a = keys[i]
-                let mess = message[a]
-                let msg = { mess, id: a }
-                messages.push(msg)
+            // console.log('in getting previous messages',data)
+            if (data._snapshot.value) {
+                const message = data.val();
+                let keys = Object.keys(message)
+                let messages = [];
+                for (let i = 0; i < keys.length; i++) {
+                    let a = keys[i]
+                    let mess = message[a]
+                    let msg = { mess, id: a }
+                    messages.push(msg)
+                }
+                callback(messages)
             }
-            callback(messages)
         };
 
         database().ref('ChatRooms/')
@@ -159,6 +162,16 @@ class FirebaseSDK {
         }
     };
 
+    // Changing the value of the typing text
+    ChangeTypingText = (chatRoomId: string, personalID: string, value: any) => {
+        database().ref('Typing/' + chatRoomId + '/' + personalID + '/' + 'typing').set(value)
+    };
+
+    // getting typing value
+    getTypingValue = (chatRoomID: string, chatPerson: string, callback: Function) => {
+        database().ref('Typing/' + chatRoomID + '/' + chatPerson + '/' + 'typing')
+            .on('value', (snapshot: any) => { callback(snapshot.val()) });
+    };
 
 }
 const firebaseSDK = new FirebaseSDK();

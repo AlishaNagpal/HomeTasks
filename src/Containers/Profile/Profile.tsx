@@ -24,6 +24,8 @@ export default function Home(props: ProfileProps) {
         profileData: state.ProfileReducer.profileData,
     }));
 
+    console.log(result.profilePic)
+
     const dispatch = useDispatch();
 
     const [edit, setEdit] = useState(false);
@@ -73,7 +75,7 @@ export default function Home(props: ProfileProps) {
                 newNumber,
             ),
         );
-        console.log('in profile',newName, newEmail, userUID, newImage)
+        console.log('in profile', newName, newEmail, userUID, newImage)
         firebaseSDK.writeTheUserToDatabase(newName, newEmail, userUID, newImage)
     }
 
@@ -116,7 +118,11 @@ export default function Home(props: ProfileProps) {
                 </TouchableOpacity>
             </View>
             <View>
-                <Image source={newImage ? { uri: newImage } : Images.placeholderImage} style={styles.image} />
+                <Image
+                    source={newImage ? { uri: newImage } : Images.placeholderImage}
+                    // source={{ uri: newImage }}
+                    style={styles.image}
+                />
                 {edit &&
                     <TouchableOpacity style={styles.cameraStyle} onPress={PickNewImage} >
                         <Image source={Images.camera} style={styles.camera} />

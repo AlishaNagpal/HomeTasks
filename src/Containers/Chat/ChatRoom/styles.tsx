@@ -26,8 +26,8 @@ const Styles = StyleSheet.create({
         // marginBottom: Platform.OS === 'ios' ? vw(8) : 0
     },
     typingText: {
-        color: Colors.dayText,
-        fontSize: vh(11),
+        color: Colors.white,
+        fontSize: vh(12),
         marginLeft: vw(10),
         marginBottom: vw(5)
     },

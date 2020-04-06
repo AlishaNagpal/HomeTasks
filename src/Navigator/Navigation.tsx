@@ -89,7 +89,8 @@ const HomeBottomNavigator = () => (
       inactiveTintColor: Colors.inactiveIconColor,
       // labelStyle: { fontSize: vh(22) },
       showIcon: true,
-      showLabel: false
+      showLabel: false,
+      tabStyle:{height:vh(0)}
     }}
   >
     <BottomTab.Screen
@@ -260,24 +261,24 @@ const styles = StyleSheet.create({
   },
   viewStyle: {
     alignItems: 'center',
-    marginTop: vh(25),
-    height: vh(60),
-    width: vh(60),
-    borderRadius: vh(30),
+    marginTop: vw(25),
+    height: vw(60),
+    width: vw(60),
+    borderRadius: vw(30),
     backgroundColor: Colors.socialColor,
     shadowColor: Colors.gray,
-    shadowRadius: vh(10),
+    shadowRadius: vw(10),
     shadowOpacity: 2,
     justifyContent: 'center',
   },
   viewStyleDisabled: {
     alignItems: 'center',
-    marginTop: vh(25),
-    height: vh(60),
-    width: vh(60),
-    borderRadius: vh(30),
+    marginTop: vw(25),
+    height: vw(60),
+    width: vw(60),
+    borderRadius: vw(30),
     shadowColor: Colors.gray,
-    shadowRadius: vh(10),
+    shadowRadius: vw(10),
     shadowOpacity: 2,
     backgroundColor: Colors.white,
     justifyContent: 'center',

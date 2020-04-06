@@ -29,18 +29,19 @@ const styles = StyleSheet.create({
     },
     moreSocial:{
         color: Colors.white,
-        alignSelf: 'center',
         fontSize: vh(25),
         fontFamily: 'NordiquePro-Regular',
         marginTop: Platform.OS === 'ios' ? vh(25) : vh(0),
+        flex:5,
         marginLeft:vw(60)
     },
     searchIconButton:{
-        width:vw(60),
+        // width:vw(60),
         justifyContent: 'center',
         top: Platform.OS === 'ios' ? vh(10) : vh(0),
         marginLeft: Platform.OS === 'ios' ? vw(80): vw(120),
-        height:vh(50),
+        // height:vh(50),
+        flex:1
     },
     map:{
         flex:1,
