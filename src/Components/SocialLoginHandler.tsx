@@ -152,12 +152,13 @@ const styles = StyleSheet.create({
         marginRight: vw(38),
         height: vh(43),
         backgroundColor: Colors.linkedIn,
-        width: vw(wi - 76),
+        // width: vw(wi - 76),
         borderRadius: vw(20),
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: vh(20.5),
-        flexDirection: 'row'
+        flexDirection: 'row',
+        flex:1
     },
     imageStyle: {
         marginLeft: vw(-30),

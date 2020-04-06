@@ -54,7 +54,7 @@ class FirebaseSDK {
             .createUserWithEmailAndPassword(user.email, user.password)
             .then(
                 function () {
-                    console.log('created user successfully. User email:' + user.email + ' name:' + user.name);
+                    // console.log('created user successfully. User email:' + user.email + ' name:' + user.name);
                     const userf = auth().currentUser
                     // @ts-ignore
                     callback(userf._user.uid)
@@ -142,8 +142,6 @@ class FirebaseSDK {
         for (let i = 0; i < messages.length; i++) {
             const { text, user } = messages[i];
 
-            console.log('in send', user,user.name, user.otherPersonName)
-
             const dated = moment()
                 .utcOffset('+05:30')
                 .format(' hh:mm a');
@@ -156,8 +154,8 @@ class FirebaseSDK {
             database().ref('ChatRooms/' + user.idRoom).push(message)
 
             // for Inbox, loading last messages
-            const inboxThisMessage = { text, gettingTime: dated, createdAt: new Date().getTime(), id: user._id, otherId: user.otherID, thisName: user.name, otherName: user.otherPersonName }
-            const inboxOtherMessage = { text, gettingTime: dated, createdAt: new Date().getTime(), id: user.otherID, otherId: user._id, thisName: user.otherPersonName, otherName: user.name }
+            const inboxThisMessage = { text, gettingTime: dated, createdAt: new Date().getTime(), id: user._id, otherId: user.otherID, thisName: user.name, otherName: user.otherPersonName, unreadMessages: 0 }
+            const inboxOtherMessage = { text, gettingTime: dated, createdAt: new Date().getTime(), id: user.otherID, otherId: user._id, thisName: user.otherPersonName, otherName: user.name, unreadMessages: 0 }
             database().ref('Inbox/' + 'OneonOne/' + user._id + '/' + user.otherID).set(inboxThisMessage)
             database().ref('Inbox/' + 'OneonOne/' + user.otherID + '/' + user._id).set(inboxOtherMessage)
 
@@ -177,9 +175,69 @@ class FirebaseSDK {
 
     // reading last messages
     readInboxData(uid: string, callback: Function) {
-        firebase.database().ref('Inbox/' + 'OneonOne/').child(uid).on('value', function (snapshot: any) {
+        database().ref('Inbox/' + 'OneonOne/').child(uid).on('value', function (snapshot: any) {
             callback(snapshot.val())
         })
+    }
+
+    // making the messages of other as read
+    readingMessages = (chatPerson: string, otherPersonID: string, callBack: Function) => {
+        const onReceive = (data: any) => {
+            if (data._snapshot.value) {
+                const message = data._snapshot.value;
+                const keys = Object.keys(message)
+                const messages = [];
+
+                for (let i = 0; i < keys.length; i++) {
+                    const a = keys[i]
+                    const mess = message[a]
+                    const msg = { mess, id: a }
+                    if (msg.mess.user.otherID !== otherPersonID) {
+                        messages.push(msg)
+                    }
+                }
+                callBack(messages)
+            }
+        };
+
+        database().ref('ChatRooms/' + chatPerson) // good for personal ones 
+            .limitToLast(20)
+            .on('value', onReceive);
+    }
+
+    // making the messages true
+    makeMessagesRead = (roomID: string, messageID: string) => {
+        database().ref('ChatRooms/' + roomID + '/' + messageID).child('messageRead').set(true)
+    }
+
+    // getting unread messages
+
+    unreadMessages = (chatPerson: string, otherPersonID: string, callBack: Function) => {
+        const onReceive = (data: any) => {
+            if (data._snapshot.value) {
+                const message = data._snapshot.value;
+                const keys = Object.keys(message)
+                const messages = [];
+
+                for (let i = 0; i < keys.length; i++) {
+                    const a = keys[i]
+                    const mess = message[a]
+                    const msg = { mess, id: a }
+                    if (msg.mess.user.otherID !== otherPersonID && msg.mess.messageRead === false) {
+                        messages.push(msg)
+                    }
+                }
+                callBack(messages.length)
+            }
+        };
+
+        database().ref('ChatRooms/' + chatPerson)
+            .on('value', onReceive);
+    }
+
+    // counting the messages here
+    unreadMessageCount = (userUID: string, otherPersonUID: string, unread: number) => {
+        database().ref('Inbox/' + 'OneonOne/' + userUID + '/' + otherPersonUID).child('unreadMessages').set(unread)
     }
 
 }

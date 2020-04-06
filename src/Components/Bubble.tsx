@@ -1,12 +1,19 @@
 import React from 'react';
 import { Bubble } from 'react-native-gifted-chat';
-import { Colors, vw } from '../Constants';
+import { Colors, vw, VectorIcons, vh } from '../Constants';
 
 export interface Props {
     props: any
 }
 
-export default function Chat (props:Props) {
+export default function Chat(props: Props) {
+
+    const renderTick = () => {
+        return (
+            <VectorIcons.FontAwesome5 name={props.currentMessage.messageRead ? 'check-double' : 'check'} color="lightgray" size={vh(12)} style={{ right: vw(5) }} />
+        )
+    }
+
     return (
         <Bubble
             {...props}
@@ -27,6 +34,7 @@ export default function Chat (props:Props) {
                     borderTopLeftRadius: vw(10)
                 }
             }}
+            renderTicks={renderTick}
         />
     );
 }

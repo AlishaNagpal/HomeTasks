@@ -69,6 +69,7 @@ class ChatRoom extends React.Component<Props, State> {
                 let mess = ans[i].mess
                 data.push(mess)
             }
+            // console.log( 'in chatroom', data[0].messageRead)
             this.setState(previousState => ({
                 messages: data
                 // GiftedChat.append(previousState.messages, message),
@@ -83,12 +84,19 @@ class ChatRoom extends React.Component<Props, State> {
                     loadEarlier: true
                 })
             }
-        })
+        });
+
+        FirebaseServices.readingMessages(this.state.roomId, this.state.uid_otherPerson, (message: any) => {
+            for (let i = 0; i < message.length; i++) {
+                FirebaseServices.makeMessagesRead(this.state.roomId, message[i].id)
+            }
+        });
     }
 
     componentWillUnmount() {
         this._isMounted = false
     }
+
 
     onLoadEarlier = () => {
         if (this.state.lastMessageKey) {

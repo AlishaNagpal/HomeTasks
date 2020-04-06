@@ -46,10 +46,11 @@ const styles = StyleSheet.create({
         marginRight: vw(38),
         height: vh(43),
         backgroundColor: Colors.fbColor,
-        width: vw(wi - 76),
+        // width: vw(wi - 76),
         borderRadius: vw(20),
         alignItems: 'center',
         flexDirection: 'row',
+        flex:1
     },
     oldSchool: {
         marginTop: vh(20),

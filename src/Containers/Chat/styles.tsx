@@ -137,6 +137,20 @@ const styles = StyleSheet.create({
     lastMessage: {
         color: Colors.dayText,
         fontSize:vh(12),
+        flex:1
+    },
+    unreadView:{
+        height:vh(20),
+        width:vh(20),
+        backgroundColor:Colors.socialColor,
+        alignItems: 'center',
+        borderRadius:vh(10),
+        justifyContent: 'center',
+        marginRight:vw(25)
+    },
+    unreadMessages: {
+        color: Colors.white,
+        fontSize:vh(12),
     },
 });
 

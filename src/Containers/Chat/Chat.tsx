@@ -1,31 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Image, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import styles from './styles'
 import { Colors, Strings, Images, VectorIcons, vh } from '../../Constants';
-import { useSelector } from 'react-redux'
 import FirebaseServices from '../../Components/Firebase';
+import { connect } from 'react-redux';
 
-export interface UserListingProps {
-    navigation?: any
+export interface ChatProps {
+    navigation?: any,
+    userUID: string
+}
+
+export interface ChatState {
+    userArray: any[],
+    Loader: boolean
 }
 
 
-export default function UserListingComponent(props: UserListingProps) {
+class Chat extends React.Component<ChatProps, ChatState> {
+    constructor(props: ChatProps) {
+        super(props);
+        this.state = {
+            userArray: [],
+            Loader: false
+        };
+    }
 
-    const [userArray, setUserArray] = useState<any>([]);
-    const [Loader, setLoader] = useState(false);
+    componentDidMount() {
+        FirebaseServices.readInboxData(this.props.userUID, this.getLastMessages)
+    }
 
-    const { userUID } = useSelector((state: { SignUpReducer: any }) => ({
-        userUID: state.SignUpReducer.userUID,
-    }));
-
-    useEffect(() => {
-        FirebaseServices.readInboxData(userUID, getLastMessages)
-    })
 
     // sorting the data as per the timestamp
-    const getUniqueData = (data: any) => {
-        const emptyArray = userArray;
+    getUniqueData = (data: any) => {
+        const emptyArray = this.state.userArray;
         const index = emptyArray.findIndex((item: any) => item[0] === data[0])
         if (index !== -1) {
             emptyArray.splice(index, 1)
@@ -45,29 +52,48 @@ export default function UserListingComponent(props: UserListingProps) {
             return comparison * -1;
         }
         emptyArray.sort(compareWhole)
-        setUserArray(emptyArray)
+
+        for (let i = 0; i < emptyArray.length; i++) {
+            let chatRoomId = '';
+            if (this.props.userUID > emptyArray[i][1].otherId) {
+                chatRoomId = this.props.userUID.concat(emptyArray[i][1].otherId)
+            } else {
+                chatRoomId = emptyArray[i][1].otherId.concat(this.props.userUID)
+            }
+
+            FirebaseServices.unreadMessages(chatRoomId, emptyArray[i][1].otherId, (messages: any) => {
+                FirebaseServices.unreadMessageCount(this.props.userUID, emptyArray[i][1].otherId, messages)
+            })
+        }
+
+        setTimeout(() => {
+            this.setState({
+                Loader: false,
+                userArray: emptyArray
+            })
+        }, 1000);
     }
 
     // getting the last messages of the one-on-one chat
-    const getLastMessages = (data: any) => {
+    getLastMessages = (data: any) => {
         if (data) {
             const result: any[] = Object.keys(data).map(function (key) {
                 return [String(key), data[key]];
             })
             for (let i = 0; i < result.length; i++) {
-                getUniqueData(result[i])
+                this.getUniqueData(result[i])
             }
         }
     }
 
-    const onChatPress = (id: string, name: string) => {
+    onChatPress = (id: string, name: string) => {
         let chatRoomId = '';
-        if (userUID > id) {
-            chatRoomId = userUID.concat(id)
+        if (this.props.userUID > id) {
+            chatRoomId = this.props.userUID.concat(id)
         } else {
-            chatRoomId = id.concat(userUID)
+            chatRoomId = id.concat(this.props.userUID)
         }
-        props.navigation.navigate('Chatroom',
+        this.props.navigation.navigate('Chatroom',
             {
                 id,
                 name,
@@ -75,13 +101,13 @@ export default function UserListingComponent(props: UserListingProps) {
             })
     }
 
-    const renderData = (rowData: any) => {
+    renderData = (rowData: any) => {
         const { item } = rowData
         return (
             <View>
                 <View style={styles.row} >
                     <Image source={Images.dummyUserImage} style={styles.chatImage} />
-                    <TouchableOpacity style={styles.root} onPress={() => onChatPress(item[0], item[1].otherName)} activeOpacity={1} >
+                    <TouchableOpacity style={styles.root} onPress={() => this.onChatPress(item[0], item[1].otherName)} activeOpacity={1} >
                         <View style={styles.row2} >
                             <Text style={styles.nameSet} >{item[1].otherName}</Text>
                             <Text style={styles.message} >{item[1].gettingTime}</Text>
@@ -89,7 +115,9 @@ export default function UserListingComponent(props: UserListingProps) {
                         </View>
                         <View style={styles.time} >
                             <Text style={styles.lastMessage} >{item[1].text}</Text>
-
+                            { item[1].unreadMessages !== 0 &&  <View style={styles.unreadView}>
+                                <Text style={styles.unreadMessages} >{item[1].unreadMessages}</Text>
+                            </View>}
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -98,15 +126,12 @@ export default function UserListingComponent(props: UserListingProps) {
         )
     }
 
-    const verifying = () => {
-        setTimeout(() => {
-            setLoader(false)
-        }, 1000);
-        if (userArray && !Loader) {
+    verifying = () => {
+        if (this.state.userArray && !this.state.Loader) {
             return (
                 <FlatList
-                    data={userArray}
-                    renderItem={renderData}
+                    data={this.state.userArray}
+                    renderItem={this.renderData}
                     keyExtractor={(item, index) => index.toString()}
                 />
             )
@@ -123,23 +148,42 @@ export default function UserListingComponent(props: UserListingProps) {
         }
     }
 
-    return (
-        <View style={styles.container} >
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.menuIconButton} onPress={() => props.navigation.openDrawer()} >
-                    <Image source={Images.menuIcon} style={styles.menuIcon} />
-                </TouchableOpacity>
-                <Text style={styles.moreSocial} > {Strings.messages} </Text>
-                <TouchableOpacity style={styles.addUser} onPress={() => props.navigation.navigate('UserListing')}>
-                    <VectorIcons.Ionicons name={'ios-add-circle'} color={Colors.white} size={vh(23)} />
-                </TouchableOpacity>
-            </View>
-            {verifying()}
-            <ActivityIndicator
-                size="large"
-                color={Colors.socialColor}
-                animating={Loader}
-            />
-        </View>
-    );
+    public render() {
+        return (
+            <View style={styles.container} >
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.menuIconButton} onPress={() => this.props.navigation.openDrawer()} >
+                        <Image source={Images.menuIcon} style={styles.menuIcon} />
+                    </TouchableOpacity>
+                    <Text style={styles.moreSocial} > {Strings.messages} </Text>
+                    <TouchableOpacity style={styles.addUser} onPress={() => this.props.navigation.navigate('UserListing')}>
+                        <VectorIcons.Ionicons name={'ios-add-circle'} color={Colors.white} size={vh(23)} />
+                    </TouchableOpacity>
+                </View>
+                {this.verifying()}
+                <ActivityIndicator
+                    size="large"
+                    color={Colors.socialColor}
+                    animating={this.state.Loader}
+                />
+            </View >
+        );
+    }
 }
+
+function mapDispatchToProps(dispatch: any) {
+    return {
+    }
+}
+
+function mapStateToProps(state: any) {
+    const { userUID } = state.SignUpReducer;
+    return {
+        userUID
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Chat);
