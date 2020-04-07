@@ -1,6 +1,6 @@
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
-import { TouchableOpacity, View, Text, Image, } from 'react-native';
+import { TouchableOpacity, View, Text, Image, Clipboard } from 'react-native';
 import styles from './styles'
 import { Colors, vh, VectorIcons, vw, Images } from '../../../Constants';
 import { Bubble, Composer, Day, InputToolbar } from '../../../Components';
@@ -26,6 +26,7 @@ interface State {
     lastMessageKey: string,
     lengthMessage: number,
     typingText: boolean,
+    unfileteredDATA: any[]
 }
 
 function compare(a: any, b: any) {
@@ -54,7 +55,8 @@ class ChatRoom extends React.Component<Props, State> {
             messages: [],
             lastMessageKey: '',
             lengthMessage: 0,
-            typingText: false
+            typingText: false,
+            unfileteredDATA: []
         };
     }
     _isMounted = false
@@ -67,6 +69,7 @@ class ChatRoom extends React.Component<Props, State> {
             const data: any[] = []
             for (let i = 0; i < ans.length; i++) {
                 let mess = ans[i].mess
+                this.state.unfileteredDATA.push(ans[i]);
                 data.push(mess)
             }
             // console.log( 'in chatroom', data[0].messageRead)
@@ -114,6 +117,7 @@ class ChatRoom extends React.Component<Props, State> {
                         const data: any[] = []
                         for (let i = 0; i < sorted.length; i++) {
                             const mess = sorted[i].mess
+                            this.state.unfileteredDATA.push(sorted[i]);
                             data.push(mess)
                         }
 
@@ -172,6 +176,47 @@ class ChatRoom extends React.Component<Props, State> {
         }
     }
 
+    onLongPress = (context: any, message: any) => {
+        console.log('onLongPress', message, message.user._id, this.props.userUID, this.state.unfileteredDATA)
+        if (message.user._id === this.props.userUID) {
+            const options = ['Copy', 'Delete Message', 'Cancel'];
+            const cancelButtonIndex = options.length - 1;
+            context.actionSheet().showActionSheetWithOptions({
+                options,
+                cancelButtonIndex
+            }, (buttonIndex: any) => {
+                switch (buttonIndex) {
+                    case 0:
+                        Clipboard.setString(message.text);
+                        break;
+                    case 1:
+                        // code to delete
+                        for (let i = 0; i < this.state.unfileteredDATA.length; i++) {
+                            if (this.state.unfileteredDATA[i].mess.user._id === this.props.userUID && this.state.unfileteredDATA[i].mess.createdAt === message.createdAt) {
+                                FirebaseServices.deleteMessages(this.state.roomId, this.state.unfileteredDATA[i].id)
+                            }
+                        }
+                        break;
+                }
+            });
+        } else {
+            const options = ['Copy', 'Cancel'];
+            const cancelButtonIndex = options.length - 1;
+            context.actionSheet().showActionSheetWithOptions({
+                options,
+                cancelButtonIndex
+            }, (buttonIndex: any) => {
+                switch (buttonIndex) {
+                    case 0:
+                        Clipboard.setString(message.text);
+                        break;
+                    default:
+                        break;
+                }
+            });
+        }
+    }
+
     getTyping = (data: boolean) => {
         this.setState({
             typingText: data
@@ -205,7 +250,8 @@ class ChatRoom extends React.Component<Props, State> {
     get user() {
         return {
             name: this.props.result.name,
-            avatar: this.props.result.profilePic,
+            // avatar: this.props.result.profilePic,
+            avatar: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
             idRoom: this.state.roomId,
             _id: this.props.userUID,
             otherID: this.state.uid_otherPerson,
@@ -252,6 +298,7 @@ class ChatRoom extends React.Component<Props, State> {
                     minComposerHeight={vw(45)}
                     maxComposerHeight={vw(80)}
                     onInputTextChanged={(val) => this.ontextChanged(val)} // changes over here
+                    onLongPress={this.onLongPress}
                 />
             </View>
         );

@@ -240,6 +240,11 @@ class FirebaseSDK {
         database().ref('Inbox/' + 'OneonOne/' + userUID + '/' + otherPersonUID).child('unreadMessages').set(unread)
     }
 
+    // Delete Message
+    deleteMessages = (chatPerson: string, deleteKey: string) => {
+        database().ref('ChatRooms/' + chatPerson).child(deleteKey).remove()
+    }
+
 }
 const firebaseSDK = new FirebaseSDK();
 export default firebaseSDK;
