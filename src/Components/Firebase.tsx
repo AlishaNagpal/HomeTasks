@@ -4,11 +4,7 @@ import database from '@react-native-firebase/database';
 import { Platform } from 'react-native';
 import moment from 'moment';
 import storage from '@react-native-firebase/storage';
-import { useCallback } from 'react';
 
-// const uid = auth().currentUser.uid;
-// const ref = database().ref(`/users/${uid}`);
-// const snapshot = await ref.once('value');
 
 class FirebaseSDK {
 
@@ -60,14 +56,6 @@ class FirebaseSDK {
                     const userf = auth().currentUser
                     // @ts-ignore
                     callback(userf._user.uid)
-                    // ,userf.updateProfile({ displayName: user.name }).then(
-                    //     function () {
-                    //         console.log('Updated displayName successfully. name:' + user.name, user);
-                    //     },
-                    //     function (error: any) {
-                    //         console.warn('Error update displayName.');
-                    //     }
-                    // );
                 },
                 function (error: any) {
                     console.error('got error:' + typeof error + ' string:' + error.message);
