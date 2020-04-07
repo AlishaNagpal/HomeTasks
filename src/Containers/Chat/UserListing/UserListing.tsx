@@ -112,7 +112,7 @@ export default function UserListingComponent(props: UserListingProps) {
                 <TouchableOpacity style={styles.menuIconButton} onPress={() => props.navigation.goBack()} >
                     <Image source={Images.forgotPasswordBackArrow} style={styles.menuIcon} />
                 </TouchableOpacity>
-                <Text style={styles.moreSocial} > {Strings.messages} </Text>
+                <Text style={styles.moreSocial} > {Strings.users} </Text>
             </View>
             {verifying()}
             <ActivityIndicator

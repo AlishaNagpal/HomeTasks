@@ -90,7 +90,7 @@ const HomeBottomNavigator = () => (
       // labelStyle: { fontSize: vh(22) },
       showIcon: true,
       showLabel: false,
-      tabStyle:{height:vh(0)}
+      tabStyle:{height:vh(0)},
     }}
   >
     <BottomTab.Screen

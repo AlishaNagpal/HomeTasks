@@ -245,6 +245,18 @@ class FirebaseSDK {
         database().ref('ChatRooms/' + chatPerson).child(deleteKey).remove()
     }
 
+    // Delete ChatThread
+    deleteChatThread = (userID: string, chatroomId: string, otherPersonID: string) => {
+        const createdAt = new Date().getTime()
+        database().ref('Delete/' + userID + '/' + chatroomId + '/LatestMessage').set(createdAt)
+        database().ref('Inbox/' + 'OneonOne/' + userID + '/' + otherPersonID).remove()
+    }
+
+    // getting delete node info
+    deleteNodeInfo = (userID: string, roomKey: string, callback:Function) => {
+        database().ref('Delete/' + userID + '/' + roomKey + '/LatestMessage')
+        .on('value', (snapshot: any) => { callback(snapshot.val()) });
+    }
 }
 const firebaseSDK = new FirebaseSDK();
 export default firebaseSDK;

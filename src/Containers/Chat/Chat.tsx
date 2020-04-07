@@ -12,7 +12,9 @@ export interface ChatProps {
 
 export interface ChatState {
     userArray: any[],
-    Loader: boolean
+    longPress: boolean,
+    otherPersonID: string,
+    chatsPresent: boolean
 }
 
 
@@ -21,7 +23,9 @@ class Chat extends React.Component<ChatProps, ChatState> {
         super(props);
         this.state = {
             userArray: [],
-            Loader: false
+            longPress: false,
+            otherPersonID: '',
+            chatsPresent: false
         };
     }
 
@@ -52,24 +56,29 @@ class Chat extends React.Component<ChatProps, ChatState> {
             return comparison * -1;
         }
         emptyArray.sort(compareWhole)
-
-        for (let i = 0; i < emptyArray.length; i++) {
-            let chatRoomId = '';
-            if (this.props.userUID > emptyArray[i][1].otherId) {
-                chatRoomId = this.props.userUID.concat(emptyArray[i][1].otherId)
-            } else {
-                chatRoomId = emptyArray[i][1].otherId.concat(this.props.userUID)
+        setTimeout(() => {
+            for (let i = 0; i < emptyArray.length; i++) {
+                let chatRoomId = '';
+                if (this.props.userUID > emptyArray[i][1].otherId) {
+                    chatRoomId = this.props.userUID.concat(emptyArray[i][1].otherId)
+                } else {
+                    chatRoomId = emptyArray[i][1].otherId.concat(this.props.userUID)
+                }
+                FirebaseServices.deleteNodeInfo(this.props.userUID, chatRoomId, (dataHere: number) => {
+                    if (!dataHere) {
+                        FirebaseServices.unreadMessages(chatRoomId, emptyArray[i][1].otherId, (messages: any) => {
+                            FirebaseServices.unreadMessageCount(this.props.userUID, emptyArray[i][1].otherId, messages)
+                        })
+                    }
+                    this.forceUpdate()
+                })
             }
-
-            FirebaseServices.unreadMessages(chatRoomId, emptyArray[i][1].otherId, (messages: any) => {
-                FirebaseServices.unreadMessageCount(this.props.userUID, emptyArray[i][1].otherId, messages)
-            })
-        }
+        }, 2000);
 
         setTimeout(() => {
             this.setState({
-                Loader: false,
-                userArray: emptyArray
+                userArray: emptyArray,
+                chatsPresent: true
             })
         }, 1000);
     }
@@ -101,11 +110,33 @@ class Chat extends React.Component<ChatProps, ChatState> {
             })
     }
 
+    deleteChatThread = () => {
+        let chatRoomId = '';
+        if (this.props.userUID > this.state.otherPersonID) {
+            chatRoomId = this.props.userUID.concat(this.state.otherPersonID)
+        } else {
+            chatRoomId = this.state.otherPersonID.concat(this.props.userUID)
+        }
+        FirebaseServices.deleteChatThread(this.props.userUID, chatRoomId, this.state.otherPersonID)
+        FirebaseServices.readInboxData(this.props.userUID, this.getLastMessages)
+        this.setState({
+            longPress: false
+        })
+
+    }
+
+    longPressDelete = (otherPersonID: string) => {
+        this.setState({
+            otherPersonID,
+            longPress: true
+        })
+    }
+
     renderData = (rowData: any) => {
         const { item } = rowData
         return (
             <View>
-                <View style={styles.row} >
+                <TouchableOpacity style={styles.row} onLongPress={() => this.longPressDelete(item[0])} >
                     <Image source={Images.dummyUserImage} style={styles.chatImage} />
                     <TouchableOpacity style={styles.root} onPress={() => this.onChatPress(item[0], item[1].otherName)} activeOpacity={1} >
                         <View style={styles.row2} >
@@ -115,57 +146,58 @@ class Chat extends React.Component<ChatProps, ChatState> {
                         </View>
                         <View style={styles.time} >
                             <Text style={styles.lastMessage} >{item[1].text}</Text>
-                            { item[1].unreadMessages !== 0 &&  <View style={styles.unreadView}>
+                            {item[1].unreadMessages !== 0 && <View style={styles.unreadView}>
                                 <Text style={styles.unreadMessages} >{item[1].unreadMessages}</Text>
                             </View>}
                         </View>
                     </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
+                {this.state.longPress && this.state.otherPersonID === item[0] &&
+                    <>
+                        <View style={styles.overlappingView} />
+                        <VectorIcons.Feather name={'check'} color={'red'} size={vh(55)} style={styles.deleteIcon} />
+                    </>
+                }
                 <View style={styles.separator} />
             </View>
         )
     }
 
-    verifying = () => {
-        if (this.state.userArray && !this.state.Loader) {
-            return (
-                <FlatList
-                    data={this.state.userArray}
-                    renderItem={this.renderData}
-                    keyExtractor={(item, index) => index.toString()}
-                />
-            )
-        } else {
-            return (
-                <View style={styles.centerNoChats}>
-                    <Image
-                        source={Images.social}
-                        style={styles.noChatImage}
-                    />
-                    <Text style={styles.noChat} >No Users</Text>
-                </View>
-            )
-        }
-    }
-
     public render() {
         return (
             <View style={styles.container} >
-                <View style={styles.header}>
-                    <TouchableOpacity style={styles.menuIconButton} onPress={() => this.props.navigation.openDrawer()} >
-                        <Image source={Images.menuIcon} style={styles.menuIcon} />
-                    </TouchableOpacity>
-                    <Text style={styles.moreSocial} > {Strings.messages} </Text>
-                    <TouchableOpacity style={styles.addUser} onPress={() => this.props.navigation.navigate('UserListing')}>
-                        <VectorIcons.Ionicons name={'ios-add-circle'} color={Colors.white} size={vh(23)} />
-                    </TouchableOpacity>
+                <View>
+                    <View style={styles.header}>
+                        <TouchableOpacity style={styles.menuIconButton} onPress={() => this.props.navigation.openDrawer()} >
+                            <Image source={Images.menuIcon} style={styles.menuIcon} />
+                        </TouchableOpacity>
+                        <Text style={styles.moreSocial} > {Strings.messages} </Text>
+                        {this.state.longPress &&
+                            <TouchableOpacity style={styles.deleteChat} onPress={this.deleteChatThread}>
+                                <Text style={styles.deleteChatThread}> {Strings.delete} </Text>
+                            </TouchableOpacity>
+                        }
+                    </View>
+                    {this.state.userArray && this.state.chatsPresent
+                        ?
+                        <FlatList
+                            data={this.state.userArray}
+                            renderItem={this.renderData}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                        :
+                        <View style={styles.centerNoChats}>
+                            <Image
+                                source={Images.social}
+                                style={styles.noChatImage}
+                            />
+                            <Text style={styles.noChat} >{Strings.noChats}</Text>
+                        </View>
+                    }
                 </View>
-                {this.verifying()}
-                <ActivityIndicator
-                    size="large"
-                    color={Colors.socialColor}
-                    animating={this.state.Loader}
-                />
+                <TouchableOpacity style={styles.addUser} onPress={() => this.props.navigation.navigate('UserListing')}>
+                    <VectorIcons.Ionicons name={'ios-add-circle'} color={Colors.socialColor} size={vh(38)} />
+                </TouchableOpacity>
             </View >
         );
     }

@@ -58,6 +58,8 @@ const Strings = {
   fillDetails: 'Please fill the details below',
   messages:'messages',
   typeMsg:'Your message!',
-  delete:'delete'
+  delete:'delete',
+  users:'users',
+  noChats:'No Chats',
 };
 export default Strings;

@@ -65,28 +65,33 @@ class ChatRoom extends React.Component<Props, State> {
         this._isMounted = true
         FirebaseServices.getTypingValue(this.state.roomId, this.state.uid_otherPerson, this.getTyping)
         FirebaseServices.refOn(this.state.roomId, (message: any) => {
-            const ans = message.sort(compare)
-            const data: any[] = []
-            for (let i = 0; i < ans.length; i++) {
-                let mess = ans[i].mess
-                this.state.unfileteredDATA.push(ans[i]);
-                data.push(mess)
-            }
-            // console.log( 'in chatroom', data[0].messageRead)
-            this.setState(previousState => ({
-                messages: data
-                // GiftedChat.append(previousState.messages, message),
-            }))
-            this.setState({
-                lengthMessage: this.state.messages.length
+            FirebaseServices.deleteNodeInfo(this.props.userUID, this.state.roomId, (dataHere: number) => {
+                if (dataHere) {
+                    const ans = message.sort(compare)
+                    const data: any[] = []
+                    for (let i = 0; i < ans.length; i++) {
+                        if (ans[i].mess.createdAt >= dataHere) {
+                            let mess = ans[i].mess
+                            this.state.unfileteredDATA.push(ans[i]);
+                            data.push(mess)
+                        }
+                    }
+                    this.setState(previousState => ({
+                        messages: data
+                        // GiftedChat.append(previousState.messages, message),
+                    }))
+                    this.setState({
+                        lengthMessage: this.state.messages.length
+                    })
+                    if (this.state.lengthMessage === 20) {
+                        const getLastMessageKey = ans[19].id
+                        this.setState({
+                            lastMessageKey: getLastMessageKey,
+                            loadEarlier: true
+                        })
+                    }
+                }
             })
-            if (this.state.lengthMessage === 20) {
-                const getLastMessageKey = ans[19].id
-                this.setState({
-                    lastMessageKey: getLastMessageKey,
-                    loadEarlier: true
-                })
-            }
         });
 
         FirebaseServices.readingMessages(this.state.roomId, this.state.uid_otherPerson, (message: any) => {
@@ -112,29 +117,35 @@ class ChatRoom extends React.Component<Props, State> {
             setTimeout(() => {
                 if (this._isMounted === true) {
                     FirebaseServices.getPreviousMessages(this.state.roomId, this.state.lastMessageKey, (message: any[]) => {
-                        const sorted = message.sort(compare)
-                        sorted.splice(0, 1)
-                        const data: any[] = []
-                        for (let i = 0; i < sorted.length; i++) {
-                            const mess = sorted[i].mess
-                            this.state.unfileteredDATA.push(sorted[i]);
-                            data.push(mess)
-                        }
+                        FirebaseServices.deleteNodeInfo(this.props.userUID, this.state.roomId, (dataHere: number) => {
+                            if (dataHere) {
+                                const sorted = message.sort(compare)
+                                sorted.splice(0, 1)
+                                const data: any[] = []
+                                for (let i = 0; i < sorted.length; i++) {
+                                    if (sorted[i].mess.createdAt >= dataHere) {
+                                        const mess = sorted[i].mess
+                                        this.state.unfileteredDATA.push(sorted[i]);
+                                        data.push(mess)
+                                    }
+                                }
 
-                        if (sorted.length === 19) {
-                            const getLastMessageKey = sorted[18].id
-                            this.setState({
-                                loadEarlier: true,
-                                lastMessageKey: getLastMessageKey,
-                            })
-                        } else {
-                            this.setState({ loadEarlier: false, })
-                        }
+                                if (sorted.length === 19) {
+                                    const getLastMessageKey = sorted[18].id
+                                    this.setState({
+                                        loadEarlier: true,
+                                        lastMessageKey: getLastMessageKey,
+                                    })
+                                } else {
+                                    this.setState({ loadEarlier: false, })
+                                }
 
-                        this.setState(previousState => ({
-                            messages: [...this.state.messages, ...data],
-                            isLoadingEarlier: false,
-                        }))
+                                this.setState(previousState => ({
+                                    messages: [...this.state.messages, ...data],
+                                    isLoadingEarlier: false,
+                                }))
+                            }
+                        })
                     })
                 }
             }, 1000)
@@ -164,7 +175,7 @@ class ChatRoom extends React.Component<Props, State> {
     }
 
     goBack = () => {
-        this.props.navigation.goBack()
+        this.props.navigation.pop(2)
         FirebaseServices.ChangeTypingText(this.state.roomId, this.props.userUID, false)
     }
 
@@ -177,7 +188,7 @@ class ChatRoom extends React.Component<Props, State> {
     }
 
     onLongPress = (context: any, message: any) => {
-        console.log('onLongPress', message, message.user._id, this.props.userUID, this.state.unfileteredDATA)
+        // console.log('onLongPress', message, message.user._id, this.props.userUID, this.state.unfileteredDATA)
         if (message.user._id === this.props.userUID) {
             const options = ['Copy', 'Delete Message', 'Cancel'];
             const cancelButtonIndex = options.length - 1;

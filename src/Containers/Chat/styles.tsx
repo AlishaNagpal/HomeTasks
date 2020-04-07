@@ -16,15 +16,15 @@ const styles = StyleSheet.create({
         height: vh(73.5),
         alignItems: 'center',
         flexDirection: 'row',
-        marginBottom: vh(50)
+        marginBottom: vh(50),
+        paddingTop:vh(25)
     },
     menuIconButton: {
         height: vh(50),
         width: vw(60),
         marginLeft: vw(12.5),
         justifyContent: 'center',
-        marginTop: vh(20),
-        flex:1
+        flex: 1
     },
     menuIcon: {
         height: vh(20.5),
@@ -35,16 +35,27 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontSize: vh(22),
         fontFamily: 'Poppins-Regular',
-        marginTop: vh(25),
-        marginLeft: vw(65),
+        marginLeft: vw(80),
         textTransform: 'capitalize',
-        flex:5
+        flex: 5,
     },
-    addUser:{
-        flex:1,
+    deleteChat: {
+        flex: 1,
         justifyContent: 'center',
-        marginTop:vh(25),
-        marginLeft:vw(10)
+        marginRight: vw(25)
+    },
+    deleteChatThread: {
+        fontFamily: 'Poppins-Regular',
+        color:Colors.white,
+        textTransform:'uppercase',
+        fontSize:vh(14),
+        width:vw(60),
+    },
+    addUser: {
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: vw(30),
+        right: vw(30)
     },
     moreSocial2: {
         color: Colors.white,
@@ -66,7 +77,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: vh(15),
         marginLeft: vw(20),
-        marginBottom:vh(5)
+        marginBottom: vh(5)
     },
     root: {
         flexDirection: 'column',
@@ -74,7 +85,7 @@ const styles = StyleSheet.create({
     },
     nameSet: {
         fontSize: vh(18),
-        marginBottom:vh(5)
+        marginBottom: vh(5)
     },
     time: {
         marginLeft: vw(20),
@@ -83,7 +94,7 @@ const styles = StyleSheet.create({
     message: {
         color: Colors.socialColor,
         fontSize: vh(12),
-        marginRight:vw(10),
+        marginRight: vw(10),
         // flex: 1,
         // marginTop: vw(10)
     },
@@ -136,22 +147,33 @@ const styles = StyleSheet.create({
     },
     lastMessage: {
         color: Colors.dayText,
-        fontSize:vh(12),
-        flex:1
+        fontSize: vh(12),
+        flex: 1
     },
-    unreadView:{
-        height:vh(20),
-        width:vh(20),
-        backgroundColor:Colors.socialColor,
+    unreadView: {
+        height: vh(20),
+        width: vh(20),
+        backgroundColor: Colors.socialColor,
         alignItems: 'center',
-        borderRadius:vh(10),
+        borderRadius: vh(10),
         justifyContent: 'center',
-        marginRight:vw(25)
+        marginRight: vw(25)
     },
     unreadMessages: {
         color: Colors.white,
-        fontSize:vh(12),
+        fontSize: vh(12),
     },
+    overlappingView:{
+        position:'absolute',
+        width: wi,
+        height:vh(64),
+        backgroundColor:'red',
+        opacity:0.2
+    },
+    deleteIcon:{
+        position:'absolute',
+        left:vw(10)
+    }
 });
 
 export default styles;
