@@ -41,7 +41,7 @@ export default function Home(props: ProfileProps) {
     const emailRef = React.createRef();
     const numberRef = React.createRef();
 
-
+    // console.log(result.profilePic)
     const resetCall = (value: boolean) => {
         setCall(value);
     };
@@ -58,12 +58,13 @@ export default function Home(props: ProfileProps) {
         }
     }
 
-    const CallSave = () => {
+    const getImageURL = (newImageURL: string) => {
+        // console.log('newImageUrl', newImageURL)
         dispatch(
             getResult(
                 newEmail,
                 newName,
-                newImage,
+                newImageURL,
                 () => { },
             ),
         );
@@ -74,7 +75,11 @@ export default function Home(props: ProfileProps) {
             ),
         );
         // console.log('in profile', newName, newEmail, userUID, newImage)
-        firebaseSDK.writeTheUserToDatabase(newName, newEmail, userUID, newImage)
+        firebaseSDK.writeTheUserToDatabase(newName, newEmail, userUID, newImageURL)
+    }
+
+    const CallSave = () => {
+        firebaseSDK.savePictureInStorage(newImage, userUID, getImageURL)
     }
 
     const makeItEditable = () => {

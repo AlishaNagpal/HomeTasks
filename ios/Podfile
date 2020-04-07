@@ -41,15 +41,17 @@ target 'HomeTasks' do
    pod 'react-native-google-maps', :path => rn_maps_path
    pod 'GoogleMaps'
    pod 'Google-Maps-iOS-Utils', :git => 'https://github.com/googlemaps/google-maps-ios-utils.git', :commit => 'd5ca417617170b9a0e4e83964e961bfaf9b26f1f'
+   
    pod 'Firebase/Analytics' 
-   pod 'Firebase/Auth'
-   pod 'Firebase/Database'
    pod 'Firebase/Core'
+  #  pod 'Firebase/Auth'
+  #  pod 'Firebase/Database'
   #  pod 'Firebase/Storage'
+   
    pod 'RNShare', :path => '../node_modules/react-native-share'
-  #  pod 'RNFirebase', :path => '../node_modules/@react-native-firebase' 
-  pod 'RNFBAuth', :path => '../node_modules/@react-native-firebase/auth'
-  pod 'RNFBDatabase', :path => '../node_modules/@react-native-firebase/database'
+   pod 'RNFBAuth', :path => '../node_modules/@react-native-firebase/auth'
+   pod 'RNFBDatabase', :path => '../node_modules/@react-native-firebase/database'
+   pod 'RNFBStorage', :path => '../node_modules/@react-native-firebase/storage'
 
   target 'HomeTasksTests' do
     inherit! :search_paths

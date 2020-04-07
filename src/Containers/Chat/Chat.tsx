@@ -95,7 +95,7 @@ class Chat extends React.Component<ChatProps, ChatState> {
         }
     }
 
-    onChatPress = (id: string, name: string) => {
+    onChatPress = (id: string, name: string, imageURL: string ) => {
         let chatRoomId = '';
         if (this.props.userUID > id) {
             chatRoomId = this.props.userUID.concat(id)
@@ -106,6 +106,7 @@ class Chat extends React.Component<ChatProps, ChatState> {
             {
                 id,
                 name,
+                imageURL,
                 chatRoomId
             })
     }
@@ -137,8 +138,8 @@ class Chat extends React.Component<ChatProps, ChatState> {
         return (
             <View>
                 <TouchableOpacity style={styles.row} onLongPress={() => this.longPressDelete(item[0])} >
-                    <Image source={Images.dummyUserImage} style={styles.chatImage} />
-                    <TouchableOpacity style={styles.root} onPress={() => this.onChatPress(item[0], item[1].otherName)} activeOpacity={1} >
+                    <Image source={{uri:item[1].otherPersonAvatar}} style={styles.chatImage} />
+                    <TouchableOpacity style={styles.root} onPress={() => this.onChatPress(item[0], item[1].otherName, item[1].otherPersonAvatar)} activeOpacity={1} >
                         <View style={styles.row2} >
                             <Text style={styles.nameSet} >{item[1].otherName}</Text>
                             <Text style={styles.message} >{item[1].gettingTime}</Text>

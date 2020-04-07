@@ -39,7 +39,7 @@ export default function UserListingComponent(props: UserListingProps) {
         }
     }
 
-    const onChatPress = (id: string, name: string) => {
+    const onChatPress = (id: string, name: string, imageURL: string) => {
         let chatRoomId = '';
         if (userUID > id) {
             chatRoomId = userUID.concat(id)
@@ -50,7 +50,7 @@ export default function UserListingComponent(props: UserListingProps) {
             {
                 id,
                 name,
-                // imageURL,
+                imageURL,
                 chatRoomId
             })
     }
@@ -60,13 +60,13 @@ export default function UserListingComponent(props: UserListingProps) {
         return (
             <View>
                 <View style={styles.row} >
-                    <Image source={Images.dummyUserImage} style={styles.chatImage} />
+                    <Image source={{uri:item[1].image}} style={styles.chatImage} />
                     <TouchableOpacity style={styles.root}
                         onPress={() =>
                             onChatPress(
                                 item[0],
                                 item[1].name,
-                                // item[1].image
+                                item[1].image
                             )} activeOpacity={1} >
                         <View style={styles.row2} >
                             <Text style={styles.nameSet} >{item[1].name}</Text>

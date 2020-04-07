@@ -18,7 +18,7 @@ export interface Props {
 interface State {
     uid_otherPerson: string,
     name_otherPerson: string,
-    // avatar_otherPerson: string,
+    avatar_otherPerson: string,
     roomId: string,
     loadEarlier: boolean,
     isLoadingEarlier: boolean,
@@ -48,7 +48,7 @@ class ChatRoom extends React.Component<Props, State> {
         this.state = {
             uid_otherPerson: this.props.route.params.id,
             name_otherPerson: this.props.route.params.name,
-            // avatar_otherPerson: this.props.route.params.imageURL,
+            avatar_otherPerson: this.props.route.params.imageURL,
             roomId: this.props.route.params.chatRoomId,
             loadEarlier: false,
             isLoadingEarlier: false,
@@ -75,6 +75,28 @@ class ChatRoom extends React.Component<Props, State> {
                             this.state.unfileteredDATA.push(ans[i]);
                             data.push(mess)
                         }
+                    }
+                    this.setState(previousState => ({
+                        messages: data
+                        // GiftedChat.append(previousState.messages, message),
+                    }))
+                    this.setState({
+                        lengthMessage: this.state.messages.length
+                    })
+                    if (this.state.lengthMessage === 20) {
+                        const getLastMessageKey = ans[19].id
+                        this.setState({
+                            lastMessageKey: getLastMessageKey,
+                            loadEarlier: true
+                        })
+                    }
+                } else {
+                    const ans = message.sort(compare)
+                    const data: any[] = []
+                    for (let i = 0; i < ans.length; i++) {
+                        let mess = ans[i].mess
+                        this.state.unfileteredDATA.push(ans[i]);
+                        data.push(mess)
                     }
                     this.setState(previousState => ({
                         messages: data
@@ -128,6 +150,30 @@ class ChatRoom extends React.Component<Props, State> {
                                         this.state.unfileteredDATA.push(sorted[i]);
                                         data.push(mess)
                                     }
+                                }
+
+                                if (sorted.length === 19) {
+                                    const getLastMessageKey = sorted[18].id
+                                    this.setState({
+                                        loadEarlier: true,
+                                        lastMessageKey: getLastMessageKey,
+                                    })
+                                } else {
+                                    this.setState({ loadEarlier: false, })
+                                }
+
+                                this.setState(previousState => ({
+                                    messages: [...this.state.messages, ...data],
+                                    isLoadingEarlier: false,
+                                }))
+                            } else {
+                                const sorted = message.sort(compare)
+                                sorted.splice(0, 1)
+                                const data: any[] = []
+                                for (let i = 0; i < sorted.length; i++) {
+                                    const mess = sorted[i].mess
+                                    this.state.unfileteredDATA.push(sorted[i]);
+                                    data.push(mess)
                                 }
 
                                 if (sorted.length === 19) {
@@ -261,12 +307,13 @@ class ChatRoom extends React.Component<Props, State> {
     get user() {
         return {
             name: this.props.result.name,
-            // avatar: this.props.result.profilePic,
-            avatar: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
+            avatar: this.props.result.profilePic,
+            // avatar: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
             idRoom: this.state.roomId,
             _id: this.props.userUID,
             otherID: this.state.uid_otherPerson,
-            otherPersonName: this.state.name_otherPerson
+            otherPersonName: this.state.name_otherPerson,
+            otherPersonAvatar: this.state.avatar_otherPerson,
         };
     }
 
@@ -276,7 +323,7 @@ class ChatRoom extends React.Component<Props, State> {
                 <TouchableOpacity style={styles.headerView} activeOpacity={1} onPress={this.goBack}  >
                     <Image source={Images.forgotPasswordBackArrow} style={styles.icon} />
                     <Image
-                        source={Images.mainScreen}
+                        source={{ uri: this.state.avatar_otherPerson }}
                         style={styles.imageStyle}
                     />
                     <View>

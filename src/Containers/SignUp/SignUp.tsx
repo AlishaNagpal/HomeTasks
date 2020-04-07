@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Image, Text, TouchableOpacity, ImageBackground, ActivityIndicator} from 'react-native';
+import { View, Image, Text, TouchableOpacity, ImageBackground, ActivityIndicator } from 'react-native';
 import { useDispatch } from 'react-redux';
 import styles from './styles'
 import { Colors, vh, Strings, Images, VectorIcons } from '../../Constants';
 import { CustomTextInput, Toast, CustomButton } from '../../Components';
-import { getResult, updateToken, userFirebaseUID} from '../../Modules/SignUP/Action';
+import { getResult, updateToken, userFirebaseUID } from '../../Modules/SignUP/Action';
 import { userLoggedInFrom } from '../../Modules/SignUP/Action';
 import ImagePicker from 'react-native-image-crop-picker';
 import firebaseSDK from '../../Components/Firebase';
@@ -26,7 +26,7 @@ export default function SignUp(props: SignUpProps) {
     const [onPasswordFocus, setonPasswordFocus] = useState(false);
     const [Loader, setLoader] = useState(false);
     const emailRef = React.createRef();
-    const passwordRef = React.createRef(); 
+    const passwordRef = React.createRef();
 
 
     const resetCall = (value: boolean) => {
@@ -71,27 +71,28 @@ export default function SignUp(props: SignUpProps) {
         });
     }
 
+    const getImageURL = (dataTask: any) => {
+        dispatch(
+            getResult(
+                newEmail,
+                newName,
+                dataTask,
+                () => { },
+            ),
+        );
+    }
+
     const userUid = (data: any) => {
+        // console.log('what', newImage, data)
         setLoader(false)
-        setTimeout(() => {
-            // firebaseSDK.writeTheUserToDatabase(newName, newEmail, data, newImage)
-            dispatch(userFirebaseUID(data));
-            props.navigation.navigate('MainHome');
-        }, 1000);
+        firebaseSDK.savePictureInStorage(newImage, data, getImageURL)
+        dispatch(userFirebaseUID(data));
         dispatch(updateToken(Math.random().toString()));
     }
 
     const CallSave = async () => {
         // console.log(newEmail, newName, newImage);
         try {
-            dispatch(
-                getResult(
-                    newEmail,
-                    newName,
-                    newImage,
-                    () => { },
-                ),
-            );
             dispatch(userLoggedInFrom('Firebase'));
             setLoader(true)
             const user = {

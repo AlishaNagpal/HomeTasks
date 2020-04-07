@@ -1,8 +1,10 @@
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import { Platform, Alert } from 'react-native';
+import { Platform } from 'react-native';
 import moment from 'moment';
+import storage from '@react-native-firebase/storage';
+import { useCallback } from 'react';
 
 // const uid = auth().currentUser.uid;
 // const ref = database().ref(`/users/${uid}`);
@@ -73,6 +75,27 @@ class FirebaseSDK {
             )
     };
 
+    // saving the users picture in the storage
+    savePictureInStorage = async (localPath: string, userUID: string, callback: Function) => {
+        if (localPath !== '') {
+            const ref = storage().ref('UserImages').child(userUID);
+            return ref
+                .putFile(localPath, { contentType: 'jpg' })
+                .then(() => {
+                    return ref.getDownloadURL();
+                })
+                .then(url => {
+                    callback(url)
+                })
+                .catch(err => {
+                    console.log('error in storage upload picture', err)
+                })
+        } else {
+            callback('Path was empty')
+        }
+
+    }
+
     // reading entire users
     readUserData(callback: Function) {
         database().ref('Users/').on('value', function (snapshot: any) {
@@ -141,7 +164,7 @@ class FirebaseSDK {
     send = (messages: any) => {
         for (let i = 0; i < messages.length; i++) {
             const { text, user } = messages[i];
-
+            // console.log(user)
             const dated = moment()
                 .utcOffset('+05:30')
                 .format(' hh:mm a');
@@ -154,8 +177,8 @@ class FirebaseSDK {
             database().ref('ChatRooms/' + user.idRoom).push(message)
 
             // for Inbox, loading last messages
-            const inboxThisMessage = { text, gettingTime: dated, createdAt: new Date().getTime(), id: user._id, otherId: user.otherID, thisName: user.name, otherName: user.otherPersonName, unreadMessages: 0 }
-            const inboxOtherMessage = { text, gettingTime: dated, createdAt: new Date().getTime(), id: user.otherID, otherId: user._id, thisName: user.otherPersonName, otherName: user.name, unreadMessages: 0 }
+            const inboxThisMessage = { text, gettingTime: dated, createdAt: new Date().getTime(), id: user._id, otherId: user.otherID, thisName: user.name, otherName: user.otherPersonName, unreadMessages: 0, otherPersonAvatar: user.otherPersonAvatar }
+            const inboxOtherMessage = { text, gettingTime: dated, createdAt: new Date().getTime(), id: user.otherID, otherId: user._id, thisName: user.otherPersonName, otherName: user.name, unreadMessages: 0, otherPersonAvatar: user.otherPersonAvatar }
             database().ref('Inbox/' + 'OneonOne/' + user._id + '/' + user.otherID).set(inboxThisMessage)
             database().ref('Inbox/' + 'OneonOne/' + user.otherID + '/' + user._id).set(inboxOtherMessage)
 
@@ -253,9 +276,9 @@ class FirebaseSDK {
     }
 
     // getting delete node info
-    deleteNodeInfo = (userID: string, roomKey: string, callback:Function) => {
+    deleteNodeInfo = (userID: string, roomKey: string, callback: Function) => {
         database().ref('Delete/' + userID + '/' + roomKey + '/LatestMessage')
-        .on('value', (snapshot: any) => { callback(snapshot.val()) });
+            .on('value', (snapshot: any) => { callback(snapshot.val()) });
     }
 }
 const firebaseSDK = new FirebaseSDK();
