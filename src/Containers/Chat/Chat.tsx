@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import { View, Image, Text, TouchableOpacity, FlatList, Alert } from 'react-native';
 import styles from './styles'
 import { Colors, Strings, Images, VectorIcons, vh } from '../../Constants';
 import FirebaseServices from '../../Components/Firebase';
@@ -14,7 +14,8 @@ export interface ChatState {
     userArray: any[],
     longPress: boolean,
     otherPersonID: string,
-    chatsPresent: boolean
+    chatsPresent: boolean,
+    refreshing: boolean
 }
 
 
@@ -25,7 +26,8 @@ class Chat extends React.Component<ChatProps, ChatState> {
             userArray: [],
             longPress: false,
             otherPersonID: '',
-            chatsPresent: false
+            chatsPresent: false,
+            refreshing: false
         };
     }
 
@@ -33,69 +35,37 @@ class Chat extends React.Component<ChatProps, ChatState> {
         FirebaseServices.readInboxData(this.props.userUID, this.getLastMessages)
     }
 
-
-    // sorting the data as per the timestamp
-    getUniqueData = (data: any) => {
-        const emptyArray = this.state.userArray;
-        const index = emptyArray.findIndex((item: any) => item[0] === data[0])
-        if (index !== -1) {
-            emptyArray.splice(index, 1)
-            emptyArray.push(data)
-        } else {
-            emptyArray.push(data)
-        }
-        function compareWhole(a: any, b: any) {
-            const bandA = a[1].createdAt;
-            const bandB = b[1].createdAt;
-            let comparison = 0;
-            if (bandA > bandB) {
-                comparison = 1;
-            } else if (bandA < bandB) {
-                comparison = -1;
-            }
-            return comparison * -1;
-        }
-        emptyArray.sort(compareWhole)
-        setTimeout(() => {
-            for (let i = 0; i < emptyArray.length; i++) {
-                let chatRoomId = '';
-                if (this.props.userUID > emptyArray[i][1].otherId) {
-                    chatRoomId = this.props.userUID.concat(emptyArray[i][1].otherId)
-                } else {
-                    chatRoomId = emptyArray[i][1].otherId.concat(this.props.userUID)
-                }
-                FirebaseServices.deleteNodeInfo(this.props.userUID, chatRoomId, (dataHere: number) => {
-                    if (!dataHere) {
-                        FirebaseServices.unreadMessages(chatRoomId, emptyArray[i][1].otherId, (messages: any) => {
-                            FirebaseServices.unreadMessageCount(this.props.userUID, emptyArray[i][1].otherId, messages)
-                        })
-                    }
-                    this.forceUpdate()
-                })
-            }
-        }, 2000);
-
-        setTimeout(() => {
-            this.setState({
-                userArray: emptyArray,
-                chatsPresent: true
-            })
-        }, 1000);
-    }
-
     // getting the last messages of the one-on-one chat
     getLastMessages = (data: any) => {
         if (data) {
-            const result: any[] = Object.keys(data).map(function (key) {
-                return [String(key), data[key]];
-            })
-            for (let i = 0; i < result.length; i++) {
-                this.getUniqueData(result[i])
-            }
+            this.setState({ userArray: data, chatsPresent: true },()=> this.getUnreadMessages())
         }
     }
 
-    onChatPress = (id: string, name: string, imageURL: string ) => {
+    // getting unread messages
+    getUnreadMessages = () => {
+        const data = this.state.userArray;
+        for (let i = 0; i < data.length; i++) {
+            let chatRoomId = '';
+            if (this.props.userUID > data[i].id) {
+                chatRoomId = this.props.userUID.concat(data[i].id)
+            } else {
+                chatRoomId = data[i].id.concat(this.props.userUID)
+            }
+            // FirebaseServices.deleteNodeInfo(this.props.userUID, chatRoomId, (dataHere: number) => {
+            //     if (!dataHere) {
+            FirebaseServices.unreadMessages(chatRoomId, data[i].otherId, (messages: any) => {
+                FirebaseServices.unreadMessageCount(this.props.userUID, data[i].otherId, messages)
+            })
+            //     }
+            // })
+        }
+
+    }
+
+
+    // going forward
+    onChatPress = (id: string, name: string, imageURL: string) => {
         let chatRoomId = '';
         if (this.props.userUID > id) {
             chatRoomId = this.props.userUID.concat(id)
@@ -111,19 +81,32 @@ class Chat extends React.Component<ChatProps, ChatState> {
             })
     }
 
+    // deleting chat thread here 
     deleteChatThread = () => {
-        let chatRoomId = '';
-        if (this.props.userUID > this.state.otherPersonID) {
-            chatRoomId = this.props.userUID.concat(this.state.otherPersonID)
-        } else {
-            chatRoomId = this.state.otherPersonID.concat(this.props.userUID)
-        }
-        FirebaseServices.deleteChatThread(this.props.userUID, chatRoomId, this.state.otherPersonID)
-        FirebaseServices.readInboxData(this.props.userUID, this.getLastMessages)
-        this.setState({
-            longPress: false
-        })
-
+        Alert.alert(
+            'Delete this Chat Thread?',
+            'This action cannot be undone.',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                    text: 'OK', onPress: () => {
+                        let chatRoomId = '';
+                        if (this.props.userUID > this.state.otherPersonID) {
+                            chatRoomId = this.props.userUID.concat(this.state.otherPersonID)
+                        } else {
+                            chatRoomId = this.state.otherPersonID.concat(this.props.userUID)
+                        }
+                        FirebaseServices.deleteChatThread(this.props.userUID, chatRoomId, this.state.otherPersonID, () => {
+                            FirebaseServices.readInboxData(this.props.userUID, this.getLastMessages)
+                        })
+                        this.setState({
+                            longPress: false,
+                        })
+                    }
+                },
+            ],
+            { cancelable: false }
+        )
     }
 
     longPressDelete = (otherPersonID: string) => {
@@ -133,27 +116,37 @@ class Chat extends React.Component<ChatProps, ChatState> {
         })
     }
 
+    // refreshing flat list
+    refresh = () => {
+        this.setState({ refreshing: true })
+        FirebaseServices.readInboxData(this.props.userUID, this.getLastMessages)
+        this.forceUpdate()
+        setTimeout(() => {
+            this.setState({ refreshing: false })
+        }, 300);
+    }
+
     renderData = (rowData: any) => {
         const { item } = rowData
         return (
             <View>
-                <TouchableOpacity style={styles.row} onLongPress={() => this.longPressDelete(item[0])} >
-                    <Image source={{uri:item[1].otherPersonAvatar}} style={styles.chatImage} />
-                    <TouchableOpacity style={styles.root} onPress={() => this.onChatPress(item[0], item[1].otherName, item[1].otherPersonAvatar)} activeOpacity={1} >
+                <TouchableOpacity style={styles.row} onLongPress={() => this.longPressDelete(item.otherId)} >
+                    <Image source={{ uri: item.otherPersonAvatar }} style={styles.chatImage} />
+                    <TouchableOpacity style={styles.root} onPress={() => this.onChatPress(item.otherId, item.otherName, item.otherPersonAvatar)} activeOpacity={1} >
                         <View style={styles.row2} >
-                            <Text style={styles.nameSet} >{item[1].otherName}</Text>
-                            <Text style={styles.message} >{item[1].gettingTime}</Text>
+                            <Text style={styles.nameSet} >{item.otherName}</Text>
+                            <Text style={styles.message} >{item.gettingTime}</Text>
 
                         </View>
                         <View style={styles.time} >
-                            <Text style={styles.lastMessage} >{item[1].text}</Text>
-                            {item[1].unreadMessages !== 0 && <View style={styles.unreadView}>
-                                <Text style={styles.unreadMessages} >{item[1].unreadMessages}</Text>
+                            <Text style={styles.lastMessage} >{item.text}</Text>
+                            {item.unreadMessages !== 0 && <View style={styles.unreadView}>
+                                <Text style={styles.unreadMessages} >{item.unreadMessages}</Text>
                             </View>}
                         </View>
                     </TouchableOpacity>
                 </TouchableOpacity>
-                {this.state.longPress && this.state.otherPersonID === item[0] &&
+                {this.state.longPress && this.state.otherPersonID === item.otherId &&
                     <>
                         <View style={styles.overlappingView} />
                         <VectorIcons.Feather name={'check'} color={'red'} size={vh(55)} style={styles.deleteIcon} />
@@ -185,6 +178,8 @@ class Chat extends React.Component<ChatProps, ChatState> {
                             data={this.state.userArray}
                             renderItem={this.renderData}
                             keyExtractor={(item, index) => index.toString()}
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.refresh}
                         />
                         :
                         <View style={styles.centerNoChats}>

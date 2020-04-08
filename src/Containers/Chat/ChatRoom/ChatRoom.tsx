@@ -66,9 +66,9 @@ class ChatRoom extends React.Component<Props, State> {
         FirebaseServices.getTypingValue(this.state.roomId, this.state.uid_otherPerson, this.getTyping)
         FirebaseServices.refOn(this.state.roomId, (message: any) => {
             FirebaseServices.deleteNodeInfo(this.props.userUID, this.state.roomId, (dataHere: number) => {
+                const ans = message.sort(compare)
+                const data: any[] = []
                 if (dataHere) {
-                    const ans = message.sort(compare)
-                    const data: any[] = []
                     for (let i = 0; i < ans.length; i++) {
                         if (ans[i].mess.createdAt >= dataHere) {
                             let mess = ans[i].mess
@@ -76,42 +76,27 @@ class ChatRoom extends React.Component<Props, State> {
                             data.push(mess)
                         }
                     }
-                    this.setState(previousState => ({
-                        messages: data
-                        // GiftedChat.append(previousState.messages, message),
-                    }))
-                    this.setState({
-                        lengthMessage: this.state.messages.length
-                    })
-                    if (this.state.lengthMessage === 20) {
-                        const getLastMessageKey = ans[19].id
-                        this.setState({
-                            lastMessageKey: getLastMessageKey,
-                            loadEarlier: true
-                        })
-                    }
                 } else {
-                    const ans = message.sort(compare)
-                    const data: any[] = []
                     for (let i = 0; i < ans.length; i++) {
                         let mess = ans[i].mess
                         this.state.unfileteredDATA.push(ans[i]);
                         data.push(mess)
                     }
-                    this.setState(previousState => ({
-                        messages: data
-                        // GiftedChat.append(previousState.messages, message),
-                    }))
+                }
+
+                this.setState(previousState => ({
+                    messages: data
+                    // GiftedChat.append(previousState.messages, message),
+                }))
+                this.setState({
+                    lengthMessage: this.state.messages.length
+                })
+                if (this.state.lengthMessage === 20) {
+                    const getLastMessageKey = ans[19].id
                     this.setState({
-                        lengthMessage: this.state.messages.length
+                        lastMessageKey: getLastMessageKey,
+                        loadEarlier: true
                     })
-                    if (this.state.lengthMessage === 20) {
-                        const getLastMessageKey = ans[19].id
-                        this.setState({
-                            lastMessageKey: getLastMessageKey,
-                            loadEarlier: true
-                        })
-                    }
                 }
             })
         });
@@ -251,6 +236,7 @@ class ChatRoom extends React.Component<Props, State> {
                         for (let i = 0; i < this.state.unfileteredDATA.length; i++) {
                             if (this.state.unfileteredDATA[i].mess.user._id === this.props.userUID && this.state.unfileteredDATA[i].mess.createdAt === message.createdAt) {
                                 FirebaseServices.deleteMessages(this.state.roomId, this.state.unfileteredDATA[i].id)
+                                this.setState({ messages: this.state.messages.splice(0) })
                             }
                         }
                         break;
@@ -314,6 +300,7 @@ class ChatRoom extends React.Component<Props, State> {
             otherID: this.state.uid_otherPerson,
             otherPersonName: this.state.name_otherPerson,
             otherPersonAvatar: this.state.avatar_otherPerson,
+            // _id: new Date().getTime()
         };
     }
 

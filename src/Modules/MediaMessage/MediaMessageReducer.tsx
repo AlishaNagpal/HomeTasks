@@ -13,7 +13,8 @@ interface UploadType {
     fileName: string,
     fileURL: string,
     uniqueID: string,
-    unreadMessages: number
+    unreadMessages: number,
+    idRoom: string
 }
 
 const initialState = {

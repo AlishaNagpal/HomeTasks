@@ -165,8 +165,8 @@ class FirebaseSDK {
             database().ref('ChatRooms/' + user.idRoom).push(message)
 
             // for Inbox, loading last messages
-            const inboxThisMessage = { text, gettingTime: dated, createdAt: new Date().getTime(), id: user._id, otherId: user.otherID, thisName: user.name, otherName: user.otherPersonName, unreadMessages: 0, otherPersonAvatar: user.otherPersonAvatar }
-            const inboxOtherMessage = { text, gettingTime: dated, createdAt: new Date().getTime(), id: user.otherID, otherId: user._id, thisName: user.otherPersonName, otherName: user.name, unreadMessages: 0, otherPersonAvatar: user.otherPersonAvatar }
+            const inboxThisMessage = { text, gettingTime: dated, createdAt: new Date().getTime(), id: user._id, otherId: user.otherID, thisName: user.name, otherName: user.otherPersonName, unreadMessages: 0, otherPersonAvatar: user.otherPersonAvatar}
+            const inboxOtherMessage = { text, gettingTime: dated, createdAt: new Date().getTime(), id: user.otherID, otherId: user._id, thisName: user.otherPersonName, otherName: user.name, unreadMessages: 0, otherPersonAvatar: user.otherPersonAvatar}
             database().ref('Inbox/' + 'OneonOne/' + user._id + '/' + user.otherID).set(inboxThisMessage)
             database().ref('Inbox/' + 'OneonOne/' + user.otherID + '/' + user._id).set(inboxOtherMessage)
 
@@ -186,9 +186,27 @@ class FirebaseSDK {
 
     // reading last messages
     readInboxData(uid: string, callback: Function) {
-        database().ref('Inbox/' + 'OneonOne/').child(uid).on('value', function (snapshot: any) {
-            callback(snapshot.val())
-        })
+        const onReceive = (data: any) => {
+            if (data._snapshot.value) {
+                const users = data._snapshot.value;
+                const keys = Object.keys(users)
+                const messages = [];
+
+                for (let i = 0; i < keys.length; i++) {
+                    const a = keys[i]
+                    messages.push(users[a])
+                }
+                messages.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1))
+                callback(messages)
+            }
+        };
+
+
+        database().ref('Inbox/' + 'OneonOne/').child(uid)
+            .on('value', onReceive);
+        // .on('value', function (snapshot: any) {
+        //     callback(snapshot.val())
+        // })
     }
 
     // making the messages of other as read
@@ -257,10 +275,11 @@ class FirebaseSDK {
     }
 
     // Delete ChatThread
-    deleteChatThread = (userID: string, chatroomId: string, otherPersonID: string) => {
+    deleteChatThread = (userID: string, chatroomId: string, otherPersonID: string, callBack: Function) => {
         const createdAt = new Date().getTime()
-        database().ref('Delete/' + userID + '/' + chatroomId + '/LatestMessage').set(createdAt)
-        database().ref('Inbox/' + 'OneonOne/' + userID + '/' + otherPersonID).remove()
+        database().ref('Delete/' + userID + '/' + chatroomId + '/LatestMessage').set(createdAt);
+        database().ref('Inbox/' + 'OneonOne/' + userID + '/' + otherPersonID).remove();
+        callBack();
     }
 
     // getting delete node info

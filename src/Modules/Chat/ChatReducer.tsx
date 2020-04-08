@@ -2,7 +2,7 @@ import * as Actions from '../../Reducer/types';
 import Data from '../../Containers/Chat/Data';
 
 const initialState = {
-    value: Data,
+    value: Data
 };
 
 const ChatReducer = (state = initialState, action: any) => {

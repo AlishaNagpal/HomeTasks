@@ -12,10 +12,9 @@ export const getChatDATA = () => {
 export const deleteChatDATA = (newValue: number) => {
     return (dispatch: any, getState: any) => {
         const { value } = getState().ChatReducer;
-        let emptyArray = value;
+        const emptyArray = value;
         const indexToFind = emptyArray.findIndex((item: any) => item.id === newValue) 
         emptyArray.splice(indexToFind,1);
         dispatch({ type: Actions.DELETE_CHAT_DATA, payload: { data: emptyArray } });
     }
 };
-

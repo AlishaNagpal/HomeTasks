@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         height: vh(73.5),
         alignItems: 'center',
         flexDirection: 'row',
-        marginBottom: vh(50),
+        marginBottom: vh(20),
         paddingTop:vh(25)
     },
     menuIconButton: {

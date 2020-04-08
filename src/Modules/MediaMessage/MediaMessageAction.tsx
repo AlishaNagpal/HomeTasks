@@ -14,7 +14,8 @@ export const MediaMessageAction = (
     fileName: string,
     fileURL: string,
     uniqueID: string,
-    unreadMessages: number
+    unreadMessages: number,
+    idRoom: string
 ) => {
     return (dispatch: any, getState: any) => {
         const { mediaMessage } = getState().MediaMessagesReducer;
@@ -33,6 +34,7 @@ export const MediaMessageAction = (
         emptyArray.fileURL = fileURL
         emptyArray.uniqueID = uniqueID
         emptyArray.unreadMessages = unreadMessages
+        emptyArray.idRoom = idRoom
         array.push(emptyArray)
         dispatch({ type: Actions.MEDIA_MESSAGE, payload: { data: array } });
     }
