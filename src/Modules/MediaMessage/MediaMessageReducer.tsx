@@ -1,4 +1,4 @@
-import * as Actions from '../../utils/ActionTypes'
+import * as Actions from '../../Reducer/types';
 
 interface UploadType {
     chatRoomId: string,
@@ -13,25 +13,25 @@ interface UploadType {
     fileName: string,
     fileURL: string,
     uniqueID: string,
-    unreadMessages: number,
-    idRoom: string
 }
 
 const initialState = {
-    // renderFooter: false,
+    renderFooter: {},
     mediaMessage: new Array<UploadType>(),
-    // lengthArray: 0,
+    lengthArray: 0,
 };
 
-export const MediaMessagesReducer = (state = initialState, action: any) => {
+ const MediaMessagesReducer = (state = initialState, action: any) => {
     switch (action.type) {
         case Actions.MEDIA_MESSAGE:
             return { ...state, mediaMessage: action.payload.data }
-        // case Actions.RENDER_FOOTER:
-        //     return { ...state, renderFooter: action.payload.data }
-        // case Actions.ARRAY_LENGHT:
-        //     return { ...state, lengthArray: action.payload.data }
+        case Actions.RENDER_FOOTER:
+            return { ...state, renderFooter: action.payload.data }
+        case Actions.ARRAY_LENGHT:
+            return { ...state, lengthArray: action.payload.data }
         default:
             return state
     }
 }
+
+export default MediaMessagesReducer;

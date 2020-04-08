@@ -8,3 +8,5 @@ export const CHAT_DATA = 'chatDATA';
 export const DELETE_CHAT_DATA = 'DeleteChatDATA';
 export const FIREBASE_UID = 'Firebase_Login_user_UID';
 export const MEDIA_MESSAGE = 'MEDIA_MESSAGE';
+export const RENDER_FOOTER = 'renderFooter';
+export const ARRAY_LENGHT = 'arrayLenght';

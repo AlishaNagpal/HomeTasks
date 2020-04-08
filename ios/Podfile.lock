@@ -336,6 +336,11 @@ PODS:
     - React
   - react-native-splash-screen (3.2.0):
     - React
+  - react-native-video (4.4.5):
+    - React
+    - react-native-video/Video (= 4.4.5)
+  - react-native-video/Video (4.4.5):
+    - React
   - react-native-webview (9.0.1):
     - React
   - React-RCTActionSheet (0.61.5):
@@ -377,15 +382,15 @@ PODS:
     - React
   - RNCMaskedView (0.1.7):
     - React
-  - RNFBApp (6.3.4):
+  - RNFBApp (6.4.0):
     - Firebase/Core (~> 6.13.0)
     - React
-  - RNFBAuth (6.3.4):
+  - RNFBAuth (6.4.0):
     - Firebase/Auth (~> 6.13.0)
     - Firebase/Core (~> 6.13.0)
     - React
     - RNFBApp
-  - RNFBDatabase (6.3.4):
+  - RNFBDatabase (6.4.0):
     - Firebase/Core (~> 6.13.0)
     - Firebase/Database (~> 6.13.0)
     - React
@@ -445,6 +450,7 @@ DEPENDENCIES:
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
+  - react-native-video (from `../node_modules/react-native-video/react-native-video.podspec`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -543,6 +549,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
     :path: "../node_modules/react-native-splash-screen"
+  react-native-video:
+    :path: "../node_modules/react-native-video/react-native-video.podspec"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-RCTActionSheet:
@@ -642,6 +650,7 @@ SPEC CHECKSUMS:
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
+  react-native-video: eee541262ada11bc7ffe8ec5508e6a877937c462
   react-native-webview: 3f2f9934ba8633a170d209cb84045b6cbc5e5f48
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
   React-RCTAnimation: 791a87558389c80908ed06cc5dfc5e7920dfa360
@@ -655,9 +664,9 @@ SPEC CHECKSUMS:
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   RNCAsyncStorage: e0dd7c8a36543b4ef84969acd9f8aceba3a92dc2
   RNCMaskedView: 76c40a1d41c3e2535df09246a2b5487f04de0814
-  RNFBApp: 7d4006751de8bb5cafa2e8d2e7d94ee250df81db
-  RNFBAuth: ed8b865db45f7ded9dbf535e390cba2ba672aede
-  RNFBDatabase: 1201eb94eff3ab457d3e898fb5c347ddc67e00db
+  RNFBApp: 69781cf10ce41f6f6db789e6264dd80119ef2fb7
+  RNFBAuth: 50fcc7826344dc96caad8bc4f5b40a64904297b8
+  RNFBDatabase: 393536c2bd82bd11de82795c2d5893f04d5bf587
   RNFBStorage: 24097a1d18534b9c3559f862b8d18365cd573c2c
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
   RNImageCropPicker: cf129d17e042ce3e96fb9ada967c28f21f977c82
@@ -668,6 +677,6 @@ SPEC CHECKSUMS:
   RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 3f7c1a05377782e373c351caa73b5a61015c6fa0
+PODFILE CHECKSUM: 8dd8ac51db133aa80049cc25e7ee8a9371609ffa
 
 COCOAPODS: 1.9.0.beta.2

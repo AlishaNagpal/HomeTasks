@@ -4,6 +4,7 @@ import SignUpReducer from '../Modules/SignUP/Reducer';
 import SplashReducer from '../Modules/Splash/Reducer';
 import ProfileReducer from '../Modules/Profile/ProfileReducer';
 import ChatReducer from '../Modules/Chat/ChatReducer';
+import MediaMessagesReducer from '../Modules/MediaMessage/MediaMessageReducer';
 
 export const reducer = combineReducers({
   HomeReducer,
@@ -11,4 +12,5 @@ export const reducer = combineReducers({
   SplashReducer,
   ProfileReducer,
   ChatReducer,
+  MediaMessagesReducer,
 });

@@ -35,7 +35,7 @@ target 'HomeTasks' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
-  
+  pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'
    # React Native Maps dependencies
    rn_maps_path = '../node_modules/react-native-maps'
    pod 'react-native-google-maps', :path => rn_maps_path

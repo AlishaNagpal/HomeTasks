@@ -94,7 +94,7 @@ class FirebaseSDK {
     /*
     * One On One Chat Stuff 
     * It is happening people
-    *  
+    * I may not understand it later (>.<)'
     */
 
     // Load msgs from Database to Chat, first 20 messages to be loaded people
@@ -286,6 +286,123 @@ class FirebaseSDK {
     deleteNodeInfo = (userID: string, roomKey: string, callback: Function) => {
         database().ref('Delete/' + userID + '/' + roomKey + '/LatestMessage')
             .on('value', (snapshot: any) => { callback(snapshot.val()) });
+    }
+
+    // media message upload
+    uploadPic = (uid: string, chatRoomId: string, paths: any, callback: Function, uniqueID: number, mime: string) => {
+        console.log('at upload pic', uid, chatRoomId,uniqueID )
+        // debugger
+        if (!!paths) {
+            const ref = storage().ref('messageImages/' + chatRoomId + uid).child(uniqueID.toString());
+                return ref
+                    .putFile(paths, { contentType: 'jpg' })
+                    .then(() => {
+                        return ref.getDownloadURL();
+                    })
+                    .then(url => {
+                        console.log('getting storage url', url)
+                        callback(url, uniqueID.toString(), mime)
+                    })
+                    .catch(err => {
+                        console.log('error in storage upload picture via messages', err)
+                    })
+        } else {
+            callback(null)
+        }
+    }
+
+    // Send image message
+    sendImageMessage = (
+        chatRoomId: string,
+        senderId: string,
+        senderName: string,
+        otherID: string,
+        otherName: string,
+        avatar: string,
+        otherPersonAvatar: string,
+        createdAt: number,
+        fileURL: string,
+        type: string,
+        mime: string
+    ) => {
+
+        console.log('in send image message')
+        const dated = moment()
+            .utcOffset('+05:30')
+            .format(' hh:mm a');
+
+        const DayTime = moment()
+            .utcOffset('+05:30')
+            .format('DD MMM,YYYY');
+
+        const text = 'File Attachment'
+        if (mime === 'image/jpeg') {
+            if (type === 'OneOnOne') {
+                const user = {
+                    name: senderName,
+                    avatar,
+                    otherPersonAvatar,
+                    idRoom: chatRoomId,
+                    _id: senderId,
+                    otherID,
+                    otherPersonName: otherName
+                }
+
+                const message = { user, text, createdAt, gettingTime: dated, onDay: DayTime, image: fileURL };
+                console.log('getting the message', message)
+                database().ref('ChatRooms/' + chatRoomId).push(message)
+
+                const inboxThisMessage = { text, image: fileURL, gettingTime: dated, createdAt, id: senderId, otherId: otherID, thisName: senderName, otherName, unreadMessages: 0, otherPersonAvatar  }
+                const inboxOtherMessage = { text, image: fileURL, gettingTime: dated, createdAt, id: otherID, otherId: senderId, thisName: otherName, otherName: senderName, unreadMessages: 0, otherPersonAvatar  }
+                database().ref('Inbox/' + 'OneonOne/' + senderId + '/' + otherID).set(inboxThisMessage)
+                database().ref('Inbox/' + 'OneonOne/' + otherID + '/' + senderId).set(inboxOtherMessage)
+            } 
+            // else if (type === 'Group') {
+            //     const user = {
+            //         GroupName: chatRoomId,
+            //         _id: senderId,
+            //         avatar,
+            //         name: senderName
+            //     }
+            //     const message = { text, user, image: fileURL, gettingTime: dated, createdAt: new Date().getTime(), onDay: DayTime, otherName: otherName, otherId: otherID };
+            //     firebase.database().ref('SelectedGroupChat/' + chatRoomId).push(message)
+            //     firebase.database().ref('Inbox/' + 'GroupChat/' + chatRoomId).set(message)
+            // }
+        } else if (mime === 'video/mp4') {
+            const text = 'Video Attachment'
+            if (type === 'OneOnOne') {
+                const user = {
+                    name: senderName,
+                    avatar,
+                    idRoom: chatRoomId,
+                    _id: senderId,
+                    otherID,
+                    otherPersonName: otherName,
+                    otherPersonAvatar
+                }
+
+                const message = { user, text, createdAt, gettingTime: dated, onDay: DayTime, video: fileURL };
+                database().ref('ChatRooms/' + chatRoomId).push(message)
+
+                const inboxThisMessage = { text, video: fileURL, gettingTime: dated, createdAt, id: senderId, otherId: otherID, thisName: senderName, otherName,unreadMessages: 0, otherPersonAvatar }
+                const inboxOtherMessage = { text, video: fileURL, gettingTime: dated, createdAt, id: otherID, otherId: senderId, thisName: otherName, otherName: senderName, unreadMessages: 0, otherPersonAvatar  }
+                database().ref('Inbox/' + 'OneonOne/' + senderId + '/' + otherID).set(inboxThisMessage)
+                database().ref('Inbox/' + 'OneonOne/' + otherID + '/' + senderId).set(inboxOtherMessage)
+            } 
+            // else if (type === 'Group') {
+            //     let user = {
+            //         GroupName: chatRoomId,
+            //         _id: senderId,
+            //         avatar: avatar,
+            //         name: senderName
+            //     }
+            //     const message = { text, user, video: fileURL, gettingTime: dated, createdAt: new Date().getTime(), onDay: DayTime, otherName: otherName, otherId: otherID };
+            //     firebase.database().ref('SelectedGroupChat/' + chatRoomId).push(message)
+            //     firebase.database().ref('Inbox/' + 'GroupChat/' + chatRoomId).set(message)
+            // }
+        }
+
+
     }
 }
 const firebaseSDK = new FirebaseSDK();

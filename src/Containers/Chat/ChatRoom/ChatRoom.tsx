@@ -1,11 +1,14 @@
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
-import { TouchableOpacity, View, Text, Image, Clipboard } from 'react-native';
+import { TouchableOpacity, View, Text, Image, Clipboard, ActivityIndicator } from 'react-native';
 import styles from './styles'
 import { Colors, vh, VectorIcons, vw, Images } from '../../../Constants';
 import { Bubble, Composer, Day, InputToolbar } from '../../../Components';
 import { connect } from 'react-redux';
 import FirebaseServices from '../../../Components/Firebase';
+import { ArrayLenght } from '../../../Modules/MediaMessage/MediaMessageAction';
+import moment from 'moment';
+import Video from 'react-native-video';
 
 
 export interface Props {
@@ -13,6 +16,10 @@ export interface Props {
     route: any,
     result: any,
     userUID: string,
+    mediaMessage: any[],
+    renderFooter: any,
+    ArrayLenght: Function,
+    lengthArray: number
 }
 
 interface State {
@@ -26,7 +33,8 @@ interface State {
     lastMessageKey: string,
     lengthMessage: number,
     typingText: boolean,
-    unfileteredDATA: any[]
+    unfileteredDATA: any[],
+    showFooter: boolean
 }
 
 function compare(a: any, b: any) {
@@ -56,7 +64,8 @@ class ChatRoom extends React.Component<Props, State> {
             lastMessageKey: '',
             lengthMessage: 0,
             typingText: false,
-            unfileteredDATA: []
+            unfileteredDATA: [],
+            showFooter: false
         };
     }
     _isMounted = false
@@ -136,7 +145,6 @@ class ChatRoom extends React.Component<Props, State> {
                                         data.push(mess)
                                     }
                                 }
-
                                 if (sorted.length === 19) {
                                     const getLastMessageKey = sorted[18].id
                                     this.setState({
@@ -160,7 +168,6 @@ class ChatRoom extends React.Component<Props, State> {
                                     this.state.unfileteredDATA.push(sorted[i]);
                                     data.push(mess)
                                 }
-
                                 if (sorted.length === 19) {
                                     const getLastMessageKey = sorted[18].id
                                     this.setState({
@@ -260,6 +267,72 @@ class ChatRoom extends React.Component<Props, State> {
         }
     }
 
+    renderMessageVideo = (props: any) => {
+        console.log('props', props, props.currentMessage.video)
+        return (
+            <Video
+                source={{ uri: props.currentMessage.video }}   // Can be a URL or a local file.
+                ref={(ref) => {
+                    this.player = ref
+                }}                                      // Store reference
+                // onBuffer={this.onBuffer}                // Callback when remote video is buffering
+                // onError={this.videoError}               // Callback when video cannot be loaded
+                style={styles.backgroundVideo}
+            />
+        )
+    }
+
+    renderFooter = () => {
+        console.log('in render footer', this.props.renderFooter)
+        const dated = moment()
+            .utcOffset('+05:30')
+            .format(' hh:mm a');
+        if (this.props.renderFooter.value && this.state.showFooter && this.props.renderFooter.type === 'image/jpeg') {
+            const array = this.props.mediaMessage.filter((item: any) => item.chatRoomId === this.state.roomId && item.senderId === this.props.userUID);
+            return (
+                <View style={styles.footerView} >
+                    <Image
+                        source={{ uri: array[0].fileURL }}
+                        style={styles.footerImage}
+                    />
+                    <Text style={styles.timeStyle} >{dated}</Text>
+                    <Text style={styles.arrayText} >{this.props.lengthArray}</Text>
+                    <ActivityIndicator size="large" style={styles.indicator} color={Colors.white} />
+                </View>
+            )
+        } else if (this.props.renderFooter.value && this.state.showFooter && this.props.renderFooter.type === 'video/mp4') {
+            const array = this.props.mediaMessage.filter((item: any) => item.chatRoomId === this.state.roomId && item.senderId === this.props.userUID);
+            return (
+                <View style={styles.footerView} >
+                    <Image
+                        source={Images.FileUpload}
+                        style={styles.footerImage}
+                    />
+                    <Text style={styles.timeStyle} >{dated}</Text>
+                    <Text style={styles.arrayText} >{this.props.lengthArray}</Text>
+                    <ActivityIndicator size="large" style={styles.indicator} color={Colors.white} />
+                </View>
+            )
+        } else {
+            return null
+        }
+    }
+
+    reRenderMessages = () => {
+        const array = this.props.mediaMessage.filter((item: any) => item.chatRoomId === this.state.roomId && item.senderId === this.props.userUID);
+        if (array.length !== 0) {
+            this.props.ArrayLenght(array.length)
+            this.setState({
+                showFooter: true,
+                messages: this.state.messages.splice(0)
+            })
+        } else {
+            this.setState({
+                showFooter: false
+            })
+        }
+    }
+
     getTyping = (data: boolean) => {
         this.setState({
             typingText: data
@@ -286,7 +359,7 @@ class ChatRoom extends React.Component<Props, State> {
 
     renderInputToolbar = (props: any) => {
         return (
-            <InputToolbar {...props} />
+            <InputToolbar {...props} reRenderMessages={() => this.reRenderMessages()} type={'OneOnOne'} />
         )
     }
 
@@ -344,6 +417,9 @@ class ChatRoom extends React.Component<Props, State> {
                     maxComposerHeight={vw(80)}
                     onInputTextChanged={(val) => this.ontextChanged(val)} // changes over here
                     onLongPress={this.onLongPress}
+                    // @ts-ignore
+                    renderFooter={this.renderFooter}
+                    renderMessageVideo={this.renderMessageVideo}
                 />
             </View>
         );
@@ -352,14 +428,19 @@ class ChatRoom extends React.Component<Props, State> {
 
 function mapDispatchToProps(dispatch: any) {
     return {
+        ArrayLenght: (value: number) => dispatch(ArrayLenght(value))
     }
 }
 
 function mapStateToProps(state: any) {
     const { result, userUID } = state.SignUpReducer;
+    const { mediaMessage, renderFooter, lengthArray } = state.MediaMessagesReducer;
     return {
         userUID,
-        result
+        result,
+        mediaMessage,
+        renderFooter,
+        lengthArray
     }
 }
 
